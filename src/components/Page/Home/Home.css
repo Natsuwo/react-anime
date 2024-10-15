@@ -1,0 +1,19 @@
+.banner-wrapper {
+  position: relative;
+  /* min-height: 617px; */
+}
+
+.list-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+  margin-top: 20px;
+}
+
+.list-wrapper .row {
+  width: calc(100% / 6 - 12px);
+}

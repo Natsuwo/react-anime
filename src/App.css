@@ -1,38 +1,201 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  font-family: "Poppins", sans-serif;
+  --sc-color: #767676;
+  --primary-color: #171717;
+  --link-active: #da0;
+  --text-color: #e6e6e6;
+  --btn-hover-color: hsla(0, 0%, 100%, 0.08);
+  --white-8: hsla(0, 0%, 100%, 0.08);
+  --white-12: hsla(0, 0%, 100%, 0.12);
+  --sub-title-color: #999;
+  background-color: #000;
+  color: #fff;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+img {
+  width: 100%;
+  display: block;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+a {
+  text-decoration: none;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+ul {
+  list-style: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* .svg-icon {
+  width: 100%;
+  height: 100%;
+} */
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+.main-container {
+  display: flex;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* custom slide */
+
+.slick-list {
+  max-width: 100%;
+  overflow: hidden; /* Ẩn phần thừa nếu có */
+}
+
+.slick-slide {
+  /* Tránh bị phóng to theo chiều cao */
+  display: inline-block; /* Giữ các slide không bị giãn */
+  box-sizing: border-box;
+}
+
+.slick-slide {
+  padding-right: 12px;
+}
+
+/* the parent */
+.btn {
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  color: white;
+  background-color: var(--white-12);
+  transition: background-color 0.3s cubic-bezier(0.33, 1, 0.68, 1),
+    color 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.btn:hover {
+  background: #e6e6e6;
+  color: #212121;
+}
+
+.mt {
+  margin-top: 64px;
+}
+
+a.link-block::after {
+  background-color: var(--white-8);
+  bottom: 0;
+  content: "";
+  display: inline-block;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: opacity 0.1s linear;
+}
+
+@supports (-webkit-line-clamp: 2) {
+  .clamp-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Giới hạn số dòng hiển thị */
+    overflow: hidden; /* Ẩn nội dung vượt quá */
   }
-  to {
-    transform: rotate(360deg);
-  }
+}
+
+.slick-slider .arrow-icon {
+  width: 54px;
+  height: 54px;
+  fill: currentColor;
+  opacity: 0.5;
+  transition: opacity 0.2s linear;
+  filter: drop-shadow(0 0 24px rgba(0, 0, 0, 0.8));
+  cursor: pointer;
+  color: white;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.slick-slider .gradient-right {
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 0, 0, 0.8) 54px,
+    #000 108px,
+    #000 250px
+  );
+  margin-right: -95vw;
+  right: 0;
+}
+
+.slick-slider .gradient-left {
+  background-image: linear-gradient(
+    270deg,
+    transparent,
+    rgba(0, 0, 0, 0.8) 54px,
+    #000 108px,
+    #000 250px
+  );
+  left: 0;
+  margin-left: -100vw;
+  transform: translateX(54px);
+  transition: transform 0.2s linear;
+}
+
+.slick-slider .gradient-left.hidden {
+  transform: translateX(0);
+}
+
+.slick-slider .gradient {
+  height: 100%;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  z-index: 1;
+}
+
+.slick-slider .arrow-icon.right {
+  right: 8px;
+}
+
+.slick-slider .arrow-icon.left {
+  left: 8px;
+}
+
+.slick-slider .arrow-icon:hover {
+  opacity: 1;
+}
+
+.slick-slide {
+  display: inline-block; /* Tránh gây lỗi bố cục */
+  vertical-align: top; /* Đảm bảo các item nằm cùng dòng */
+  box-sizing: border-box;
+}
+
+.slick-list {
+  overflow: visible;
+}
+
+.slick-slider {
+  margin: 0 24px;
+}
+
+.container {
+  margin: 0 auto;
+  position: relative;
+  padding: 0 24px;
 }

@@ -1,0 +1,86 @@
+.main-navbar {
+  position: relative;
+  width: 188px;
+  z-index: 12;
+  transition: 250ms;
+  flex-shrink: 0;
+}
+
+.sidebar-wrapper {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--primary-color);
+  height: 100vh;
+  width: 188px;
+  transition: width 0.25s cubic-bezier(0.33, 1, 0.68, 1);
+  padding-top: 68px;
+}
+
+ul.navbar-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+ul.navbar-menu li a {
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  padding: 16px 20px;
+}
+
+ul.navbar-menu li a.active {
+  color: var(--link-active);
+}
+
+ul.navbar-menu li a .navbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+ul.navbar-menu li a .navbar-item .navbar-text-under-icon {
+  position: absolute;
+  bottom: -20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: 250ms;
+}
+
+ul.navbar-menu li a .navbar-item .navbar-icon {
+  width: 24px;
+  height: 24px;
+}
+
+ul.navbar-menu li {
+  cursor: pointer;
+}
+
+ul.navbar-menu li:hover {
+  background-color: var(--btn-hover-color);
+}
+
+/* active */
+
+.main-navbar.active {
+  width: 64px;
+}
+
+.main-navbar.active .sidebar-wrapper {
+  width: 64px;
+}
+
+.main-navbar.active .navbar-text {
+  opacity: 0;
+  visibility: hidden;
+  transition: 250ms;
+}
+
+.main-navbar.active ul.navbar-menu li a .navbar-item .navbar-text-under-icon {
+  opacity: 1;
+  visibility: visible;
+  transition: 250ms;
+}

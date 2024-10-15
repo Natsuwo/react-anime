@@ -1,0 +1,222 @@
+.main-banner {
+  position: relative;
+  overflow: hidden;
+  padding-top: 50%;
+}
+
+.main-banner video {
+  width: 100%;
+}
+
+.main-banner .banner-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.main-banner .banner-video.hover .banner-video-detail button.view-more {
+  background-color: white;
+  color: black;
+}
+
+.main-banner .banner-video.hover .banner-player video {
+  scale: 1.1;
+}
+
+.main-banner .banner-video .banner-player {
+  position: relative;
+}
+
+.main-banner .banner-video .banner-player video {
+  transition: 500ms;
+}
+
+.main-banner .banner-video .banner-player button {
+  position: absolute;
+  right: 72px;
+  top: 90px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  filter: drop-shadow(#000 0 0 4px);
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.1s linear;
+}
+
+.main-banner .banner-video .banner-video-detail {
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  transform: translateY(-50%);
+  color: white;
+  z-index: 1;
+}
+
+.banner-video-detail .live {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.banner-video-detail .live .live-text {
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.banner-video-detail .live .live-icon-container {
+  position: relative;
+  width: 12px;
+  height: 12px;
+}
+
+.banner-video-detail .live .live-icon-container .icon-live {
+  width: 12px;
+  height: 12px;
+  background-color: #f0163a;
+  border-radius: 50%;
+  animation: live-scale-1 2s cubic-bezier(0.65, 0, 0.35, 1) 0s infinite,
+    live-opacity-1 2s 0s infinite;
+  position: absolute;
+  opacity: 0;
+}
+
+.banner-video-detail .live .live-icon-container::before {
+  width: 12px;
+  height: 12px;
+  background-color: #f0163a;
+  border-radius: 50%;
+  animation: live-scale-2 2s cubic-bezier(0.65, 0, 0.35, 1) 0s infinite,
+    live-opacity-2 2s 0s infinite;
+  position: absolute;
+  opacity: 0;
+  content: "";
+}
+
+.banner-video-detail .live .live-icon-container::after {
+  background-color: #f0163a;
+  border-radius: 50%;
+  content: "";
+  height: 12px;
+  width: 12px;
+  position: absolute;
+}
+
+@keyframes live-scale-1 {
+  0% {
+    scale: 1;
+  }
+  25% {
+    scale: 2.2;
+  }
+}
+
+@keyframes live-opacity-1 {
+  0% {
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    opacity: 0;
+  }
+  25% {
+    animation-timing-function: linear;
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes live-scale-2 {
+  0% {
+    scale: 1;
+  }
+  25% {
+    scale: 4;
+  }
+}
+
+@keyframes live-opacity-2 {
+  0% {
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+    opacity: 0;
+  }
+  25% {
+    animation-timing-function: linear;
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.main-banner .banner-video .banner-video-detail .title {
+  display: flex;
+  gap: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+.main-banner .banner-video .banner-video-detail .info {
+  display: flex;
+  gap: 20px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.main-banner .banner-video .banner-video-detail button.view-more {
+  display: flex;
+  align-items: center;
+  color: white;
+  border: none;
+  background-color: hsla(0, 0%, 100%, 0.12);
+  padding: 12px 24px;
+  border-radius: 8px;
+  margin-top: 12px;
+  transition: 250ms;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  gap: 4px;
+}
+
+.main-banner .banner-video .banner-video-detail button.view-more:hover {
+  background-color: white;
+  color: black;
+}
+
+.main-banner .banner-video .banner-video-detail button.view-more svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.main-banner .banner-video .overlay-bottom {
+  position: absolute;
+  height: 160px;
+  background: linear-gradient(transparent, #000);
+  border-bottom: 64px solid #000;
+  box-sizing: content-box;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.main-banner .banner-video .overlay-left-side-wrapper {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 66.66667%;
+  z-index: 0;
+}
+
+.main-banner .banner-video .overlay-left-side {
+  background: linear-gradient(-90deg, transparent, rgba(0, 0, 0, 0.7));
+  height: 100%;
+  width: 100%;
+}

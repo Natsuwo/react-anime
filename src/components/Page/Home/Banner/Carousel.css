@@ -1,0 +1,112 @@
+.main-carousel {
+  /* position: absolute;
+  top: 50%; */
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 2;
+}
+
+.main-carousel .control-bar {
+  display: inline-flex;
+  width: 100%;
+  justify-content: flex-end;
+  z-index: 1;
+  padding-right: 20px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.carousel-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+.carousel-wrapper .carousel-content {
+  position: relative;
+}
+
+.carousel-wrapper .carousel {
+  white-space: nowrap;
+  position: relative;
+  /* overflow: hidden; */
+  transition: left 0.3s ease;
+  font-size: 0px;
+  scroll-behavior: smooth;
+}
+
+.carousel-wrapper .arrow-icon {
+  width: 54px;
+  height: 54px;
+  fill: currentColor;
+  opacity: 0.5;
+  transition: opacity 0.2s linear;
+  filter: drop-shadow(0 0 24px rgba(0, 0, 0, 0.8));
+  cursor: pointer;
+  color: white;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.carousel-wrapper .arrow-icon.left {
+  left: 12px;
+}
+
+.carousel-wrapper .arrow-icon.right {
+  right: 12px;
+}
+
+.carousel-wrapper .arrow-icon:hover {
+  opacity: 1;
+}
+
+.carousel-wrapper .carousel .main-card {
+  /* height: 100px !important; */
+  object-fit: cover;
+  width: calc(100% / 6) !important;
+  display: inline-block;
+  margin-left: 14px;
+}
+
+.carousel-wrapper .carousel .main-card:first-child {
+  margin-left: 24px;
+}
+
+.carousel-wrapper .pagination {
+  display: flex;
+  gap: 20px;
+  color: white;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-wrapper .pagination li button {
+  width: 48px;
+  height: 6px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: 250ms;
+}
+
+.carousel-wrapper .pagination li:hover button,
+.carousel-wrapper .pagination li.active button {
+  opacity: 1;
+}
+
+.card-zone-wrapper {
+  position: relative;
+}
+
+.card-zone-wrapper .control-wrapper {
+  /* padding-top: 60px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

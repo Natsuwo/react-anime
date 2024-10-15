@@ -1,0 +1,95 @@
+.layout-switcher-wrapper .layout-switcher {
+  display: inline-flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding-right: 20px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.layout-switcher-wrapper .layout-switcher div {
+  cursor: pointer;
+  pointer-events: auto;
+  /* overflow: hidden; */
+}
+
+.layout-switcher-wrapper .layout-switcher div button.switch {
+  width: 100%;
+  height: 100%;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  /* opacity: 0.5; */
+  /* background-color: transparent; */
+  background-color: black;
+  color: white;
+}
+
+.layout-switcher-wrapper .layout-switcher div:hover button.switch {
+  background-color: hsla(0, 0%, 100%, 0.12);
+}
+
+.layout-switcher-wrapper .layout-switcher div.active button.switch {
+  background-color: hsla(0, 0%, 100%, 0.24);
+}
+
+.layout-switcher-wrapper .layout-switcher .preview {
+  color: white;
+  background-color: black;
+  border-right: none;
+  cursor: pointer;
+}
+
+.layout-switcher-wrapper .layout-switcher div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.layout-switcher-wrapper .layout-switcher div button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.layout-switcher-wrapper .layout-switcher .preview svg,
+.layout-switcher-wrapper .layout-switcher .list svg {
+  width: 24px;
+  height: 24px;
+}
+
+.layout-switcher-wrapper .layout-switcher .list {
+  /* background-color: hsla(0, 0%, 100%, 0.24); */
+  color: white;
+  background-color: black;
+  cursor: pointer;
+}
+
+.layout-switcher-wrapper .layout-switcher .list::after,
+.layout-switcher-wrapper .layout-switcher .preview::after {
+  content: "";
+  border: 1px solid white;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
+.layout-switcher-wrapper .layout-switcher .list {
+  border-radius: 0 8px 8px 0;
+}
+
+.layout-switcher-wrapper .layout-switcher .preview {
+  border-radius: 8px 0 0 8px;
+}
+
+.layout-switcher-wrapper .layout-switcher .list::after {
+  border-radius: 0 8px 8px 0;
+}
+
+.layout-switcher-wrapper .layout-switcher .preview::after {
+  border-radius: 8px 0 0 8px;
+  border-right: none;
+}
