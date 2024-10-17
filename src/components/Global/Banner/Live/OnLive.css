@@ -93,3 +93,17 @@
     opacity: 0;
   }
 }
+
+/* Mobile */
+
+.mobile-onlive .on-live-wrapper .live .live-text {
+  font-size: 24px;
+}
+
+.mobile-onlive .on-live-wrapper .live .live-icon-container,
+.mobile-onlive .on-live-wrapper .live .live-icon-container .icon-live,
+.mobile-onlive .on-live-wrapper .live .live-icon-container::before,
+.mobile-onlive .on-live-wrapper .live .live-icon-container::after {
+  width: 6px;
+  height: 6px;
+}

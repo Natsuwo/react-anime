@@ -1,6 +1,6 @@
 import React from "react";
 import "./LayoutSwitcher.css";
-import SvgList from "../../SvgList/SvgList";
+import UseIconList from "../../SvgList/UseIconList";
 
 const LayoutSwitcher = ({ isSwitcher, handleSwitch }) => {
   return (
@@ -11,7 +11,7 @@ const LayoutSwitcher = ({ isSwitcher, handleSwitch }) => {
           className={`preview${isSwitcher === 0 ? " active" : ""}`}
         >
           <button className="switch">
-            <SvgList icon="content_preview" />
+            <UseIconList icon="content-preview" />
             Preview
           </button>
         </div>
@@ -20,7 +20,7 @@ const LayoutSwitcher = ({ isSwitcher, handleSwitch }) => {
           className={`list${isSwitcher === 1 ? " active" : ""}`}
         >
           <button className="switch">
-            <SvgList icon="genre" />
+            <UseIconList icon="genre" />
             List
           </button>
         </div>

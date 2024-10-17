@@ -1,16 +1,23 @@
 import React from "react";
+import IconList from "./IconList";
 
-const UseIconList = ({ icon, tag, width = 24, height = 24 }) => {
+const UseIconList = ({
+  className = "",
+  icon,
+  width = "100%",
+  height = "100%",
+}) => {
   return (
     <svg
       aria-label=""
+      className={className}
       aria-hidden="true"
       width={width}
       height={height}
       role="img"
       focusable="false"
     >
-      <use xlinkHref={`${icon}#svg-${tag}`}></use>
+      <use xlinkHref={`${IconList[icon]}#svg-${icon}`}></use>
     </svg>
   );
 };

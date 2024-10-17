@@ -10,6 +10,7 @@ body {
   font-family: "Poppins", sans-serif;
   --sc-color: #767676;
   --primary-color: #171717;
+  --secondary-color: #373737;
   --link-active: #da0;
   --text-color: #e6e6e6;
   --btn-hover-color: hsla(0, 0%, 100%, 0.08);
@@ -64,8 +65,13 @@ svg:not(:root) {
   box-sizing: border-box;
 }
 
-.slick-slide {
+/* .slick-slide {
   padding-right: 12px;
+} */
+
+.slick-track {
+  display: flex !important; /* Kích hoạt flex layout cho slick track */
+  gap: 16px; /* Thêm khoảng cách giữa các card */
 }
 
 /* the parent */

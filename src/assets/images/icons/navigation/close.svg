@@ -1,0 +1,6 @@
+<svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="svg-close" viewBox="0 0 24 24">
+        <path d="m18.3 5.71a.996.996 0 0 0 -1.41 0l-4.89 4.88-4.89-4.89a.996.996 0 1 0 -1.41 1.41l4.89 4.89-4.89 4.89a.996.996 0 1 0 1.41 1.41l4.89-4.89 4.89 4.89a.996.996 0 1 0 1.41-1.41l-4.89-4.89 4.89-4.89c.38-.38.38-1.02 0-1.4z" fill="currentColor" fill-rule="evenodd"></path>
+    </symbol>
+    <use href="#svg-close"></use>
+</svg>

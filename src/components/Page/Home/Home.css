@@ -11,9 +11,21 @@
   gap: 12px;
   position: relative;
   z-index: 2;
-  margin-top: 20px;
+  margin-top: 60px;
 }
 
 .list-wrapper .row {
   width: calc(100% / 6 - 12px);
+}
+
+@media (max-width: 1199px) {
+  .list-wrapper .row {
+    width: calc(100% / 5 - 12px);
+  }
+}
+
+@media (max-width: 1100px) {
+  .list-wrapper .row {
+    width: calc(100% / 4 - 12px);
+  }
 }

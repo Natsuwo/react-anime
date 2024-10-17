@@ -1,15 +1,14 @@
 import "./App.css";
-import Header from "./components/Global/Header/Header";
+import Header from "./components/Mobile/Global/Header/Header";
+import Home from "./components/Mobile/Page/Home/Home";
+import "./Mobile.css";
 import { Routes, Route } from "react-router-dom";
-import Home from "./components/Page/Home/Home";
-import Navbar from "./components/Global/Navbar/Navbar";
 
 function App() {
   return (
     <>
-      <Header></Header>
+      <Header />
       <div className="main-container">
-        <Navbar></Navbar>
         <div className="main-content">
           <Routes>
             <Route path="/" element={<Home />}></Route>

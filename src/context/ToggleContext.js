@@ -1,10 +1,10 @@
 import { useContext, createContext, useState } from "react";
 
 // create
-const Context = createContext();
+const ToggleContext = createContext();
 
 // provider
-const ContextProvider = ({ children }) => {
+const ToggleContextProvider = ({ children }) => {
   const [nav, setNav] = useState(false);
   const [isSwitcher, setSwitcher] = useState(0);
   const toggleNav = () => {
@@ -15,15 +15,17 @@ const ContextProvider = ({ children }) => {
   };
 
   return (
-    <Context.Provider value={{ nav, toggleNav, handleSwitch, isSwitcher }}>
+    <ToggleContext.Provider
+      value={{ nav, toggleNav, handleSwitch, isSwitcher }}
+    >
       {children}
-    </Context.Provider>
+    </ToggleContext.Provider>
   );
 };
 
 // usage the create
-const UseContext = () => {
-  return useContext(Context);
+const UseToggleContext = () => {
+  return useContext(ToggleContext);
 };
 
-export { ContextProvider, UseContext };
+export { ToggleContextProvider, UseToggleContext };

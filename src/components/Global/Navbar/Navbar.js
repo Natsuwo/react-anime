@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
-import SvgList from "../SvgList/SvgList";
-import { UseContext } from "../../../features/Context";
+import UseIconList from "../SvgList/UseIconList";
+import { UseToggleContext } from "../../../context/ToggleContext";
 
 const Navbar = () => {
-  const { nav, toggleNav } = UseContext();
+  const { nav, toggleNav } = UseToggleContext();
   const [active, setActive] = useState(1);
   const [delayHover, setDelayHover] = useState(null);
   const [hovered, setHovered] = useState(false);
@@ -30,7 +30,7 @@ const Navbar = () => {
 
   const arrMenu = [
     { id: 1, title: "Home", icon: "home", href: "/" },
-    { id: 2, title: "MyList", icon: "check", href: "/mylist" },
+    { id: 2, title: "MyList", icon: "done", href: "/mylist" },
     { id: 3, title: "History", icon: "history", href: "/history" },
   ];
   return (
@@ -50,7 +50,7 @@ const Navbar = () => {
               >
                 <div className="navbar-item">
                   <span className="navbar-icon">
-                    <SvgList icon={item.icon} />
+                    <UseIconList icon={item.icon} />
                   </span>
                   <span className="navbar-text-under-icon">{item.title}</span>
                 </div>

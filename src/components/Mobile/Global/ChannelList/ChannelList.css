@@ -1,0 +1,17 @@
+.channel-list-wrapper {
+  margin-top: -20%;
+}
+
+.channel-list-container {
+  padding: 0 8px 32px;
+}
+
+.channel-list-outer .mobile-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.channel-list-outer .mobile-row .mobile-col {
+  width: calc(100% / 5 - 8px);
+}

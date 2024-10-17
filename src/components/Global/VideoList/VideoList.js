@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "./VideoList.css";
-import { CardVideo } from "../Card/Card";
-// import MainCarousel from "../Carousel/MainCarousel";
 import Slider from "react-slick";
-import { leftIcon, rightIcon } from "../SvgList/IconList";
 import UseIconList from "../SvgList/UseIconList";
+import {
+  fourCardResponsive,
+  eightCardResponsive,
+} from "../../Page/Home/CardReponsive";
 
 function NextArrow(props) {
   const { style, onClick, state } = props;
@@ -20,8 +21,7 @@ function NextArrow(props) {
         <UseIconList
           width={54}
           height={54}
-          icon={rightIcon}
-          tag="chevron-right"
+          icon={"chevron-right"}
         ></UseIconList>
       </div>
     </>
@@ -38,18 +38,17 @@ function PrevArrow(props) {
         style={{ ...style, display: state ? "none" : "block" }}
         onClick={onClick}
       >
-        <UseIconList
-          width={54}
-          height={54}
-          icon={leftIcon}
-          tag="chevron-left"
-        ></UseIconList>
+        <UseIconList width={54} height={54} icon={"chevron-left"}></UseIconList>
       </div>
     </>
   );
 }
-
-const VideoList = ({ categoryTitle, totalSlides = 12, slidesToShow = 3 }) => {
+const VideoList = ({
+  categoryTitle,
+  totalSlides = 12,
+  slidesToShow = 3,
+  ChildComponent,
+}) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const lastSlide = totalSlides - slidesToShow;
@@ -58,6 +57,8 @@ const VideoList = ({ categoryTitle, totalSlides = 12, slidesToShow = 3 }) => {
     // centerMode: true,
     infinite: false,
     speed: 500,
+    responsive:
+      slidesToShow < 5 ? fourCardResponsive : eightCardResponsive || [],
     slidesToShow: slidesToShow,
     slidesToScroll: slidesToShow,
     afterChange: (index) => setCurrentSlide(index),
@@ -90,9 +91,12 @@ const VideoList = ({ categoryTitle, totalSlides = 12, slidesToShow = 3 }) => {
         <div className="flex-container">
           <Slider {...settings}>
             {videos.map((video) => (
-              <CardVideo key={video.id} title={video.title} />
+              <ChildComponent
+                key={video.id}
+                rank={video.id + 1}
+                title={video.title}
+              />
             ))}
-            {/* <CardVideo></CardVideo> */}
           </Slider>
         </div>
       </div>

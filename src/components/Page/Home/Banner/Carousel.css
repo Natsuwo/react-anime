@@ -105,7 +105,7 @@
 }
 
 .card-zone-wrapper .control-wrapper {
-  /* padding-top: 60px; */
+  padding-top: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;

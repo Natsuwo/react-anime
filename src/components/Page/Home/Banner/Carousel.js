@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CardSlide } from "../../../Global/Card/Card";
-import SvgList from "../../../Global/SvgList/SvgList";
+import UseIconList from "../../../Global/SvgList/UseIconList";
 import "./Carousel.css";
 import LayoutSwitcher from "../../../Global/Banner/LayoutSwitcher/LayoutSwitcher";
-import { UseContext } from "../../../../features/Context";
+import { UseToggleContext } from "../../../../context/ToggleContext";
 
 const Carousel = ({ handleHovered }) => {
   const scrollRef = useRef(null);
@@ -17,7 +17,7 @@ const Carousel = ({ handleHovered }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 5;
   // active sort
-  const { isSwitcher, handleSwitch } = UseContext();
+  const { isSwitcher, handleSwitch } = UseToggleContext();
 
   // active card
   const [activeCard, setActiveCard] = useState(0);
@@ -102,7 +102,7 @@ const Carousel = ({ handleHovered }) => {
               onClick={() => handleClick("left")}
               className="arrow-icon left"
             >
-              <SvgList icon="left_arrow"></SvgList>
+              <UseIconList icon="chevron-left" />
             </span>
           )}
           <div
@@ -131,7 +131,7 @@ const Carousel = ({ handleHovered }) => {
               onClick={() => handleClick("right")}
               className="arrow-icon right"
             >
-              <SvgList icon="right_arrow"></SvgList>
+              <UseIconList icon="chevron-right" />
             </span>
           )}
         </div>

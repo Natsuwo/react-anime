@@ -1,0 +1,101 @@
+.mobile-banner-wrapper {
+  position: relative;
+  padding-top: 56.25%;
+  width: 100%;
+  margin-bottom: 20%;
+}
+
+.mobile-banner-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mobile-banner-outer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.mobile-banner-image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.mobile-banner-image-gallery {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* overflow: hidden; */
+}
+
+.mobile-banner-image-gallery-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.mobile-banner-image-gallery-item.active {
+  opacity: 1;
+}
+
+.mobile-banner-image-gallery-item img {
+  height: 100%;
+  width: 100%;
+}
+
+.mobile-banner-details-wrapper {
+  align-items: flex-end;
+  background: linear-gradient(-90deg, transparent, rgba(0, 0, 0, 0.5)),
+    linear-gradient(-180deg, transparent, #000);
+  display: flex;
+  height: 100%;
+  justify-content: flex-start;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  cursor: pointer;
+}
+
+.mobile-banner-details-wrapper .mobile-banner-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 24px;
+  padding-left: 8px;
+  width: 100%;
+}
+
+.mobile-banner-details .mobile-button-watch-wrapper {
+  color: #fff;
+  border: 2px solid #fff;
+  height: 44px;
+  line-height: 1;
+  display: inline-block;
+  position: relative;
+  width: fit-content;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 44px;
+  padding: 4px 12px;
+}
+
+.mobile-button-watch-wrapper .watch-now {
+  background: inherit;
+}
+
+.mobile-banner-details-title {
+  margin: 2px 0 12px 0;
+  font-size: 14px;
+  color: var(--text-color);
+}

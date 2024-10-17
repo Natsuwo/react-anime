@@ -3,11 +3,11 @@ import "./Sponsored.css";
 import videotest from "../../../../assets/videos/trailer-1.mp4";
 import OnLive from "../../../Global/Banner/Live/OnLive";
 import LayoutSwitcher from "../../../Global/Banner/LayoutSwitcher/LayoutSwitcher";
-import { UseContext } from "../../../../features/Context";
+import { UseToggleContext } from "../../../../context/ToggleContext";
 import { CardList } from "../../../Global/Card/Card";
 
 const Sponsored = () => {
-  const { isSwitcher, handleSwitch } = UseContext();
+  const { isSwitcher, handleSwitch } = UseToggleContext();
   return (
     <div className="sponsored-wrapper">
       <div className="sponsored-container">
@@ -60,18 +60,6 @@ const Sponsored = () => {
         <div className="row">
           <CardList></CardList>
         </div>
-      </div>
-
-      {/* Set Gradient */}
-      <div className="sponsored-overlay">
-        <div className="sponsored-overlay-bg">
-          <div className="sponsored-bg">
-            <div className="background-color"></div>
-            <div className="overlay"></div>
-            <div className="gradition"></div>
-          </div>
-        </div>
-        <div className="sponsored-bottom-gradition"></div>
       </div>
     </div>
   );

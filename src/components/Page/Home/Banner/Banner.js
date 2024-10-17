@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Banner.css";
-import SvgList from "../../../Global/SvgList/SvgList";
+import UseIconList from "../../../Global/SvgList/UseIconList";
 import trailerVideo from "../../../../assets/videos/trailer-1.mp4";
 import Carousel from "./Carousel";
 const Banner = ({ isHovered, handleHovered }) => {
@@ -20,7 +20,11 @@ const Banner = ({ isHovered, handleHovered }) => {
             onMouseLeave={() => handleHovered(true)}
             onClick={() => setIsMute(!isMute)}
           >
-            <SvgList icon={isMute ? "volume_off" : "volume"} />
+            <UseIconList
+              icon={isMute ? "volume-off" : "volume"}
+              width={48}
+              height={48}
+            />
           </button>
         </div>
         <div className="banner-video-detail">
@@ -40,7 +44,7 @@ const Banner = ({ isHovered, handleHovered }) => {
             <div className="views">53k views</div>
           </div>
           <button className="view-more">
-            <SvgList icon="play" />
+            <UseIconList icon="play" />
             Watch now
           </button>
         </div>
