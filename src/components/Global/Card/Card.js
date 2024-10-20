@@ -60,23 +60,45 @@ export const CardList = () => {
   );
 };
 
-export const CardVideo = ({ title }) => {
+export const CardVideo = ({
+  video_id = 1,
+  title,
+  video_tags = {},
+  is_live = false,
+  date,
+  is_new = false,
+  role_tag = "",
+}) => {
   return (
     <div className="video-card-wrapper">
-      <Link to="#" className="link-block video-card">
+      <Link
+        to={`/video/detail/${video_id}`}
+        className="link-block video-card"
+        draggable="false"
+      >
         <div className="video-card-thumbnail">
+          {Object.keys(video_tags).length !== 0 &&
+            video_tags.constructor === Object && (
+              <div className="video-card-tags">
+                <div className="card-tag-name">{video_tags.title}</div>
+                <div className="card-tag-time">{video_tags.time}</div>
+              </div>
+            )}
+
           <img
             src="https://image.p-c2-x.abema-tv.com/image/creatives/2b645eac-3646-441e-a266-12d473e8c785/2b645eac-3646-441e-a266-12d473e8c785?background=000000&fit=fill&height=576&quality=75&width=1024"
             alt=""
           />
-          <div className="tag-on-thumb-wrapper">
-            <span className="tag-on-thumb">
-              <span className="tag-icon">
-                <UseIconList icon="onair" />
+          {is_live && (
+            <div className="tag-on-thumb-wrapper">
+              <span className="tag-on-thumb">
+                <span className="tag-icon">
+                  <UseIconList icon="onair" />
+                </span>
+                <div className="tag-text">On Live</div>
               </span>
-              <div className="tag-text">On Live</div>
-            </span>
-          </div>
+            </div>
+          )}
         </div>
         <div className="video-card-detail-container">
           <div className="video-card-detail">
@@ -90,21 +112,28 @@ export const CardVideo = ({ title }) => {
             >
               {title}
             </div>
-            <time
-              className="video-release-date clamp-text"
-              style={{ WebkitLineClamp: 1 }}
-            >
-              10月15日(火) 09:40 〜
-            </time>
-            <div className="video-new-episode">
-              <div className="video-new-episode-text">New Episode</div>
-            </div>
-            <div className="video-label">
-              <span className="label-text free">Free</span>
-            </div>
+            {date && (
+              <time
+                className="video-release-date clamp-text"
+                style={{ WebkitLineClamp: 1 }}
+              >
+                {date}
+              </time>
+            )}
+            {is_new && (
+              <div className="video-new-episode">
+                <div className="video-new-episode-text">New Episode</div>
+              </div>
+            )}
+
+            {role_tag && (
+              <div className="video-label">
+                <span className="label-text free">Free</span>
+              </div>
+            )}
           </div>
           <button className="video-card-action">
-            <UseIconList width="32" height="32" icon={"add"}></UseIconList>
+            <UseIconList width="24" height="24" icon={"add"}></UseIconList>
           </button>
         </div>
       </Link>
@@ -120,7 +149,7 @@ export const CardRank = ({ rank }) => {
           <div className="card-rank-text">
             <span className="rank-text">{rank}</span>
           </div>
-          <Link className="card-rank" to="#">
+          <Link className="card-rank link-block" to="#">
             <div className="card-rank-details">
               <div className="card-rank-thumbnail">
                 <img
@@ -180,7 +209,7 @@ export const CardSquare = () => {
   }, []);
   return (
     <div className="card-wrapper">
-      <div className="card-square-wrapper">
+      <Link to="#" className="card-square-wrapper link-block">
         <div className="card-square-content">
           <div
             className="card-square-thumbnail"
@@ -207,7 +236,7 @@ export const CardSquare = () => {
             <span>MLB</span>
           </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 };

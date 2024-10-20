@@ -1,0 +1,132 @@
+.episode-main-title {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.episode-main-title .season-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.episode-main-title .episode-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.episode-supplement {
+  display: flex;
+  gap: 8px;
+  color: var(--sc-color);
+  margin: 8px 0;
+}
+
+.episode-action {
+  position: relative;
+}
+
+.episode-desc-wrapper .detail-description {
+  position: relative;
+  font-size: 14px;
+  margin-bottom: 16px;
+  max-height: 80px;
+  overflow: hidden;
+  transition: max-height 0.25s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.episode-desc-wrapper .detail-description::before {
+  background: linear-gradient(180deg, transparent, #000);
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 100%;
+  left: 0;
+  max-height: 80px;
+  position: absolute;
+  transition: opacity 0.25s cubic-bezier(0.33, 1, 0.68, 1), visibility 0.25s;
+  width: 100%;
+}
+
+.episode-desc-wrapper .detail-description.expanded:before {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.detail-toggle {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: #000;
+  border: none;
+  padding: 4px 4px;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.detail-toggle .detail-toggle-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.episode-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  grid-template-rows: auto;
+  gap: 24px;
+}
+
+.episode-inner {
+  flex-shrink: 0;
+}
+
+.episode-sidebar-inner .episode-sidebar-title {
+  font-size: 20px;
+  color: var(--text-color);
+}
+
+.episode-sidebar-ep-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.episode-sidebar-ep-list .episode-list-item-thumbnail {
+  width: 160px;
+  height: 90px;
+}
+
+.episode-sidebar-ep-list .episode-list-item-details .episode-list-item-title {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.3;
+  max-height: 3.9em;
+}
+
+.episode-sidebar-ep-list .episode-list-item-details .episode-list-item-info {
+  display: none;
+}
+
+.episode-sidebar-ep-list .episode-list-item-tag {
+  display: none;
+}
+
+.episode-sidebar-ep-list .episode-list-item-desc {
+  display: none;
+}
+
+.episode-sidebar-ep-list .episode-list-item {
+  padding: 0;
+}
+
+.episode-sidebar-ep-list .episode-list-item::after {
+  border: none;
+}
+
+.episode-tag {
+  margin: 8px 0;
+}

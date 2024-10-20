@@ -90,8 +90,9 @@ const VideoList = ({
         </div>
         <div className="flex-container">
           <Slider {...settings}>
-            {videos.map((video) => (
+            {videos.map((video, index) => (
               <ChildComponent
+                video_id={video.id + 1}
                 key={video.id}
                 rank={video.id + 1}
                 title={video.title}

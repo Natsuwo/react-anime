@@ -1,0 +1,60 @@
+.main-footer {
+  border-top: 1px solid var(--white-12);
+  margin-top: 32px;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 0 16px 44px;
+}
+
+.footer-inner .footer-left {
+  max-width: 640px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding-top: 4px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.footer-left .footer-nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-left .footer-nav-list li a {
+  display: inline-flex;
+  gap: 8px;
+  padding: 8px 4px;
+  align-items: center;
+  justify-content: center;
+  transition: 250ms;
+  border-radius: 4px;
+}
+
+.footer-left .footer-nav-list li:hover a {
+  background-color: var(--white-12);
+}
+
+.footer-nav-list .footer-nav-logo {
+  width: 24px;
+  height: 24px;
+  color: var(--text-color);
+}
+
+footer .copyright {
+  color: var(--sc-color);
+  font-size: 12px;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Đưa nhân vật vào giữa */
+  width: 240px;
+}

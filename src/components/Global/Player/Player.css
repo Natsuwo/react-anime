@@ -1,0 +1,135 @@
+.yurei-player-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.yurei-player-wrapper .controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 12;
+}
+
+.yurei-player-wrapper .grid-controls {
+  display: grid;
+  color: #fff;
+  grid-template-columns: repeat(3, 1fr);
+  height: 70px;
+  padding: 0 12px 2px;
+  user-select: none;
+}
+
+.yurei-player-wrapper .controls .seekbar {
+  grid-column: 1 / -1;
+  margin: 0 0 -6px;
+}
+
+.yurei-player-wrapper .controls .seekbar-inner {
+  position: relative;
+  cursor: pointer;
+  /* padding: 14px 0; */
+}
+
+.controls .seekbar-inner .seekbar-loading {
+  position: relative;
+  width: 100%;
+  background-color: hsla(0, 0%, 100%, 0.5);
+  height: 4px;
+  transform: scaleY(0.5);
+}
+
+.controls .seekbar-inner:hover .seekbar-loading {
+  transform: scaleY(1);
+}
+
+.controls .seekbar-inner .seekbar-handle {
+  height: 4px;
+  max-width: 100%;
+  position: absolute;
+  top: 0;
+  /* width: 3.51365%; */
+}
+
+.seekbar-handle .seekbar-handle-maker {
+  background-color: #da0;
+  border-radius: 10px;
+  content: "";
+  display: block;
+  height: 16px;
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+}
+
+.yurei-player-wrapper .controls .control-left {
+  display: flex;
+  align-items: center;
+  grid-column: 1/3;
+}
+
+.yurei-player-wrapper .controls .control-right {
+  display: flex;
+  align-items: center;
+  grid-column: 3/4;
+  justify-content: flex-end;
+}
+
+.yurei-player-wrapper button {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  transition: background-color 0.1s linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+  box-sizing: border-box;
+  text-align: center;
+  background-color: transparent;
+  border: 0 transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.yurei-player-wrapper .player-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+.player-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+}
+
+.player-container .video-bg {
+  background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  bottom: 0;
+  height: 120px;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 0.3s ease;
+  width: 100%;
+  z-index: 12;
+}
+
+.player-container .video-bg.fade-in {
+  opacity: 1;
+  transition: opacity 0.1s linear, visibility 0s;
+  visibility: visible;
+}
+
+.player-container .video-bg.fade-out {
+  opacity: 0;
+  transition: opacity 0.1s linear, visibility 0s linear 0.1s;
+  visibility: hidden;
+}

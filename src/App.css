@@ -17,13 +17,21 @@ body {
   --white-8: hsla(0, 0%, 100%, 0.08);
   --white-12: hsla(0, 0%, 100%, 0.12);
   --sub-title-color: #999;
+  --text-21: #212121;
   background-color: #000;
-  color: #fff;
+  color: var(--text-color);
 }
 
 img {
   width: 100%;
   display: block;
+}
+
+video {
+  display: block;
+  height: 100%;
+  pointer-events: none;
+  width: 100%;
 }
 
 a {
@@ -97,8 +105,12 @@ svg:not(:root) {
   margin-top: 64px;
 }
 
+.mb-md {
+  margin-bottom: 32px;
+}
+
 a.link-block::after {
-  background-color: var(--white-8);
+  background-color: var(--white-12);
   bottom: 0;
   content: "";
   display: inline-block;
@@ -109,6 +121,32 @@ a.link-block::after {
   right: 0;
   top: 0;
   transition: opacity 0.1s linear;
+}
+
+a.link-block:hover::after {
+  opacity: 1;
+}
+
+button.btn-default {
+  position: relative;
+}
+
+button.btn-default::after {
+  background-color: var(--white-12);
+  bottom: 0;
+  content: "";
+  display: inline-block;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: opacity 0.1s linear;
+}
+
+button.btn-default:hover::after {
+  opacity: 1;
 }
 
 @supports (-webkit-line-clamp: 2) {
@@ -207,6 +245,18 @@ a.link-block::after {
   padding: 0 24px;
 }
 
+main.page-main {
+  flex-grow: 1;
+}
+
+.page-container {
+  margin: 68px auto 0;
+  position: relative;
+  overflow: hidden;
+  /* padding: 0 24px; */
+  max-width: 1024px;
+}
+
 /* Mobile side */
 
 .mobile-button {
@@ -244,4 +294,21 @@ a.link-block::after {
   .channel-list-outer .mobile-row .mobile-col {
     width: calc(100% / 2 - 8px);
   }
+}
+
+.video-label .label-text {
+  color: #fff;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 3px 4px;
+}
+
+.video-label .label-text.free {
+  background: linear-gradient(
+    135deg,
+    hsla(0, 0%, 100%, 0.4),
+    hsla(0, 0%, 100%, 0.12)
+  );
 }

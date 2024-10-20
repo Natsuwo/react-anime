@@ -1,0 +1,14 @@
+.main-recommend-wrapper {
+  position: relative;
+}
+
+.main-recommend-wrapper .recommend-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 16px;
+}
+
+.main-recommend-wrapper h3 {
+  margin: 12px 0;
+}
