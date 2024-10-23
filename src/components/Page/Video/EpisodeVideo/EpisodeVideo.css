@@ -75,13 +75,18 @@
 
 .episode-wrapper {
   display: grid;
-  grid-template-columns: 1fr 350px;
+  grid-template-columns: 1fr auto;
   grid-template-rows: auto;
   gap: 24px;
 }
 
 .episode-inner {
   flex-shrink: 0;
+}
+
+.episode-sidebar {
+  min-width: 0;
+  max-width: 350px;
 }
 
 .episode-sidebar-inner .episode-sidebar-title {

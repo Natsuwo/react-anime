@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <symbol id="svg-checkbox" viewBox="0 0 14 14">
+        <path d="M6.008 8.158l3.66-3.927a.75.75 0 0 1 1.097 1.022L6.557 9.769a.75.75 0 0 1-1.098 0L3.235 7.383A.75.75 0 1 1 4.333 6.36l1.675 1.798z"/>
+    </symbol>
+    <use xlink:href="#svg-checkbox"></use>
+</svg>

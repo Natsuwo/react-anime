@@ -44,7 +44,7 @@
 
 .control-group-tab-list li.active button {
   background-color: var(--text-color);
-  color: var(--text-21);
+  color: var(--secondary-color-2);
 }
 
 .sort-episode-wrapper {

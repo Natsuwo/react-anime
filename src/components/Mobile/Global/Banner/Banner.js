@@ -19,7 +19,6 @@ const Banner = () => {
     const interval = setInterval(() => {
       currentIndexRef.current =
         (currentIndexRef.current + 1) % arrBanner.length;
-      console.log(currentIndexRef.current, galleryImagesRef.current);
       galleryImagesRef.current.forEach((img, index) => {
         if (index === currentIndexRef.current) {
           img.classList.add("active");

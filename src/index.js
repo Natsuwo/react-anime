@@ -8,18 +8,20 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { ToggleContextProvider } from "./context/ToggleContext";
 import { ResponsiveContextPrivider } from "./context/ResponsiveContext";
-
+import { PlayerWideContextProvider } from "./context/PlayerWideContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
-    <ResponsiveContextPrivider>
-      <ToggleContextProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ToggleContextProvider>
-    </ResponsiveContextPrivider>
+    <PlayerWideContextProvider>
+      <ResponsiveContextPrivider>
+        <ToggleContextProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ToggleContextProvider>
+      </ResponsiveContextPrivider>
+    </PlayerWideContextProvider>
   </React.StrictMode>
 );
 

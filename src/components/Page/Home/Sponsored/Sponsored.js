@@ -21,7 +21,7 @@ const Sponsored = () => {
                 />
               </div>
               <div className="description">Long, Many, Good</div>
-              <button className="btn">More Details</button>
+              <button className="btn btn-special">More Details</button>
             </div>
             <div className="preview">
               <video src={videotest}></video>

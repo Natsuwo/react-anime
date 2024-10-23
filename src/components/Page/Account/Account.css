@@ -1,0 +1,30 @@
+.account-page-wrapper {
+  position: relative;
+}
+
+.manager-title {
+  margin: 4px 0 16px 0;
+}
+
+.account-page-inner {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+}
+
+.account-page-inner .account-page-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 240px;
+}
+
+.account-page-nav li a {
+  display: block;
+  padding: 16px 12px;
+  border-radius: 4px;
+}
+
+.account-page-nav li a.active {
+  background-color: var(--secondary-color-2);
+}

@@ -1,0 +1,79 @@
+.modal-form .modal-item-title {
+  box-sizing: border-box;
+  padding: 0 40px 32px;
+  text-align: center;
+  width: 100%;
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.modal-form .upload-avatar {
+  display: inline-block;
+  line-height: 0;
+  margin: 0 0 40px;
+  position: relative;
+}
+
+.modal-form .modal-upload-btn {
+  overflow: hidden;
+  background: none;
+  cursor: pointer;
+}
+
+.modal-form .modal-upload-btn::before {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  bottom: 0;
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.modal-upload-btn .avatar-img {
+  display: block;
+  position: relative;
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.modal-upload-btn .upload-icon {
+  bottom: 0;
+  fill: #fff;
+  height: 20px;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20px;
+  z-index: 2;
+}
+
+.modal-form .modal-description {
+  text-align: left;
+  font-size: 13px;
+  color: var(--text-color);
+}
+
+.modal-form input {
+  display: block;
+  width: 100%;
+  padding: 12px 8px;
+  margin: 12px 0;
+  border-radius: 6px;
+  border: none;
+}
+
+.modal-form .modal-actions {
+  margin: 12px 0;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}

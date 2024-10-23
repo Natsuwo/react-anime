@@ -1,0 +1,77 @@
+.account-nav {
+  background-color: var(--secondary-color-2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 12px 24px;
+  text-decoration: none;
+  position: relative;
+  transition: background-color 0.1s linear;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.account-nav.active .account-nav-main,
+.account-nav.active .account-nav-title {
+  color: var(--link-active);
+}
+
+.account-nav-main {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.account-nav-main .account-nav-icon {
+  flex-shrink: 0;
+}
+
+.account-nav-main .account-nav-text {
+  transition: color 0.1s linear;
+  white-space: nowrap;
+  color: var(--text-color);
+}
+
+.account-nav-main .account-nav-icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.account-nav .account-nav-item {
+  display: flex;
+  color: var(--text-color);
+  gap: 12px;
+  font-size: 14px;
+  align-items: center;
+}
+
+.account-nav-item .account-item-tag {
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  position: relative;
+}
+
+.account-nav-item .account-nav-text {
+  background-color: var(--white-8);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.account-nav-item .account-nav-text.free {
+  background-color: var(--sc-color);
+}
+
+.main-navbar.active .account-nav-item {
+  display: none;
+}
+
+.main-navbar.active .account-nav-title {
+  display: none;
+}
+
+.main-navbar.active .account-nav-main {
+  margin: 0 auto;
+}

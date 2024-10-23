@@ -7,11 +7,13 @@ import CardListEpsiode from "../../../Global/CardListEpisode/CardListEpisode";
 import EpisodeList from "../DetailVideo/EpisodeList";
 import Recommend from "../../../Global/Recommend/Recommend";
 import Player from "../../../Global/Player/Player";
+import { UsePlayerWide } from "../../../../context/PlayerWideContext";
 
 const EpisodeVideo = () => {
   const descRef = useRef(null);
   const [isShow, setIsShow] = useState(false);
   const [oriHeight, setOriHeight] = useState(0);
+  const { wideMode } = UsePlayerWide();
 
   useEffect(() => {
     if (descRef.current) {
@@ -80,16 +82,18 @@ const EpisodeVideo = () => {
               <EpisodeList />
             </div>
           </div>
-          <div className="episode-sidebar">
-            <div className="episode-sidebar-inner">
-              <h2 className="episode-sidebar-title mb-md">Popular Stuffs</h2>
-              <ul className="episode-sidebar-ep-list">
-                {items.map((item) => (
-                  <CardListEpsiode sidebar={true} />
-                ))}
-              </ul>
+          {!wideMode && (
+            <div className="episode-sidebar">
+              <div className="episode-sidebar-inner">
+                <h2 className="episode-sidebar-title mb-md">Popular Stuffs</h2>
+                <ul className="episode-sidebar-ep-list">
+                  {items.map((item, index) => (
+                    <CardListEpsiode key={index} sidebar={true} />
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="mt">
           <Recommend title={"Recent Category"} />

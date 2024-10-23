@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import { UseToggleContext } from "../../../context/ToggleContext";
+import AccountBar from "./AccountBar";
 
 const Navbar = () => {
   const { nav, toggleNav } = UseToggleContext();
-  const [active, setActive] = useState(1);
   const [delayHover, setDelayHover] = useState(null);
   const [hovered, setHovered] = useState(false);
 
@@ -24,10 +24,6 @@ const Navbar = () => {
     }
   };
 
-  const handleMenuActive = (id) => {
-    setActive(id);
-  };
-
   const arrMenu = [
     { id: 1, title: "Home", icon: "home", href: "/" },
     { id: 2, title: "MyList", icon: "done", href: "/mylist" },
@@ -43,11 +39,7 @@ const Navbar = () => {
         <ul className="navbar-menu">
           {arrMenu.map((item) => (
             <li key={item.id}>
-              <Link
-                className={`${active === item.id ? "active" : undefined}`}
-                onClick={() => handleMenuActive(item.id)}
-                to={item.href}
-              >
+              <NavLink to={item.href}>
                 <div className="navbar-item">
                   <span className="navbar-icon">
                     <UseIconList icon={item.icon} />
@@ -55,10 +47,11 @@ const Navbar = () => {
                   <span className="navbar-text-under-icon">{item.title}</span>
                 </div>
                 <span className="navbar-text">{item.title}</span>
-              </Link>
+              </NavLink>
             </li>
           ))}
         </ul>
+        <AccountBar />
       </div>
     </aside>
   );

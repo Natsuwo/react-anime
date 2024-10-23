@@ -6,8 +6,11 @@ import Navbar from "./components/Global/Navbar/Navbar";
 import { UseResponsiveContext } from "./context/ResponsiveContext";
 import HeaderMenu from "./components/Mobile/Global/Header/Header";
 import DetailVideo from "./components/Page/Video/DetailVideo/DetailVideo";
-import Footer from "./components/Page/Footer/Footer";
+import Footer from "./components/Global/Footer/Footer";
 import EpisodeVideo from "./components/Page/Video/EpisodeVideo/EpisodeVideo";
+import Account from "./components/Page/Account/Account";
+import Badges from "./components/Page/Account/Badges/Badges";
+import AccountManagement from "./components/Page/Account/AccountManagement/AccountManagement";
 
 function App() {
   const { size } = UseResponsiveContext();
@@ -27,6 +30,10 @@ function App() {
               path="/video/episode/:videoId"
               element={<EpisodeVideo />}
             ></Route>
+            <Route element={<Account />}>
+              <Route path="/account" element={<AccountManagement />} />
+              <Route path="/badges" element={<Badges />} />
+            </Route>
           </Routes>
 
           <Footer />

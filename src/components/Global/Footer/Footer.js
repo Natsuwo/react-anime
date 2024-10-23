@@ -16,8 +16,8 @@ const Footer = () => {
       <div className="footer-inner">
         <div className="footer-left">
           <ul className="footer-nav-list">
-            {arrFooterNav.map((item) => (
-              <li>
+            {arrFooterNav.map((item, index) => (
+              <li key={index}>
                 <Link to="#">
                   <span className="footer-nav-logo">
                     <UseIconList icon="external-link" />

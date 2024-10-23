@@ -11,13 +11,14 @@ body {
   --sc-color: #767676;
   --primary-color: #171717;
   --secondary-color: #373737;
+  --secondary-color-2: #212121;
   --link-active: #da0;
   --text-color: #e6e6e6;
   --btn-hover-color: hsla(0, 0%, 100%, 0.08);
   --white-8: hsla(0, 0%, 100%, 0.08);
   --white-12: hsla(0, 0%, 100%, 0.12);
+  --white-24: hsla(0, 0%, 100%, 0.24);
   --sub-title-color: #999;
-  --text-21: #212121;
   background-color: #000;
   color: var(--text-color);
 }
@@ -41,6 +42,13 @@ a {
 
 ul {
   list-style: none;
+}
+
+h1.headline-titile {
+  color: var(--text-color);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 24px;
 }
 
 /* .svg-icon {
@@ -97,12 +105,35 @@ svg:not(:root) {
 }
 
 .btn:hover {
-  background: #e6e6e6;
-  color: #212121;
+  background-color: var(--white-24);
+}
+
+.btn-special:hover {
+  background-color: var(--text-color);
+  color: var(--secondary-color-2);
+}
+
+.btn-green {
+  background-color: var(--link-active) !important;
+}
+
+.btn-active {
+  background-color: var(--link-active);
+  color: var(--secondary-color-2);
+}
+
+.btn-active:hover {
+  background-color: var(--link-active);
+  color: var(--secondary-color-2);
+  opacity: 0.8;
 }
 
 .mt {
   margin-top: 64px;
+}
+
+.mt-2 {
+  margin-top: 32px;
 }
 
 .mb-md {
@@ -125,6 +156,12 @@ a.link-block::after {
 
 a.link-block:hover::after {
   opacity: 1;
+}
+
+button,
+fieldset {
+  border: 0;
+  padding: 0;
 }
 
 button.btn-default {
@@ -311,4 +348,46 @@ main.page-main {
     hsla(0, 0%, 100%, 0.4),
     hsla(0, 0%, 100%, 0.12)
   );
+}
+
+.player-icon-circle {
+  animation: player-circle 1.5s ease-in-out infinite;
+  stroke: #fff;
+  stroke-dasharray: 89, 200;
+  stroke-dashoffset: -35px;
+  stroke-linecap: round;
+}
+
+.player-icon-loading {
+  animation: player-ratate 2s linear infinite;
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform-origin: center center;
+  width: 100%;
+}
+
+@keyframes player-ratate {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes player-circle {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
 }

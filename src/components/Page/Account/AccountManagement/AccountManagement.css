@@ -1,0 +1,99 @@
+.account-manager-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.account-manager-item {
+  background-color: var(--secondary-color-2);
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.manager-item-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manager-item-left {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.manager-item-left .account-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.manager-item-left .manager-item-icon {
+  width: 80px;
+  height: 80px;
+  background-color: var(--sc-color);
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.manager-item-left .manager-item-icon.small {
+  width: 44px;
+  height: 44px;
+}
+
+.manager-item-left .manager-item-icon svg {
+  width: 50%;
+  height: 50%;
+}
+
+.manager-item-left .text-account-id {
+  color: var(--sub-title-color);
+  font-weight: 300;
+}
+
+.manager-item-left .text-account-username {
+  font-size: 18px;
+  color: var(--sub-title-color);
+  font-weight: 700;
+}
+
+.manager-item-right .account-btn {
+  width: 120px;
+  color: var(--secondary-color-2);
+  background-color: var(--text-color);
+}
+
+.manager-item-right .account-btn:hover {
+  color: var(--secondary-color-2);
+  opacity: 0.9;
+}
+
+.manager-item-text .item-main-text {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.manager-item-text .item-sub-text {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--sub-title-color);
+}
+
+.switch-account-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.switch-account-wrapper .switch-text {
+  font-size: 13px;
+  color: var(--sub-title-color);
+}
+
+.switch-acount-btn:hover {
+  background-color: var(--white-24);
+}
