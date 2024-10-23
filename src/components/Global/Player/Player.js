@@ -22,7 +22,10 @@ const Player = () => {
   const [totalTime, setTotalTime] = useState(0);
 
   //fast
+  const [isHoldingMouse, setIsHoldingMouse] = useState(false);
+  const [holdTimeout, setHoldTimeout] = useState(null);
   const [playbackRate, setPlaybackRate] = useState("1");
+  const [wasPausedBefore, setWasPausedBefore] = useState(true);
 
   // Volume
   const [volume, setVolume] = useState(1);
@@ -54,19 +57,21 @@ const Player = () => {
 
   const togglePlayPause = () => {
     const video = videoRef.current;
-    if (!readyToPlay) {
-      setReadyToPlay(true);
+    if (!isHoldingMouse && video) {
+      if (!readyToPlay) {
+        setReadyToPlay(true);
+      }
+      if (isPlaying) {
+        video.pause(); // Nếu đang phát thì tạm dừng
+      } else {
+        video.play(); // Nếu đang tạm dừng thì phát tiếp
+      }
+      setIsPlaying(!isPlaying); // Cập nhật trạng thái
+      setShowPlayPauseIcon(true);
+      setTimeout(() => {
+        setShowPlayPauseIcon(false);
+      }, 500);
     }
-    if (isPlaying) {
-      video.pause(); // Nếu đang phát thì tạm dừng
-    } else {
-      video.play(); // Nếu đang tạm dừng thì phát tiếp
-    }
-    setIsPlaying(!isPlaying); // Cập nhật trạng thái
-    setShowPlayPauseIcon(true);
-    setTimeout(() => {
-      setShowPlayPauseIcon(false);
-    }, 500);
   };
 
   const handleRewindForward = (option) => {
@@ -82,16 +87,63 @@ const Player = () => {
     setPlaybackRate(speed);
   };
 
+  const handleSpeedChangeMouseDown = () => {
+    if (videoRef.current) {
+      // Lưu trạng thái của video trước khi đè chuột
+      setWasPausedBefore(videoRef.current.paused);
+
+      const timeout = setTimeout(() => {
+        // Nếu video đang bị pause, khi đè chuột sẽ play và phát x2
+        setIsHoldingMouse(true);
+        videoRef.current.playbackRate = 2;
+        if (videoRef.current.paused) {
+          handlePlay("play");
+        }
+      }, 1000); // Delay 1 giây
+
+      setHoldTimeout(timeout);
+    }
+  };
+
+  const handleSpeedChangeMouseUp = () => {
+    clearTimeout(holdTimeout);
+    setHoldTimeout(null);
+
+    if (videoRef.current && isHoldingMouse) {
+      videoRef.current.playbackRate = playbackRate; // Trở lại tốc độ bình thường khi thả chuột
+      setTimeout(() => {
+        setIsHoldingMouse(false);
+      }, 200); // delay holding
+
+      // Khôi phục trạng thái trước đó (pause nếu trước đó đang bị pause)
+      if (wasPausedBefore) {
+        handlePlay("pause");
+      }
+    }
+  };
+
   const handleFullScreen = () => {
     const playerContainer = document.querySelector(".yurei-player-wrapper");
     if (!isFullscreen) {
       if (playerContainer.requestFullscreen) {
         playerContainer.requestFullscreen();
+      } else if (playerContainer.mozRequestFullScreen) {
+        playerContainer.mozRequestFullScreen(); // Firefox
+      } else if (playerContainer.webkitRequestFullscreen) {
+        playerContainer.webkitRequestFullscreen(); // Chrome, Safari and Opera
+      } else if (playerContainer.msRequestFullscreen) {
+        playerContainer.msRequestFullscreen(); // IE/Edge
       }
       setIsFullscreen(true);
     } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen(); // Firefox
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen(); // Chrome, Safari and Opera
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen(); // IE/Edge
       }
       setIsFullscreen(false);
     }
@@ -184,6 +236,35 @@ const Player = () => {
     setIsPip(opt);
   };
 
+  // handle key
+
+  const handleKeyDown = (event) => {
+    const { key, shiftKey } = event;
+
+    switch (key) {
+      case " ": // Space để play/pause video
+        event.preventDefault(); // Ngăn chặn scroll khi nhấn Space
+        togglePlayPause();
+        break;
+      case "f": // F để vào full screen
+        handleFullScreen();
+        break;
+      case "F": // Shift + F để vào wide mode
+        if (shiftKey) {
+          handleWide(!wideMode);
+        }
+        break;
+      case "ArrowRight": // Mũi tên phải để tua tới
+        handleRewindForward("forward");
+        break;
+      case "ArrowLeft": // Mũi tên trái để tua lùi
+        handleRewindForward("rewind");
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     const video = videoRef.current;
 
@@ -236,22 +317,66 @@ const Player = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("keydown", handleKeyDown);
+
+    const handleFullscreenChange = () => {
+      if (
+        !document.fullscreenElement && // Kiểm tra nếu không có element nào trong fullscreen mode
+        !document.webkitFullscreenElement &&
+        !document.mozFullScreenElement &&
+        !document.msFullscreenElement
+      ) {
+        setIsFullscreen(false);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange); // Cho trình duyệt Webkit
+    document.addEventListener("mozfullscreenchange", handleFullscreenChange); // Cho Firefox
+    document.addEventListener("MSFullscreenChange", handleFullscreenChange); // Cho IE/Edge
+
+    // Push mouse to x2
+    document.addEventListener("mouseup", handleSpeedChangeMouseUp);
+    console.log("loop");
 
     return () => {
+      document.removeEventListener("mouseup", handleSpeedChangeMouseUp);
+      // fullscreen
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener(
+        "webkitfullscreenchange",
+        handleFullscreenChange
+      );
+      document.removeEventListener(
+        "mozfullscreenchange",
+        handleFullscreenChange
+      );
+      document.removeEventListener(
+        "MSFullscreenChange",
+        handleFullscreenChange
+      );
+      // others
+      window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("scroll", handleScroll);
       video.removeEventListener("loadeddata", handleLoadedData);
       video.removeEventListener("timeupdate", updateProgress);
       video.removeEventListener("progress", updateBuffered);
     };
-  }, []);
+  }, [isPlaying, wideMode, isFullscreen, isHoldingMouse, holdTimeout]);
 
   return (
     <div className="yurei-player-wrapper" ref={playerRef}>
       <div className={`yurei-pip-mode${isPip ? " active" : ""}`}></div>
       <div
+        onMouseDown={handleSpeedChangeMouseDown}
         id="yurei-player"
         className={`yurei-player${isPip ? " pip-mode" : ""}`}
       >
+        <div
+          className={`holding-mouse-tooltip${isHoldingMouse ? " active" : ""}`}
+        >
+          <span className="holding-mouse-tooltip-text">Play 2x</span>
+        </div>
         <VideoScreen
           playerRef={playerRef}
           videoRef={videoRef}
@@ -278,6 +403,7 @@ const Player = () => {
           handleMouseUp={handleMouseUp}
           handlePlay={handlePlay}
           handleFullScreen={handleFullScreen}
+          isFullscreen={isFullscreen}
           volumeRef={volumeRef}
           volume={volume}
           startDrag={startDrag}

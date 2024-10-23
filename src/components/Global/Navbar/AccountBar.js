@@ -7,7 +7,6 @@ const AccountBar = () => {
   const location = useLocation();
   const accountChildPath = ["/badges", "/coupon"];
   const isInPath = accountChildPath.some((item) => item === location.pathname);
-  console.log(isInPath);
   return (
     <NavLink
       to="/account"

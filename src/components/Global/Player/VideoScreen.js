@@ -2,7 +2,6 @@ import React from "react";
 
 const VideoScreen = ({
   videoRef,
-  playerRef,
   Video,
   setCurrentTime,
   setTotalTime,

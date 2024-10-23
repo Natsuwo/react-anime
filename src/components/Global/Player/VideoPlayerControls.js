@@ -2,6 +2,7 @@ import React from "react";
 import UseIconList from "../SvgList/UseIconList";
 import Seekbar from "./Seekbar";
 import VolumeControl from "./VolumeControl";
+import Tooltip from "../Tooltip/Tooltip";
 
 const VideoPlayerControls = ({
   seekbarRef,
@@ -24,6 +25,7 @@ const VideoPlayerControls = ({
   handleSpeedChange,
   handleMute,
   handleFullScreen,
+  isFullscreen,
   handleWide,
 }) => {
   const arrSpeedList = [
@@ -65,6 +67,12 @@ const VideoPlayerControls = ({
           className="playback-btn"
           onClick={() => (isPlaying ? handlePlay("pause") : handlePlay("play"))}
         >
+          <Tooltip
+            condition={isPlaying}
+            textTrue={"Pause (Space)"}
+            textFalse={"Play (Space)"}
+            position="left"
+          />
           <span className="player-icon">
             <UseIconList icon={isPlaying ? "pause" : "play"} />
           </span>
@@ -73,6 +81,12 @@ const VideoPlayerControls = ({
           onClick={() => handleRewindForward("rewind")}
           className="rewind-btn"
         >
+          <Tooltip
+            condition={true}
+            textTrue={"Back 10s (←)"}
+            textFalse={"Back 10s (←)"}
+            position="center"
+          />
           <span className="player-icon">
             <UseIconList icon="seek-back-10" />
           </span>
@@ -81,6 +95,12 @@ const VideoPlayerControls = ({
           onClick={() => handleRewindForward("forward")}
           className="advances-btn"
         >
+          <Tooltip
+            condition={true}
+            textTrue={"Next 10s (→)"}
+            textFalse={"Next 10s (→)"}
+            position="center"
+          />
           <span className="player-icon">
             <UseIconList icon="seek-forward-10" />
           </span>
@@ -146,13 +166,27 @@ const VideoPlayerControls = ({
           </div>
         </button>
         <button className="full-screen-in-browser-btn" onClick={handleWide}>
+          <Tooltip
+            condition={wideMode}
+            textTrue={"Default Mode (Shift + F)"}
+            textFalse={"Wide Mode (Shift + F)"}
+            position="center"
+          />
           <span className="player-icon">
             <UseIconList icon={wideMode ? "wide-on" : "wide"} />
           </span>
         </button>
         <button className="full-screen-btn" onClick={handleFullScreen}>
+          <Tooltip
+            condition={isFullscreen}
+            textTrue={"Exit Full Screen (F)"}
+            textFalse={"Full Screen (F)"}
+            position="center"
+          />
           <span className="player-icon">
-            <UseIconList icon="fullscreen" />
+            <UseIconList
+              icon={isFullscreen ? "fullscreen-exit" : "fullscreen"}
+            />
           </span>
         </button>
         <VolumeControl

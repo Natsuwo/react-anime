@@ -3,9 +3,12 @@ import "./AccountManagement.css";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import Modal from "../../../Modal/Modal";
 import EditAccountModal from "../../../Modal/children/EditAccountModal";
+import EditEmailPassword from "../../../Modal/children/EditEmailPassword";
+import CreateOTPModal from "../../../Modal/children/CreateOTPModal";
 
 const AccountManagement = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [modalName, setModalName] = useState("");
   return (
     <>
       <h2 className="manager-title">Account Manager</h2>
@@ -26,7 +29,10 @@ const AccountManagement = () => {
             </div>
             <div className="manager-item-right">
               <button
-                onClick={() => setIsVisible(true)}
+                onClick={() => {
+                  setIsVisible(true);
+                  setModalName("profile");
+                }}
                 className="btn account-btn"
               >
                 Edit
@@ -57,12 +63,20 @@ const AccountManagement = () => {
                 <UseIconList icon="mail" />
               </span>
               <div className="manager-item-text">
-                <div className="item-main-text">Email/Passwor</div>
+                <div className="item-main-text">Email/Password</div>
                 <div className="item-sub-text">deptrai@gmail.com</div>
               </div>
             </div>
             <div className="manager-item-right">
-              <button className="btn account-btn">Update</button>
+              <button
+                className="btn account-btn"
+                onClick={() => {
+                  setIsVisible(true);
+                  setModalName("edit-email");
+                }}
+              >
+                Update
+              </button>
             </div>
           </div>
         </div>
@@ -77,7 +91,15 @@ const AccountManagement = () => {
               </div>
             </div>
             <div className="manager-item-right">
-              <button className="btn account-btn">Create</button>
+              <button
+                className="btn account-btn"
+                onClick={() => {
+                  setModalName("create-otp");
+                  setIsVisible(true);
+                }}
+              >
+                Create
+              </button>
             </div>
           </div>
         </div>
@@ -92,13 +114,32 @@ const AccountManagement = () => {
               height: "44px",
               width: "260px",
             }}
+            onClick={() => {
+              setModalName("switch-account");
+              setIsVisible(true);
+            }}
           >
             Switch Account
           </button>
         </div>
       </div>
       <Modal visible={isVisible} setVisible={setIsVisible}>
-        <EditAccountModal visible={isVisible} setVisible={setIsVisible} />
+        {modalName === "profile" && (
+          <EditAccountModal visible={isVisible} setVisible={setIsVisible} />
+        )}
+        {modalName === "edit-email" && (
+          <EditEmailPassword visible={isVisible} setVisible={setIsVisible} />
+        )}
+        {modalName === "switch-account" && (
+          <EditEmailPassword
+            modalType="modal-switch-account"
+            visible={isVisible}
+            setVisible={setIsVisible}
+          />
+        )}
+        {modalName === "create-otp" && (
+          <CreateOTPModal visible={isVisible} setVisible={setIsVisible} />
+        )}
       </Modal>
     </>
   );

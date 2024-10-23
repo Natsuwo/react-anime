@@ -31,6 +31,7 @@ import seekBack10 from "../../../assets/images/icons/player/seek_back_10.svg";
 import wideIcon from "../../../assets/images/icons/player/wide.svg";
 import wideOnIcon from "../../../assets/images/icons/player/wide_on.svg";
 import fullScreenIcon from "../../../assets/images/icons/player/fullscreen.svg";
+import fullScreenExitIcon from "../../../assets/images/icons/player/fullscreen_exit.svg";
 
 // Condition
 import onairIcon from "../../../assets/images/icons/condition/onair.svg";
@@ -42,6 +43,9 @@ import accountIcon from "../../../assets/images/icons/condition/account.svg";
 import linkIcon from "../../../assets/images/icons/condition/link.svg";
 import mailIcon from "../../../assets/images/icons/condition/mail.svg";
 import creditCard from "../../../assets/images/icons/condition/credit_card.svg";
+import errorIcon from "../../../assets/images/icons/condition/error.svg";
+import viewIcon from "../../../assets/images/icons/condition/view.svg";
+import viewOffIcon from "../../../assets/images/icons/condition/view_off.svg";
 
 // Feature
 import genreIcon from "../../../assets/images/icons/feature/genre.svg";
@@ -79,6 +83,7 @@ const objIcon = {
   "fast-1-7x": fastFw1p7X,
   "fast-2x": fastFw2x,
   fullscreen: fullScreenIcon,
+  "fullscreen-exit": fullScreenExitIcon,
   "seek-back-10": seekBack10,
   "seek-forward-10": seekFw10,
   wide: wideIcon,
@@ -93,6 +98,9 @@ const objIcon = {
   link: linkIcon,
   mail: mailIcon,
   "credit-card": creditCard,
+  error: errorIcon,
+  view: viewIcon,
+  "view-off": viewOffIcon,
   // Feature
   genre: genreIcon,
   home: homeIcon,
