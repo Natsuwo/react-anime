@@ -6,9 +6,15 @@ const VideoScreen = ({
   setCurrentTime,
   setTotalTime,
   togglePlayPause,
+  handleSpeedChangeMouseDown,
+  handleDoubleClick,
 }) => {
   return (
-    <div className="player-container">
+    <div
+      className="player-container"
+      onMouseDown={handleSpeedChangeMouseDown}
+      onDoubleClick={handleDoubleClick}
+    >
       <div className="player" onClick={togglePlayPause}>
         <video
           ref={videoRef}

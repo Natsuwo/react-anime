@@ -1,0 +1,9 @@
+.manager-input-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.manager-input-item input {
+  max-width: 350px;
+}

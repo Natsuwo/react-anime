@@ -1,6 +1,7 @@
 import React from "react";
 import "./Account.css";
 import { NavLink, Outlet } from "react-router-dom";
+import UseIconList from "../../Global/SvgList/UseIconList";
 
 const Account = () => {
   return (
@@ -28,18 +29,24 @@ const Account = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/mailnoty">
+                <NavLink to="/mailnotify">
                   <span className="account-page-nav-title">Mail Settings</span>
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/announcement">
                   <span className="account-page-nav-title">Announcement</span>
+                  <span className="account-page-nav-icon">
+                    <UseIconList icon="external-link" />
+                  </span>
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/faq">
                   <span className="account-page-nav-title">FAQ</span>
+                  <span className="account-page-nav-icon">
+                    <UseIconList icon="external-link" />
+                  </span>
                 </NavLink>
               </li>
             </ul>

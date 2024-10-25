@@ -23,8 +23,19 @@
   display: block;
   padding: 16px 12px;
   border-radius: 4px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .account-page-nav li a.active {
   background-color: var(--secondary-color-2);
+  color: var(--link-active);
+}
+
+.account-page-nav-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
 }

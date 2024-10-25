@@ -4,6 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 550px;
+  min-height: 300px;
   padding-bottom: 32px;
+  color: var(--sub-title-color);
 }

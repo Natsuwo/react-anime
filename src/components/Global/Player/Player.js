@@ -17,6 +17,7 @@ const Player = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [readyToPlay, setReadyToPlay] = useState(false);
   const [showPlayPauseIcon, setShowPlayPauseIcon] = useState(false);
+  const [playTimeout, setPlayTimeOut] = useState(null);
   // Time
   const [currentTime, setCurrentTime] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
@@ -25,6 +26,7 @@ const Player = () => {
   const [isHoldingMouse, setIsHoldingMouse] = useState(false);
   const [holdTimeout, setHoldTimeout] = useState(null);
   const [playbackRate, setPlaybackRate] = useState("1");
+  const [prevPlaybackRate, setPrevPlaybackRate] = useState("1");
   const [wasPausedBefore, setWasPausedBefore] = useState(true);
 
   // Volume
@@ -58,20 +60,34 @@ const Player = () => {
   const togglePlayPause = () => {
     const video = videoRef.current;
     if (!isHoldingMouse && video) {
-      if (!readyToPlay) {
-        setReadyToPlay(true);
+      const timer = setTimeout(() => {
+        if (!readyToPlay) {
+          setReadyToPlay(true);
+        }
+        if (isPlaying) {
+          video.pause(); // Nếu đang phát thì tạm dừng
+        } else {
+          video.play(); // Nếu đang tạm dừng thì phát tiếp
+        }
+        setShowPlayPauseIcon(true);
+        setTimeout(() => {
+          setShowPlayPauseIcon(false);
+        }, 500);
+        setIsPlaying(!isPlaying); // Cập nhật trạng thái
+      }, 200);
+
+      if (playTimeout) {
+        clearTimeout(playTimeout);
       }
-      if (isPlaying) {
-        video.pause(); // Nếu đang phát thì tạm dừng
-      } else {
-        video.play(); // Nếu đang tạm dừng thì phát tiếp
-      }
-      setIsPlaying(!isPlaying); // Cập nhật trạng thái
-      setShowPlayPauseIcon(true);
-      setTimeout(() => {
-        setShowPlayPauseIcon(false);
-      }, 500);
+
+      setPlayTimeOut(timer);
     }
+  };
+
+  const handleDoubleClick = () => {
+    clearTimeout(playTimeout);
+    setPlayTimeOut(null);
+    handleFullScreen();
   };
 
   const handleRewindForward = (option) => {
@@ -87,7 +103,8 @@ const Player = () => {
     setPlaybackRate(speed);
   };
 
-  const handleSpeedChangeMouseDown = () => {
+  const handleSpeedChangeMouseDown = (e) => {
+    if (e.button !== 0) return;
     if (videoRef.current) {
       // Lưu trạng thái của video trước khi đè chuột
       setWasPausedBefore(videoRef.current.paused);
@@ -96,10 +113,12 @@ const Player = () => {
         // Nếu video đang bị pause, khi đè chuột sẽ play và phát x2
         setIsHoldingMouse(true);
         videoRef.current.playbackRate = 2;
+        setPrevPlaybackRate(playbackRate);
+        setPlaybackRate(2);
         if (videoRef.current.paused) {
           handlePlay("play");
         }
-      }, 1000); // Delay 1 giây
+      }, 600); // Delay 1 giây
 
       setHoldTimeout(timeout);
     }
@@ -110,7 +129,8 @@ const Player = () => {
     setHoldTimeout(null);
 
     if (videoRef.current && isHoldingMouse) {
-      videoRef.current.playbackRate = playbackRate; // Trở lại tốc độ bình thường khi thả chuột
+      videoRef.current.playbackRate = prevPlaybackRate; // Trở lại tốc độ bình thường khi thả chuột
+      setPlaybackRate(prevPlaybackRate);
       setTimeout(() => {
         setIsHoldingMouse(false);
       }, 200); // delay holding
@@ -247,10 +267,12 @@ const Player = () => {
         togglePlayPause();
         break;
       case "f": // F để vào full screen
-        handleFullScreen();
+        if (!isPip) {
+          handleFullScreen();
+        }
         break;
       case "F": // Shift + F để vào wide mode
-        if (shiftKey) {
+        if (shiftKey && !isPip) {
           handleWide(!wideMode);
         }
         break;
@@ -337,8 +359,6 @@ const Player = () => {
 
     // Push mouse to x2
     document.addEventListener("mouseup", handleSpeedChangeMouseUp);
-    console.log("loop");
-
     return () => {
       document.removeEventListener("mouseup", handleSpeedChangeMouseUp);
       // fullscreen
@@ -362,13 +382,12 @@ const Player = () => {
       video.removeEventListener("timeupdate", updateProgress);
       video.removeEventListener("progress", updateBuffered);
     };
-  }, [isPlaying, wideMode, isFullscreen, isHoldingMouse, holdTimeout]);
+  }, [isPlaying, wideMode, isFullscreen, isHoldingMouse, holdTimeout, isPip]);
 
   return (
     <div className="yurei-player-wrapper" ref={playerRef}>
       <div className={`yurei-pip-mode${isPip ? " active" : ""}`}></div>
       <div
-        onMouseDown={handleSpeedChangeMouseDown}
         id="yurei-player"
         className={`yurei-player${isPip ? " pip-mode" : ""}`}
       >
@@ -378,6 +397,8 @@ const Player = () => {
           <span className="holding-mouse-tooltip-text">Play 2x</span>
         </div>
         <VideoScreen
+          handleSpeedChangeMouseDown={handleSpeedChangeMouseDown}
+          handleDoubleClick={handleDoubleClick}
           playerRef={playerRef}
           videoRef={videoRef}
           Video={Video}

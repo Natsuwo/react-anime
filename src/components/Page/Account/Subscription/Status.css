@@ -1,0 +1,51 @@
+.plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.plan-box {
+  background-color: var(--secondary-color-2);
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.plan-box-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.plan-box-content .plan-box-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-box-left .plan-title {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+}
+
+.plan-box-left .plan-text {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.plan-box-left .plan-text span {
+  font-size: 24px;
+}
+
+.plan-box-left .plan-price {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.plan-box-left .plan-description {
+  font-size: var(--h6);
+  color: var(--sub-title-color);
+}
+
+.plan-box-right {
+  flex-shrink: 0;
+}

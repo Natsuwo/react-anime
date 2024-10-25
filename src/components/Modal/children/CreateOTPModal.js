@@ -1,5 +1,5 @@
 import React from "react";
-import InputForm from "../component/InputForm";
+import InputForm from "../../Global/FormInput/FormInput";
 
 const CreateOTPModal = ({ setVisible }) => {
   return (
@@ -12,7 +12,13 @@ const CreateOTPModal = ({ setVisible }) => {
         </div>
         <form className="modal-form">
           <InputForm value="dasdasdsad" label="ID" idFor="id" disabled={true} />
-          <span className="form-input-wrapper">
+          <InputForm
+            idFor="otp"
+            label="One-Time Password"
+            placeholder="Enter your One-Time Password"
+            buttonText="Accept"
+          />
+          {/* <span className="form-input-wrapper">
             <label htmlFor="otp">One-Time Password</label>
             <div className="modal-otp-input">
               <input
@@ -22,7 +28,7 @@ const CreateOTPModal = ({ setVisible }) => {
               />
               <button className="btn btn-active">Accept</button>
             </div>
-          </span>
+          </span> */}
         </form>
         <div className="modal-description">
           <ul>

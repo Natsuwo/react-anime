@@ -101,15 +101,6 @@
   color: var(--text-color);
 }
 
-.modal-form input:not(.modal-input-file) {
-  display: block;
-  width: 100%;
-  padding: 12px 8px;
-  margin: 12px 0;
-  border-radius: 6px;
-  border: none;
-}
-
 .modal-actions {
   margin: 12px 0;
   display: flex;
@@ -216,33 +207,6 @@
   color: var(--link-active);
 }
 
-.form-input-wrapper {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-sub-text {
-  color: var(--sub-title-color);
-  font-size: 13px;
-}
-
-.form-input-password {
-  position: relative;
-}
-
-.form-input-password .modal-password-icon {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 24px;
-  height: 24px;
-  color: var(--sc-color);
-  cursor: pointer;
-  user-select: none;
-}
-
 .modal-description ol,
 .modal-description ul {
   font-size: 14px;
@@ -292,14 +256,4 @@
 .modal-headline-back-icon {
   float: left;
   cursor: pointer;
-}
-
-.modal-otp-input {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.form-input-wrapper input:disabled {
-  color: var(--sub-title-color);
 }

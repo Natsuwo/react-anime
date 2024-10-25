@@ -3,8 +3,7 @@ import UseIconList from "../../Global/SvgList/UseIconList";
 import { Link } from "react-router-dom";
 import Alert from "../component/Alert";
 import HeadlineBack from "../component/HeadlineBack";
-import PasswordForm from "../component/PasswordForm";
-import InputForm from "../component/InputForm";
+import InputForm from "../../Global/FormInput/FormInput";
 
 const ModalSignUp = ({ visible, setVisible, openModal }) => {
   const handleSumbit = (e) => {
@@ -37,7 +36,7 @@ const ModalSignUp = ({ visible, setVisible, openModal }) => {
                 type="text"
                 placeholder="Enter your email"
               />
-              <PasswordForm />
+              <InputForm type="password" />
               <div className="modal-description modal-supplement">
                 当社の利用規約及びプライバシーポリシーを確認の上、同意して送信してください。
                 取得したメールアドレスは、以下の目的で使用します。
@@ -118,7 +117,7 @@ const EmailPasswordSignIn = ({ setVisible, openModal }) => {
             type="text"
             placeholder="Enter your email"
           />
-          <PasswordForm subtitle={false} />
+          <InputForm type="password" subtitle={false} />
         </form>
       </div>
       <div className="modal-actions">

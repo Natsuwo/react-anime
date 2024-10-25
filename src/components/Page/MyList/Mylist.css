@@ -1,0 +1,75 @@
+.episode-list-sort-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  height: 44px;
+  font-size: 14px;
+}
+
+.episode-list-sort-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  background-color: var(--bg-color);
+  padding: 12px 24px;
+  border-radius: 6px 6px 0 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.episode-list-sort-btn:hover {
+  background-color: var(--secondary-color-2);
+}
+
+.episode-list-sort-btn .sort-btn-text {
+  color: var(--text-color);
+}
+
+.episode-list-sort-btn .sort-icon {
+  color: var(--sub-title-color);
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.episode-list-sort-container {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: var(--secondary-color-2);
+  box-shadow: 0 2px 4px #000;
+  border: 1px solid hsla(0, 0%, 100%, 0.12);
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.1s linear, visibility 0s linear 0.1s;
+  visibility: hidden;
+}
+
+.episode-list-sort-container.show {
+  opacity: 1;
+  transition: opacity 0.1s linear, visibility 0s;
+  visibility: visible;
+}
+
+.episode-list-sort-item {
+  padding: 12px 24px;
+  text-align: left;
+  cursor: pointer;
+  line-height: 1.3;
+  transition: background-color 0.1s linear 0s;
+}
+
+.episode-list-sort-item.active .sort-item-text {
+  color: var(--link-active);
+  font-weight: 600;
+}
+
+.episode-list-sort-item:hover {
+  background-color: var(--secondary-color);
+}

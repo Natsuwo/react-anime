@@ -89,11 +89,11 @@
   gap: 16px;
 }
 
-.switch-account-wrapper .switch-text {
-  font-size: 13px;
-  color: var(--sub-title-color);
-}
-
 .switch-acount-btn:hover {
   background-color: var(--white-24);
+}
+
+.manager-sub-text {
+  font-size: 13px;
+  color: var(--sub-title-color);
 }

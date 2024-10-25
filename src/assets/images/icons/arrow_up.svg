@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <symbol id="svg-arrow-up" viewBox="0 0 13 8">
+        <path d="M7.146 2.044l-1.232-.006L11.69 7.93l1.238-1.213L7.152.825 6.54.2l-.618.619L.029 6.71l1.225 1.225z"/>
+    </symbol>
+    <use xlink:href="#svg-arrow-up"></use>
+</svg>

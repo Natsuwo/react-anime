@@ -5,6 +5,7 @@ import Modal from "../../../Modal/Modal";
 import EditAccountModal from "../../../Modal/children/EditAccountModal";
 import EditEmailPassword from "../../../Modal/children/EditEmailPassword";
 import CreateOTPModal from "../../../Modal/children/CreateOTPModal";
+import { Link } from "react-router-dom";
 
 const AccountManagement = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -52,7 +53,9 @@ const AccountManagement = () => {
               </div>
             </div>
             <div className="manager-item-right">
-              <button className="btn account-btn btn-green">Sign Up</button>
+              <Link to={"/subscription/status"}>
+                <button className="btn account-btn btn-green">Upgrade</button>
+              </Link>
             </div>
           </div>
         </div>
@@ -104,7 +107,7 @@ const AccountManagement = () => {
           </div>
         </div>
         <div className="switch-account-wrapper mt-2">
-          <p className="switch-text">
+          <p className="manager-sub-text">
             他のデバイスで設定済みの情報を使ってアカウントの切り替えができます。
           </p>
           <button

@@ -1,0 +1,117 @@
+.form-input-wrapper input:disabled {
+  color: var(--sub-title-color);
+}
+
+.form-input-wrapper input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 1px solid var(--white-12);
+  border-radius: 4px;
+  caret-color: var(--link-active);
+  color: var(--sub-title-color);
+  font-size: 16px;
+  height: 100%;
+  overflow: hidden;
+  padding: 12px;
+  transition-duration: 0.1s;
+  transition-property: color background-color;
+  transition-timing-function: linear;
+  width: 100%;
+}
+
+.form-input-wrapper input:not(:placeholder-shown) {
+  background-color: #fff;
+  border-color: var(--white-12);
+  color: var(--secondary-color-2);
+}
+
+input:not(.modal-input-file) {
+  display: block;
+  width: 100%;
+  padding: 0 8px;
+  margin: 12px 0;
+  border-radius: 6px;
+  border: none;
+}
+
+.form-input-wrapper label {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.input-flex-with-button {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.modal-sub-text {
+  color: var(--sub-title-color);
+  font-size: 13px;
+}
+
+.form-input-wrapper {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-input-password {
+  position: relative;
+}
+
+.form-input-password .modal-password-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  color: var(--sc-color);
+  cursor: pointer;
+  user-select: none;
+}
+
+.main-checkbox {
+  position: relative;
+}
+
+.main-checkbox .checkbox-item {
+  display: block;
+  position: relative;
+  border: 1px solid var(--sc-color);
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden;
+  width: 14px;
+  height: 14px;
+}
+
+.main-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.main-checkbox .main-checkbox-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--sub-title-color);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.main-checkbox:hover .main-checkbox-icon {
+  opacity: 1;
+}
+
+.main-checkbox.active .main-checkbox-icon {
+  background-color: var(--link-active);
+  color: var(--primary-color);
+  opacity: 1;
+}

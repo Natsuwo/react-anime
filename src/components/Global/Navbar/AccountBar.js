@@ -5,7 +5,14 @@ import "./AccountBar.css";
 
 const AccountBar = () => {
   const location = useLocation();
-  const accountChildPath = ["/badges", "/coupon"];
+  console.log(location.pathname);
+  const accountChildPath = [
+    "/badges",
+    "/coupon",
+    "/mailnotify",
+    "/mailnotify/unsubscribe",
+    "/subscription/status",
+  ];
   const isInPath = accountChildPath.some((item) => item === location.pathname);
   return (
     <NavLink

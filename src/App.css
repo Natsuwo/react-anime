@@ -17,16 +17,36 @@ body {
   --secondary-color: #373737;
   --secondary-color-2: #212121;
   --link-active: #da0;
+  --link-active-hover: #e7be35;
   --text-color: #e6e6e6;
   --btn-hover-color: hsla(0, 0%, 100%, 0.08);
   --white-8: hsla(0, 0%, 100%, 0.08);
   --white-12: hsla(0, 0%, 100%, 0.12);
   --white-24: hsla(0, 0%, 100%, 0.24);
   --color-danger: #f0163a;
+  --color-sub-danger: #f34461;
   --sub-title-color: #999;
   --sub-title-color-2: #333;
-  background-color: #000;
+  --bg-color: #000;
+  --h5: 16px;
+  --h6: 13px;
+  background-color: var(--bg-color);
   color: var(--text-color);
+}
+
+.__text-active {
+  color: var(--link-active);
+}
+
+.__bg-active {
+  background-color: var(--link-active);
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: inherit;
 }
 
 img {
@@ -39,6 +59,10 @@ video {
   height: 100%;
   pointer-events: none;
   width: 100%;
+}
+
+input::placeholder {
+  color: var(--sub-title-color);
 }
 
 a {
@@ -72,6 +96,18 @@ svg:not(:root) {
 
 .main-content {
   flex: 1;
+}
+
+.__half-container {
+  margin-right: auto;
+  max-width: 640px;
+  padding: 0 8px;
+  width: 100%;
+}
+
+.sub-title {
+  font-size: 20px;
+  font-weight: 600;
 }
 
 /* custom slide */
@@ -128,10 +164,23 @@ svg:not(:root) {
   color: var(--secondary-color-2);
 }
 
+.btn-danger {
+  background-color: var(--color-danger);
+  color: var(--text-color);
+}
+
+.btn-danger:hover:disabled {
+  background-color: var(--color-danger);
+  color: var(--text-color);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--color-sub-danger);
+}
+
 .btn-active:hover {
-  background-color: var(--link-active);
+  background-color: var(--link-active-hover);
   color: var(--secondary-color-2);
-  opacity: 0.8;
 }
 
 .mt {
@@ -144,6 +193,14 @@ svg:not(:root) {
 
 .mb-md {
   margin-bottom: 32px;
+}
+
+.mb-2 {
+  margin-bottom: 16px;
+}
+
+.my-auto {
+  margin: 12px 0;
 }
 
 a.link-block::after {
@@ -173,6 +230,10 @@ fieldset {
 button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+}
+
+button:disabled:hover {
+  opacity: 0.7;
 }
 
 button.btn-default {
@@ -406,4 +467,31 @@ main.page-main {
 .__icon-default {
   width: 24px;
   height: 24px;
+}
+
+input.dark-theme {
+  background-color: #212121;
+  border: 1px solid !important;
+  border-color: hsla(0, 0%, 100%, 0.12) !important;
+}
+
+input.dark-theme::placeholder {
+  color: var(--sc-color);
+}
+
+input.dark-theme:focus {
+  background-color: white;
+  border: 1px solid #fafafa;
+}
+
+.slash {
+  margin: 0 12px;
+}
+
+.slash::before {
+  content: "/";
+}
+
+.form-actions {
+  margin-top: 12px;
 }
