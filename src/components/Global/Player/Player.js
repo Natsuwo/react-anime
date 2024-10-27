@@ -414,7 +414,12 @@ const Player = () => {
   ]);
 
   return (
-    <div className="yurei-player-wrapper" ref={playerRef}>
+    <div
+      className={`yurei-player-wrapper${
+        isFullscreen && size.width < 767 ? " __mobile-fullscreen" : ""
+      }`}
+      ref={playerRef}
+    >
       <div className={`yurei-pip-mode${isPip ? " active" : ""}`}></div>
       <div
         id="yurei-player"
