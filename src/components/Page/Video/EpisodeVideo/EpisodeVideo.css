@@ -135,3 +135,12 @@
 .episode-tag {
   margin: 8px 0;
 }
+
+@media (max-width: 991px) {
+  .episode-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .episode-sidebar {
+    display: none;
+  }
+}

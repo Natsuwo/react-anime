@@ -12,3 +12,21 @@
 .main-recommend-wrapper h3 {
   margin: 12px 0;
 }
+
+@media (max-width: 767px) {
+  .main-recommend-wrapper .recommend-inner {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 578px) {
+  .main-recommend-wrapper .recommend-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 340px) {
+  .main-recommend-wrapper .recommend-inner {
+    grid-template-columns: 1fr;
+  }
+}

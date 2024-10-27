@@ -5,6 +5,7 @@ import UseIconList from "../SvgList/UseIconList";
 import {
   fourCardResponsive,
   eightCardResponsive,
+  sevenCardResponsive,
 } from "../../Page/Home/CardReponsive";
 
 function NextArrow(props) {
@@ -58,7 +59,11 @@ const VideoList = ({
     infinite: false,
     speed: 500,
     responsive:
-      slidesToShow < 5 ? fourCardResponsive : eightCardResponsive || [],
+      slidesToShow < 5
+        ? fourCardResponsive
+        : slidesToShow < 8
+        ? sevenCardResponsive
+        : eightCardResponsive || [],
     slidesToShow: slidesToShow,
     slidesToScroll: slidesToShow,
     afterChange: (index) => setCurrentSlide(index),

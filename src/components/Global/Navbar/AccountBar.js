@@ -5,7 +5,6 @@ import "./AccountBar.css";
 
 const AccountBar = () => {
   const location = useLocation();
-  console.log(location.pathname);
   const accountChildPath = [
     "/badges",
     "/coupon",

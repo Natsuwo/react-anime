@@ -95,6 +95,7 @@
 .episode-list-item {
   padding: 16px;
   position: relative;
+  width: 100%;
 }
 
 .episode-list-item::after {
@@ -131,6 +132,7 @@
   flex-direction: column;
   color: var(--text-color);
   gap: 4px;
+  flex-grow: 1;
 }
 
 .episode-list-item-details .episode-list-item-title {
@@ -191,4 +193,38 @@
 
 .episode-list-current-play.active {
   display: block;
+}
+
+@media (max-width: 991px) {
+}
+
+@media (max-width: 767px) {
+  .episode-list-item-details .episode-list-item-title {
+    font-size: 14px;
+    /* font-weight: 500; */
+  }
+
+  .episode-list-item-add-to-list .add-to-list-btn {
+    width: 24px;
+    height: 24px;
+  }
+
+  .episode-list-item-details .episode-list-item-desc {
+    display: none;
+  }
+}
+
+@media (max-width: 568px) {
+  .episode-list-item-wrapper .episode-list-item-thumbnail {
+    width: 134.4px;
+    height: 75.6px;
+  }
+
+  .episode-list-item-details .episode-list-item-info li:nth-child(2) {
+    display: none;
+  }
+  .episode-list-item-details .episode-list-item-info {
+    font-size: 11px;
+    gap: 4px;
+  }
 }

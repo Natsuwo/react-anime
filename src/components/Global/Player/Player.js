@@ -85,12 +85,14 @@ const Player = () => {
   };
 
   const handleDoubleClick = () => {
+    console.log("chay");
     clearTimeout(playTimeout);
     setPlayTimeOut(null);
     handleFullScreen();
   };
 
   const handleRewindForward = (option) => {
+    console.log("chay");
     if (option === "rewind") {
       videoRef.current.currentTime -= 10;
     } else {
@@ -359,6 +361,16 @@ const Player = () => {
 
     // Push mouse to x2
     document.addEventListener("mouseup", handleSpeedChangeMouseUp);
+
+    // Draging
+
+    if (isDragging) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    } else {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    }
     return () => {
       document.removeEventListener("mouseup", handleSpeedChangeMouseUp);
       // fullscreen
@@ -381,8 +393,20 @@ const Player = () => {
       video.removeEventListener("loadeddata", handleLoadedData);
       video.removeEventListener("timeupdate", updateProgress);
       video.removeEventListener("progress", updateBuffered);
+
+      // Draging
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isPlaying, wideMode, isFullscreen, isHoldingMouse, holdTimeout, isPip]);
+  }, [
+    isPlaying,
+    wideMode,
+    isFullscreen,
+    isHoldingMouse,
+    holdTimeout,
+    isPip,
+    isDragging,
+  ]);
 
   return (
     <div className="yurei-player-wrapper" ref={playerRef}>
@@ -405,6 +429,7 @@ const Player = () => {
           setCurrentTime={setCurrentTime}
           setTotalTime={setTotalTime}
           togglePlayPause={togglePlayPause}
+          handleRewindForward={handleRewindForward}
         />
         <ButtonHandle
           isLoading={isLoading}

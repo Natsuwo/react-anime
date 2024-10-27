@@ -11,9 +11,9 @@ const History = () => {
         <div className="episode-list-wrapper">
           <div className="episode-list-container">
             <ul className="episode-list">
-              <CardListEpsiode />
-              <CardListEpsiode />
-              <CardListEpsiode />
+              <CardListEpsiode showDesc={false} showSupplements={false} />
+              <CardListEpsiode showDesc={false} showSupplements={false} />
+              <CardListEpsiode showDesc={false} showSupplements={false} />
             </ul>
           </div>
         </div>

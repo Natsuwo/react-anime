@@ -48,7 +48,7 @@ function App() {
         <Header />
       )}
 
-      <div className="main-container">
+      <div className={`main-container${size.width < 992 ? " __mobile" : ""}`}>
         {!isSubscriptionPage && size.width >= 992 && <Navbar />}
         <div className="main-content">
           <Routes>

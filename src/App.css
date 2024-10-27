@@ -23,6 +23,9 @@ body {
   --white-8: hsla(0, 0%, 100%, 0.08);
   --white-12: hsla(0, 0%, 100%, 0.12);
   --white-24: hsla(0, 0%, 100%, 0.24);
+  --radius: 6px;
+  --radius-2: 8px;
+  --radius-3: 12px;
   --color-danger: #f0163a;
   --color-sub-danger: #f34461;
   --sub-title-color: #999;
@@ -94,6 +97,10 @@ svg:not(:root) {
   display: flex;
 }
 
+.main-container.__mobile {
+  display: block;
+}
+
 .main-content {
   flex: 1;
 }
@@ -159,6 +166,15 @@ svg:not(:root) {
   background-color: var(--link-active) !important;
 }
 
+.btn-white {
+  background-color: #fff;
+  color: var(--primary-color);
+}
+
+.btn-white:hover {
+  background-color: var(--white-12);
+}
+
 .btn-active {
   background-color: var(--link-active);
   color: var(--secondary-color-2);
@@ -181,6 +197,24 @@ svg:not(:root) {
 .btn-active:hover {
   background-color: var(--link-active-hover);
   color: var(--secondary-color-2);
+}
+
+.btn .btn-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.__rarius-1 {
+  border-radius: var(--radius) !important;
+}
+
+.__rarius-2 {
+  border-radius: var(--radius-2) !important;
+}
+
+.__rarius-3 {
+  border-radius: var(--radius-3) !important;
 }
 
 .mt {
@@ -362,7 +396,7 @@ main.page-main {
   margin: 68px auto 0;
   position: relative;
   overflow: hidden;
-  /* padding: 0 24px; */
+  padding: 0 24px;
   max-width: 1024px;
 }
 
@@ -377,14 +411,18 @@ main.page-main {
   border-radius: 4px;
   background-color: #000;
   transition: 500ms;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .mobile-btn {
   border: none;
   color: white;
+}
+
+.btn-icon-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 @media (max-width: 767px) {
@@ -494,4 +532,17 @@ input.dark-theme:focus {
 
 .form-actions {
   margin-top: 12px;
+}
+
+.container__mobile {
+  padding: 0 8px;
+}
+
+@media (max-width: 991px) {
+  .page-container {
+    padding: 0 0;
+  }
+}
+
+@media (max-width: 767px) {
 }

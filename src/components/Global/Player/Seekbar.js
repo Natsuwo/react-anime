@@ -13,9 +13,9 @@ const Seekbar = ({
       <div
         className="seekbar-inner"
         onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        // onMouseMove={handleMouseMove}
+        // onMouseUp={handleMouseUp}
+        // onMouseLeave={handleMouseUp}
       >
         <div className="seekbar-loading">
           <div

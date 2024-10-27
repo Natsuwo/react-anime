@@ -21,6 +21,10 @@
   height: 100%;
 }
 
+.player {
+  position: relative;
+}
+
 .yurei-player-wrapper .controls {
   position: absolute;
   bottom: 0;
@@ -632,4 +636,11 @@
 .holding-mouse-tooltip.active {
   opacity: 1;
   visibility: visible;
+}
+
+@media (max-width: 767px) {
+  button.advances-btn,
+  button.rewind-btn {
+    display: none;
+  }
 }
