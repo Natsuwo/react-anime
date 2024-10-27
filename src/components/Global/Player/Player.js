@@ -157,7 +157,7 @@ const Player = () => {
         playerContainer.msRequestFullscreen(); // IE/Edge
       }
       setIsFullscreen(true);
-      if (size.width < 991) {
+      if (size.width < 576) {
         window.screen.orientation.lock("landscape").catch((err) => {
           console.error(`Cannot lock orientation: ${err}`);
         });
