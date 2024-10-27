@@ -14,7 +14,7 @@ const Subscription = () => {
   return (
     <main className="page-main">
       <div className="page-container">
-        <h1 className="main-title mb-2">History</h1>
+        <h1 className="main-title mb-2">Upgrade</h1>
         <div className="subscription-step my-auto">Step 2/2</div>
         <h2 className="sub-title my-auto">Choose a payment gate</h2>
 
@@ -40,19 +40,19 @@ const Subscription = () => {
               <p className="guideline-title">
                 Important points to note when purchasing
               </p>
-              <p className="guideline-content">
-                <div>
+              <div className="guideline-content">
+                <p>
                   ・Your viewing plan will be automatically renewed unless you
                   cancel it. If you wish to cancel, please cancel it from the
                   "Viewing Plan" screen by the cancellation deadline. Please
                   note that even after the cancellation procedure, you can still
                   use the canceled viewing plan until its expiration date.
-                </div>
-                <div>
+                </p>
+                <p>
                   ・Please note that even if you cancel during the usage period,
                   refunds or deductions cannot be made on a pro rata basis.
-                </div>
-              </p>
+                </p>
+              </div>
               <ul>
                 <li>
                   <Link className="__text-active">Terms of Use</Link>

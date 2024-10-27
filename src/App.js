@@ -18,6 +18,9 @@ import SubscriptionStatus from "./components/Page/Account/Subscription/Status";
 import MyList from "./components/Page/MyList/MyList";
 import History from "./components/Page/History/History";
 import Subscription from "./components/Page/Subscription/Subscription";
+import SignUp from "./components/Page/Subscription/SignUp/SignUp";
+import HeaderPromote from "./components/Global/Header/HeaderPromote";
+import Promote from "./components/Page/Subscription/Promote/Promote";
 
 function App() {
   const { size } = UseResponsiveContext();
@@ -27,15 +30,24 @@ function App() {
   const isSubscriptionPage = /^\/subscription\/(?!status\b)\w+/i.test(
     location.pathname
   );
+
+  const isPromotePage = /^\/subscription\/promote\b/i.test(location.pathname);
+
+  // const isSubscriptionPage =
+  // /^\/subscription\/(?!status\b)(?!signup\b)\w+/i.test(location.pathname);
+
   return (
     <>
       {size.width < 992 ? (
         <HeaderMenu />
       ) : !isSubscriptionPage ? (
-        <Header />
-      ) : (
         <Header hideMenu={true} />
+      ) : isPromotePage ? (
+        <HeaderPromote />
+      ) : (
+        <Header />
       )}
+
       <div className="main-container">
         {!isSubscriptionPage && size.width >= 992 && <Navbar />}
         <div className="main-content">
@@ -64,14 +76,16 @@ function App() {
               path="/subscription/status"
               element={<SubscriptionStatus />}
             ></Route>
-            <Route path="/mylist" element={<MyList />}></Route>
-            <Route path="/history" element={<History />}></Route>
+            <Route path="/subscription/signup" element={<SignUp />}></Route>
+            <Route path="/subscription/promote" element={<Promote />}></Route>
             <Route
               path="/subscription/:params"
               element={<Subscription />}
             ></Route>
+            <Route path="/mylist" element={<MyList />}></Route>
+            <Route path="/history" element={<History />}></Route>
           </Routes>
-          {!isSubscriptionPage && <Footer />}
+          {!isSubscriptionPage || (isPromotePage && <Footer />)}
         </div>
       </div>
     </>

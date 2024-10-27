@@ -103,7 +103,7 @@ const CreditCard = () => {
                 value={values["card_id"]}
                 label={"Card ID"}
                 onChange={(e) => handleValidateCard(e, "card_id")}
-                placeholder={"1234123412341234"}
+                placeholder={"1234 1234 1234 1234"}
                 autocomplete={"cc-number"}
               />
             </div>
@@ -153,7 +153,7 @@ const CreditCard = () => {
             </div>
           </div>
         </div>
-        <div className="before-subscription-policy">
+        <div className="subtitle-description">
           By registering, you agree to the{" "}
           <Link className="__text-active">Terms of Use</Link>,{" "}
           <Link className="__text-active">Privacy Policy</Link>, and{" "}

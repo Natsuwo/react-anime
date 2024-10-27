@@ -29,7 +29,7 @@ const PasswordForm = ({
         </span>
       )}
 
-      <span className="form-input-password">
+      <span className="form-input-password" style={{ width: widthForm }}>
         <input
           className={className}
           style={{ width: widthForm, height: heightForm }}
