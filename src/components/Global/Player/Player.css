@@ -638,9 +638,15 @@
   visibility: visible;
 }
 
+@media (max-width: 991px) {
+  .yurei-player-wrapper button.full-screen-in-browser-btn {
+    display: none !important;
+  }
+}
+
 @media (max-width: 767px) {
-  button.advances-btn,
-  button.rewind-btn {
-    display: none;
+  .yurei-player-wrapper button.advances-btn,
+  .yurei-player-wrapper button.rewind-btn {
+    display: none !important;
   }
 }

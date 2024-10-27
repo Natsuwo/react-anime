@@ -6,8 +6,10 @@ import VideoScreen from "./VideoScreen";
 import ButtonHandle from "./ButtonHandle";
 import PiPButon from "./PiPButon";
 import VideoPlayerControls from "./VideoPlayerControls";
+import { UseResponsiveContext } from "../../../context/ResponsiveContext";
 
 const Player = () => {
+  const { size } = UseResponsiveContext();
   const videoRef = useRef(null);
   const playerRef = useRef(null);
   const volumeRef = useRef(null);
@@ -85,14 +87,12 @@ const Player = () => {
   };
 
   const handleDoubleClick = () => {
-    console.log("chay");
     clearTimeout(playTimeout);
     setPlayTimeOut(null);
     handleFullScreen();
   };
 
   const handleRewindForward = (option) => {
-    console.log("chay");
     if (option === "rewind") {
       videoRef.current.currentTime -= 10;
     } else {
@@ -157,6 +157,11 @@ const Player = () => {
         playerContainer.msRequestFullscreen(); // IE/Edge
       }
       setIsFullscreen(true);
+      if (size.width < 991) {
+        window.screen.orientation.lock("landscape").catch((err) => {
+          console.error(`Cannot lock orientation: ${err}`);
+        });
+      }
     } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
