@@ -16,7 +16,7 @@ const VideoScreen = ({
     <div
       className="player-container"
       onMouseDown={handleSpeedChangeMouseDown}
-      onDoubleClick={size.width > 991 && handleDoubleClick}
+      onDoubleClick={size.width > 991 ? handleDoubleClick : () => {}}
     >
       <div className="player" onClick={togglePlayPause}>
         <video
