@@ -57,6 +57,7 @@ const VideoPlayerControls = ({
       <Seekbar
         seekbarRef={seekbarRef}
         handleMouseDown={handleMouseDown}
+        onTouchStart={handleMouseDown}
         handleMouseMove={handleMouseMove}
         handleMouseUp={handleMouseUp}
         buffered={buffered}

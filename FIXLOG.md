@@ -1,5 +1,6 @@
-1. Nút đè không hoạt động trên mobile
-2. Double Tap bị pause trên mobile
+1. Nút đè không hoạt động trên mobile [FIXED]
+2. Double Tap bị pause trên mobile [FIXED]
+3. Lỗi tap true, tap lại lần nữa thì không tính
 
 Update
 

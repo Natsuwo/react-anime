@@ -17,7 +17,9 @@ const VideoScreen = ({
     <div
       className="player-container"
       onMouseDown={handleSpeedChangeMouseDown}
+      onTouchStart={handleSpeedChangeMouseDown}
       onDoubleClick={!isMobile ? handleDoubleClick : () => {}}
+      onContextMenu={(e) => e.preventDefault()}
     >
       <div className="player" onClick={togglePlayPause}>
         <video
@@ -33,20 +35,19 @@ const VideoScreen = ({
           <>
             <div
               className="tap-left"
-              onDoubleClick={(event) => handleDoubleClickTime(event, "rewind")}
+              onDoubleClick={() => handleDoubleClickTime("rewind")}
               style={{
                 width: "50%",
                 position: "absolute",
                 left: 0,
                 top: 0,
                 height: "100%",
-                zIndex: 10,
               }}
             ></div>
 
             <div
               className="tap-right"
-              onDoubleClick={(event) => handleDoubleClickTime(event, "forward")}
+              onDoubleClick={() => handleDoubleClickTime("forward")}
               style={{
                 width: "50%",
                 position: "absolute",

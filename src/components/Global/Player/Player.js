@@ -13,6 +13,7 @@ const Player = () => {
   const playerRef = useRef(null);
   const volumeRef = useRef(null);
   const seekbarRef = useRef(null);
+  const doubleTapRef = useRef(false);
   // Play pause
   const [isLoading, setIsLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -30,7 +31,7 @@ const Player = () => {
   const [prevPlaybackRate, setPrevPlaybackRate] = useState("1");
   const [wasPausedBefore, setWasPausedBefore] = useState(true);
   const [skipState, setSkipState] = useState("");
-  const [doubleTap, setDoubleTap] = useState(false);
+  const [tapTime, setTapTime] = useState(false);
 
   // Volume
   const [volume, setVolume] = useState(1);
@@ -62,8 +63,9 @@ const Player = () => {
 
   const togglePlayPause = () => {
     const video = videoRef.current;
-    if (!isHoldingMouse && !doubleTap && video) {
+    if (!isHoldingMouse && !doubleTapRef.current && video) {
       const timer = setTimeout(() => {
+        if (doubleTapRef.current) return;
         if (!readyToPlay) {
           setReadyToPlay(true);
         }
@@ -93,14 +95,17 @@ const Player = () => {
     handleFullScreen();
   };
 
-  const handleDoubleClickTime = (e, option) => {
-    setDoubleTap(true);
-    setSkipState(option);
-    setTimeout(() => {
-      setSkipState("");
-      setDoubleTap(false);
-    }, 500);
+  const handleDoubleClickTime = (option) => {
+    doubleTapRef.current = true;
+    clearTimeout(tapTime);
     handleRewindForward(option);
+
+    const timer = setTimeout(() => {
+      // setSkipState("");
+      doubleTapRef.current = false;
+    }, 500);
+    // setSkipState(option);
+    setTapTime(timer);
   };
 
   const handleRewindForward = (option) => {
@@ -121,7 +126,7 @@ const Player = () => {
   };
 
   const handleSpeedChangeMouseDown = (e) => {
-    if (e.button !== 0) return;
+    if (e.type !== "touchstart" && e.button !== 0) return;
     if (videoRef.current) {
       // Lưu trạng thái của video trước khi đè chuột
       setWasPausedBefore(videoRef.current.paused);
@@ -234,7 +239,7 @@ const Player = () => {
 
   // Bắt đầu kéo seekbar
   const handleMouseDown = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setIsDragging(true);
     updateSeek(e.touches ? e.touches[0] : e);
   };
@@ -255,7 +260,7 @@ const Player = () => {
   const updateSeek = (e) => {
     const seekBar = seekbarRef.current;
     const rect = seekBar.getBoundingClientRect();
-    const offsetX = e.clientX - rect.left;
+    const offsetX = (e.clientX || e.pageX) - rect.left;
     const newTime = (offsetX / rect.width) * videoRef.current.duration;
 
     videoRef.current.currentTime = newTime;
@@ -382,6 +387,8 @@ const Player = () => {
 
     // Push mouse to x2
     document.addEventListener("mouseup", handleSpeedChangeMouseUp);
+    document.addEventListener("touchend", handleSpeedChangeMouseUp);
+    document.addEventListener("touchcancel", handleSpeedChangeMouseUp);
 
     // Draging
 
@@ -398,6 +405,8 @@ const Player = () => {
     }
     return () => {
       document.removeEventListener("mouseup", handleSpeedChangeMouseUp);
+      document.removeEventListener("touchend", handleSpeedChangeMouseUp);
+      document.removeEventListener("touchcancel", handleSpeedChangeMouseUp);
       // fullscreen
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
       document.removeEventListener(
@@ -439,7 +448,7 @@ const Player = () => {
     <div
       className={`yurei-player-wrapper${
         isFullscreen && isMobile ? " __mobile-fullscreen" : ""
-      }`}
+      }${isMobile ? " __mobile" : ""}`}
       ref={playerRef}
     >
       <div className={`yurei-pip-mode${isPip ? " active" : ""}`}></div>
