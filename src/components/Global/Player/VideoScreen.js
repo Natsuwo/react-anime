@@ -43,47 +43,7 @@ const VideoScreen = ({
                 zIndex: 10,
               }}
             ></div>
-            <div
-              className={`player-fore-icon forward${
-                skipState === "forward" ? " show" : ""
-              }`}
-            >
-              <div className="player-fore-container">
-                <div className="player-fore-icon-inner">
-                  <span className="player-icon">
-                    <UseIconList icon="play" />
-                  </span>
-                  <span className="player-icon">
-                    <UseIconList icon="play" />
-                  </span>
-                  <span className="player-icon">
-                    <UseIconList icon="play" />
-                  </span>
-                </div>
-                <div className="player-fore-text">10 seconds</div>
-              </div>
-            </div>
 
-            <div
-              className={`player-fore-icon rewind${
-                skipState === "rewind" ? " show" : ""
-              }`}
-            >
-              <div className="player-fore-container">
-                <div className="player-fore-icon-inner">
-                  <span className="player-icon">
-                    <UseIconList icon="play" />
-                  </span>
-                  <span className="player-icon">
-                    <UseIconList icon="play" />
-                  </span>
-                  <span className="player-icon">
-                    <UseIconList icon="play" />
-                  </span>
-                </div>
-                <div className="player-fore-text">10 seconds</div>
-              </div>
-            </div>
             <div
               className="tap-right"
               onDoubleClick={(event) => handleDoubleClickTime(event, "forward")}
@@ -97,6 +57,48 @@ const VideoScreen = ({
             ></div>
           </>
         )}
+
+        <div
+          className={`player-fore-icon forward${
+            skipState === "forward" ? " show" : ""
+          }`}
+        >
+          <div className="player-fore-container">
+            <div className="player-fore-icon-inner">
+              <span className="player-icon">
+                <UseIconList icon="play" />
+              </span>
+              <span className="player-icon">
+                <UseIconList icon="play" />
+              </span>
+              <span className="player-icon">
+                <UseIconList icon="play" />
+              </span>
+            </div>
+            <div className="player-fore-text">10 seconds</div>
+          </div>
+        </div>
+
+        <div
+          className={`player-fore-icon rewind${
+            skipState === "rewind" ? " show" : ""
+          }`}
+        >
+          <div className="player-fore-container">
+            <div className="player-fore-icon-inner">
+              <span className="player-icon">
+                <UseIconList icon="play" />
+              </span>
+              <span className="player-icon">
+                <UseIconList icon="play" />
+              </span>
+              <span className="player-icon">
+                <UseIconList icon="play" />
+              </span>
+            </div>
+            <div className="player-fore-text">10 seconds</div>
+          </div>
+        </div>
       </div>
       <div className="video-cover"></div>
       <div className="video-bg fade-in"></div>

@@ -30,6 +30,7 @@ const Player = () => {
   const [prevPlaybackRate, setPrevPlaybackRate] = useState("1");
   const [wasPausedBefore, setWasPausedBefore] = useState(true);
   const [skipState, setSkipState] = useState("");
+  const [doubleTap, setDoubleTap] = useState(false);
 
   // Volume
   const [volume, setVolume] = useState(1);
@@ -61,7 +62,7 @@ const Player = () => {
 
   const togglePlayPause = () => {
     const video = videoRef.current;
-    if (!isHoldingMouse && video) {
+    if (!isHoldingMouse && !doubleTap && video) {
       const timer = setTimeout(() => {
         if (!readyToPlay) {
           setReadyToPlay(true);
@@ -92,29 +93,14 @@ const Player = () => {
     handleFullScreen();
   };
 
-  let lastTap = 0;
   const handleDoubleClickTime = (e, option) => {
-    console.log("chay");
-    const currentTime = new Date().getTime();
-    const tapLength = currentTime - lastTap;
-
-    if (tapLength < 500 && tapLength > 0) {
-      setSkipState(option);
-      setTimeout(() => {
-        setSkipState("");
-      }, 500);
-      // Kiểm tra double tap
-      e.preventDefault();
-      clearTimeout(playTimeout); // Xóa timeout để không bị pause
-      setPlayTimeOut(null);
-      handleRewindForward(option); // Hoặc kích hoạt fullscreen
-    } else {
-      const timer = setTimeout(() => {
-        togglePlayPause(); // Nếu là single tap, play/pause video
-      }, 300);
-      setPlayTimeOut(timer);
-    }
-    lastTap = currentTime;
+    setDoubleTap(true);
+    setSkipState(option);
+    setTimeout(() => {
+      setSkipState("");
+      setDoubleTap(false);
+    }, 500);
+    handleRewindForward(option);
   };
 
   const handleRewindForward = (option) => {
