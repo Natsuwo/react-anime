@@ -635,18 +635,82 @@
   visibility: visible;
 }
 
+.player-fore-icon {
+  border-radius: 50%;
+  width: 125px;
+  height: 125px;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: 300ms;
+}
+
+.player-fore-icon.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.player-fore-icon.forward {
+  right: 15%;
+}
+
+.player-fore-icon.rewind {
+  left: 15%;
+}
+
+.player-fore-icon.rewind .player-fore-icon-inner {
+  transform: rotate(180deg);
+}
+
+.player-fore-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.player-fore-icon-inner .player-icon {
+  width: 32px;
+  height: 32px;
+  opacity: 0.4;
+  transition: 250ms;
+}
+
+.player-fore-icon-inner .player-icon:first-child {
+  animation: icon-display 0.4s linear alternate infinite;
+}
+
+.player-fore-icon-inner .player-icon:nth-child(2) {
+  animation: icon-display 0.6s 0.4s linear alternate infinite;
+}
+
+.player-fore-icon-inner .player-icon:last-child {
+  animation: icon-display 0.8s 0.6s linear alternate infinite;
+}
+
+@keyframes icon-display {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @media (max-width: 991px) {
   .yurei-player-wrapper button.full-screen-in-browser-btn {
     display: none !important;
   }
   .volume-tooltip-wrapper {
-    display: none !important;
-  }
-}
-
-@media (max-width: 767px) {
-  .yurei-player-wrapper button.advances-btn,
-  .yurei-player-wrapper button.rewind-btn {
     display: none !important;
   }
 
@@ -674,5 +738,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .yurei-player-wrapper button.advances-btn,
+  .yurei-player-wrapper button.rewind-btn {
+    display: none !important;
   }
 }

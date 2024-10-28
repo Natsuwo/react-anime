@@ -1,5 +1,6 @@
 import React from "react";
-import { UseResponsiveContext } from "../../../context/ResponsiveContext";
+import { isMobile } from "react-device-detect";
+import UseIconList from "../SvgList/UseIconList";
 
 const VideoScreen = ({
   videoRef,
@@ -9,14 +10,14 @@ const VideoScreen = ({
   togglePlayPause,
   handleSpeedChangeMouseDown,
   handleDoubleClick,
-  handleRewindForward,
+  handleDoubleClickTime,
+  skipState,
 }) => {
-  const { size } = UseResponsiveContext();
   return (
     <div
       className="player-container"
       onMouseDown={handleSpeedChangeMouseDown}
-      onDoubleClick={size.width > 991 ? handleDoubleClick : () => {}}
+      onDoubleClick={!isMobile ? handleDoubleClick : () => {}}
     >
       <div className="player" onClick={togglePlayPause}>
         <video
@@ -28,11 +29,11 @@ const VideoScreen = ({
         >
           <source src={Video} type="video/mp4" />
         </video>
-        {size.width < 767 && (
+        {isMobile && (
           <>
             <div
               className="tap-left"
-              onDoubleClick={() => handleRewindForward("rewind")}
+              onDoubleClick={(event) => handleDoubleClickTime(event, "rewind")}
               style={{
                 width: "50%",
                 position: "absolute",
@@ -43,8 +44,49 @@ const VideoScreen = ({
               }}
             ></div>
             <div
+              className={`player-fore-icon forward${
+                skipState === "forward" ? " show" : ""
+              }`}
+            >
+              <div className="player-fore-container">
+                <div className="player-fore-icon-inner">
+                  <span className="player-icon">
+                    <UseIconList icon="play" />
+                  </span>
+                  <span className="player-icon">
+                    <UseIconList icon="play" />
+                  </span>
+                  <span className="player-icon">
+                    <UseIconList icon="play" />
+                  </span>
+                </div>
+                <div className="player-fore-text">10 seconds</div>
+              </div>
+            </div>
+
+            <div
+              className={`player-fore-icon rewind${
+                skipState === "rewind" ? " show" : ""
+              }`}
+            >
+              <div className="player-fore-container">
+                <div className="player-fore-icon-inner">
+                  <span className="player-icon">
+                    <UseIconList icon="play" />
+                  </span>
+                  <span className="player-icon">
+                    <UseIconList icon="play" />
+                  </span>
+                  <span className="player-icon">
+                    <UseIconList icon="play" />
+                  </span>
+                </div>
+                <div className="player-fore-text">10 seconds</div>
+              </div>
+            </div>
+            <div
               className="tap-right"
-              onDoubleClick={() => handleRewindForward("forward")}
+              onDoubleClick={(event) => handleDoubleClickTime(event, "forward")}
               style={{
                 width: "50%",
                 position: "absolute",

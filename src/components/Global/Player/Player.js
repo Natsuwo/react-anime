@@ -6,10 +6,9 @@ import VideoScreen from "./VideoScreen";
 import ButtonHandle from "./ButtonHandle";
 import PiPButon from "./PiPButon";
 import VideoPlayerControls from "./VideoPlayerControls";
-import { UseResponsiveContext } from "../../../context/ResponsiveContext";
+import { isMobile } from "react-device-detect";
 
 const Player = () => {
-  const { size } = UseResponsiveContext();
   const videoRef = useRef(null);
   const playerRef = useRef(null);
   const volumeRef = useRef(null);
@@ -30,6 +29,7 @@ const Player = () => {
   const [playbackRate, setPlaybackRate] = useState("1");
   const [prevPlaybackRate, setPrevPlaybackRate] = useState("1");
   const [wasPausedBefore, setWasPausedBefore] = useState(true);
+  const [skipState, setSkipState] = useState("");
 
   // Volume
   const [volume, setVolume] = useState(1);
@@ -92,7 +92,36 @@ const Player = () => {
     handleFullScreen();
   };
 
+  let lastTap = 0;
+  const handleDoubleClickTime = (e, option) => {
+    console.log("chay");
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+
+    if (tapLength < 500 && tapLength > 0) {
+      setSkipState(option);
+      setTimeout(() => {
+        setSkipState("");
+      }, 500);
+      // Kiểm tra double tap
+      e.preventDefault();
+      clearTimeout(playTimeout); // Xóa timeout để không bị pause
+      setPlayTimeOut(null);
+      handleRewindForward(option); // Hoặc kích hoạt fullscreen
+    } else {
+      const timer = setTimeout(() => {
+        togglePlayPause(); // Nếu là single tap, play/pause video
+      }, 300);
+      setPlayTimeOut(timer);
+    }
+    lastTap = currentTime;
+  };
+
   const handleRewindForward = (option) => {
+    setSkipState(option);
+    setTimeout(() => {
+      setSkipState("");
+    }, 500);
     if (option === "rewind") {
       videoRef.current.currentTime -= 10;
     } else {
@@ -157,7 +186,7 @@ const Player = () => {
         playerContainer.msRequestFullscreen(); // IE/Edge
       }
       setIsFullscreen(true);
-      if (size.width < 576) {
+      if (isMobile) {
         window.screen.orientation.lock("landscape").catch((err) => {
           console.error(`Cannot lock orientation: ${err}`);
         });
@@ -219,14 +248,15 @@ const Player = () => {
 
   // Bắt đầu kéo seekbar
   const handleMouseDown = (e) => {
+    e.preventDefault();
     setIsDragging(true);
-    updateSeek(e);
+    updateSeek(e.touches ? e.touches[0] : e);
   };
 
   // Kéo seekbar
   const handleMouseMove = (e) => {
     if (isDragging) {
-      updateSeek(e);
+      updateSeek(e.touches ? e.touches[0] : e);
     }
   };
 
@@ -372,9 +402,13 @@ const Player = () => {
     if (isDragging) {
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
+      window.addEventListener("touchmove", handleMouseMove);
+      window.addEventListener("touchend", handleMouseUp);
     } else {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchmove", handleMouseMove);
+      window.removeEventListener("touchend", handleMouseUp);
     }
     return () => {
       document.removeEventListener("mouseup", handleSpeedChangeMouseUp);
@@ -402,6 +436,8 @@ const Player = () => {
       // Draging
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchmove", handleMouseMove);
+      window.removeEventListener("touchend", handleMouseUp);
     };
   }, [
     isPlaying,
@@ -416,7 +452,7 @@ const Player = () => {
   return (
     <div
       className={`yurei-player-wrapper${
-        isFullscreen && size.width < 767 ? " __mobile-fullscreen" : ""
+        isFullscreen && isMobile ? " __mobile-fullscreen" : ""
       }`}
       ref={playerRef}
     >
@@ -439,7 +475,8 @@ const Player = () => {
           setCurrentTime={setCurrentTime}
           setTotalTime={setTotalTime}
           togglePlayPause={togglePlayPause}
-          handleRewindForward={handleRewindForward}
+          skipState={skipState}
+          handleDoubleClickTime={handleDoubleClickTime}
         />
         <ButtonHandle
           isLoading={isLoading}
