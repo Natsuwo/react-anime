@@ -535,7 +535,7 @@ input.dark-theme:focus {
 }
 
 .container__mobile {
-  padding: 0 8px;
+  padding: 0 12px !important;
 }
 
 @media (max-width: 991px) {

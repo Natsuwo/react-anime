@@ -92,7 +92,7 @@ const InputFormDefault = ({
       <div className="input-flex-with-button">
         <input
           className={className}
-          style={{ width: widthForm, height: heightForm }}
+          style={{ maxWidth: widthForm, height: heightForm }}
           value={value}
           id={idFor}
           type={type}

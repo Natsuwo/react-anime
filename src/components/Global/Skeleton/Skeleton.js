@@ -1,13 +1,20 @@
 import React from "react";
+import "./Skeleton.css";
 
-const Skeleton = () => {
+const Skeleton = ({
+  width = "100%",
+  height = "100%",
+  rounded,
+  borderRadius,
+  children,
+}) => {
   return (
-    <div className="skeleton-card loading">
+    <div
+      className="skeleton-card loading"
+      style={{ width, height, borderRadius: rounded ? "50%" : borderRadius }}
+    >
       <div className="skeleton"></div>
-      {/* <img
-      src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx163146-f2vYhmiGn6dM.png"
-      alt=""
-    /> */}
+      {children}
     </div>
   );
 };

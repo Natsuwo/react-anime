@@ -29,6 +29,7 @@
   right: 0;
   margin: 0 auto;
   z-index: 12;
+  transition: 300ms;
 }
 
 .yurei-player-wrapper .grid-controls {
@@ -704,6 +705,10 @@
   to {
     opacity: 1;
   }
+}
+
+.yurei-player-wrapper .controls.hide {
+  opacity: 0;
 }
 
 /* Responsive */

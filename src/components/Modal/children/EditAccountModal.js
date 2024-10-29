@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import UseIconList from "../../Global/SvgList/UseIconList";
+import InputForm from "../../Global/FormInput/FormInput";
 
 const EditAccountModal = ({ visible, setVisible }) => {
   const handleSumbit = (e) => {
@@ -52,7 +53,7 @@ const EditAccountModal = ({ visible, setVisible }) => {
           <div className="modal-description">
             利用規約に反する内容を設定しないでください。運営によりアカウントを削除、または停止する場合があります。
           </div>
-          <input type="text" placeholder="Enter your nickname" />
+          <InputForm placeholder={"Enter your Nickname"} />
           <div className="modal-actions">
             <button onClick={() => setVisible(false)} className="btn">
               Cancel

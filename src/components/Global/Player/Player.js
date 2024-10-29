@@ -8,12 +8,13 @@ import PiPButon from "./PiPButon";
 import VideoPlayerControls from "./VideoPlayerControls";
 import { isMobile } from "react-device-detect";
 
-const Player = () => {
+const Player = ({ url }) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
   const volumeRef = useRef(null);
   const seekbarRef = useRef(null);
   const doubleTapRef = useRef(false);
+  const controlTimerRef = useRef(null);
   // Play pause
   const [isLoading, setIsLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -47,6 +48,8 @@ const Player = () => {
   const { wideMode, handleWide } = UsePlayerWide();
   // PiPMode
   const [isPip, setIsPip] = useState(false);
+  // Control
+  const [showControls, setShowControls] = useState(false);
 
   const handlePlay = (option) => {
     if (!readyToPlay) {
@@ -71,7 +74,9 @@ const Player = () => {
         }
         if (isPlaying) {
           video.pause(); // Nếu đang phát thì tạm dừng
+          startControlTimer();
         } else {
+          startControlTimer();
           video.play(); // Nếu đang tạm dừng thì phát tiếp
         }
         setShowPlayPauseIcon(true);
@@ -315,6 +320,28 @@ const Player = () => {
     }
   };
 
+  // Control timeout hide
+
+  const startControlTimer = () => {
+    if (controlTimerRef.current) {
+      clearTimeout(controlTimerRef.current);
+    }
+    controlTimerRef.current = setTimeout(() => {
+      setShowControls(false);
+    }, 2000);
+  };
+
+  // Control
+
+  const handleMouseMoveControl = () => {
+    setShowControls(true); // Hiện thanh điều khiển khi chuột di chuyển
+    startControlTimer(); // Bắt đầu lại hẹn giờ
+  };
+
+  const handleMouseLeaveControl = () => {
+    setShowControls(false);
+  };
+
   useEffect(() => {
     const video = videoRef.current;
 
@@ -403,7 +430,16 @@ const Player = () => {
       window.removeEventListener("touchmove", handleMouseMove);
       window.removeEventListener("touchend", handleMouseUp);
     }
+
+    // document.addEventListener("mousemove", handleMouseMoveControl);
+    document.addEventListener("mouseleave", handleMouseLeaveControl);
+
     return () => {
+      // Control
+      // document.removeEventListener("mousemove", handleMouseMoveControl);
+      document.removeEventListener("mouseleave", handleMouseLeaveControl);
+      clearTimeout(controlTimerRef.current);
+      //
       document.removeEventListener("mouseup", handleSpeedChangeMouseUp);
       document.removeEventListener("touchend", handleSpeedChangeMouseUp);
       document.removeEventListener("touchcancel", handleSpeedChangeMouseUp);
@@ -453,6 +489,7 @@ const Player = () => {
     >
       <div className={`yurei-pip-mode${isPip ? " active" : ""}`}></div>
       <div
+        onMouseMove={handleMouseMoveControl}
         id="yurei-player"
         className={`yurei-player${isPip ? " pip-mode" : ""}`}
       >
@@ -466,7 +503,7 @@ const Player = () => {
           handleDoubleClick={handleDoubleClick}
           playerRef={playerRef}
           videoRef={videoRef}
-          Video={Video}
+          Video={url}
           setCurrentTime={setCurrentTime}
           setTotalTime={setTotalTime}
           togglePlayPause={togglePlayPause}
@@ -505,6 +542,7 @@ const Player = () => {
           handleRewindForward={handleRewindForward}
           handleSpeedChange={handleSpeedChange}
           handleMute={handleMute}
+          showControls={showControls}
         />
       </div>
     </div>

@@ -8,18 +8,34 @@ import EpisodeList from "../DetailVideo/EpisodeList";
 import Recommend from "../../../Global/Recommend/Recommend";
 import Player from "../../../Global/Player/Player";
 import { UsePlayerWide } from "../../../../context/PlayerWideContext";
+import { useParams } from "react-router-dom";
+import db from "../../../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const EpisodeVideo = () => {
   const descRef = useRef(null);
+  const { videoId } = useParams();
   const [isShow, setIsShow] = useState(false);
   const [oriHeight, setOriHeight] = useState(0);
   const { wideMode } = UsePlayerWide();
+  const [value, setValue] = useState({});
 
   useEffect(() => {
     if (descRef.current) {
       setOriHeight(descRef.current.scrollHeight);
     }
-  }, []);
+    const getData = async () => {
+      const docRef = doc(db, "Episode", videoId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setValue(docSnap.data());
+      } else {
+        console.log("No such document!");
+      }
+    };
+    getData();
+    return () => {};
+  }, [videoId]);
   const items = Array.from({ length: 12 }, (_, i) => ({ id: i + 1 }));
   return (
     <main className="page-main">
@@ -28,7 +44,7 @@ const EpisodeVideo = () => {
         <div className="episode-wrapper">
           <div className="episode-inner">
             <div className="player-wrapper">
-              <Player />
+              <Player url={value.video_url} />
             </div>
 
             <h1 className="episode-main-title">

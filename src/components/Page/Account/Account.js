@@ -6,7 +6,7 @@ import UseIconList from "../../Global/SvgList/UseIconList";
 const Account = () => {
   return (
     <main className="page-main">
-      <div className="page-container">
+      <div className="page-container container__mobile">
         <h1 className="headline-titile">Account / Settings</h1>
         <div className="account-page-wrapper">
           <div className="account-page-inner">

@@ -257,3 +257,31 @@
   float: left;
   cursor: pointer;
 }
+
+@media (max-width: 767px) {
+  .main-modal-container .main-modal-content {
+    width: auto;
+    margin: 0 auto;
+  }
+
+  .manager-actions {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .manager-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .input-flex-with-button {
+    flex-direction: column;
+  }
+
+  .input-flex-with-button .btn {
+    width: 100%;
+  }
+}

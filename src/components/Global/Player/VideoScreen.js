@@ -28,6 +28,7 @@ const VideoScreen = ({
           onTimeUpdate={() => setCurrentTime(videoRef.current.currentTime)}
           onLoadedData={() => setTotalTime(videoRef.current.duration)}
           playsInline
+          onError={(err) => console.error(err)}
         >
           <source src={Video} type="video/mp4" />
         </video>

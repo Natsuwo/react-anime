@@ -27,6 +27,7 @@ const VideoPlayerControls = ({
   handleFullScreen,
   isFullscreen,
   handleWide,
+  showControls,
 }) => {
   const arrSpeedList = [
     { id: "speed-1x", speed: "1" },
@@ -53,7 +54,11 @@ const VideoPlayerControls = ({
       .padStart(2, "0")}`;
   };
   return (
-    <div className="controls grid-controls">
+    <div
+      className={`controls grid-controls${
+        !showControls && isPlaying ? " hide" : ""
+      }`}
+    >
       <Seekbar
         seekbarRef={seekbarRef}
         handleMouseDown={handleMouseDown}

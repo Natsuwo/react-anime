@@ -49,6 +49,8 @@ const VideoList = ({
   totalSlides = 12,
   slidesToShow = 3,
   ChildComponent,
+  height,
+  items = [{}],
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -80,10 +82,10 @@ const VideoList = ({
         <PrevArrow state={false} />
       ),
   };
-  const videos = Array.from({ length: totalSlides }, (_, i) => ({
-    id: i,
-    title: `Video ${i + 1}`,
-  }));
+  // const videos = Array.from({ length: totalSlides }, (_, i) => ({
+  //   id: i,
+  //   title: `Video ${i + 1}`,
+  // }));
 
   return (
     <div className="video-list-wrapper">
@@ -95,10 +97,13 @@ const VideoList = ({
         </div>
         <div className="flex-container">
           <Slider {...settings}>
-            {videos.map((video, index) => (
+            {items.map((video, index) => (
               <ChildComponent
-                video_id={video.id + 1}
-                key={video.id}
+                height={height}
+                video_id={video.id}
+                key={index}
+                thumbnail={video.thumbnail_url}
+                url={video.video_url}
                 rank={video.id + 1}
                 title={video.title}
               />

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./Card.css";
 import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
+import Skeleton from "../Skeleton/Skeleton";
 
 export const CardSlide = ({ index, isActive, onCardClick }) => {
   return (
@@ -61,13 +62,14 @@ export const CardList = () => {
 };
 
 export const CardVideo = ({
-  video_id = 1,
+  video_id = "1",
   title,
   video_tags = {},
   is_live = false,
   date,
   is_new = false,
   role_tag = "",
+  thumbnail,
 }) => {
   return (
     <div className="video-card-wrapper">
@@ -84,11 +86,7 @@ export const CardVideo = ({
                 <div className="card-tag-time">{video_tags.time}</div>
               </div>
             )}
-
-          <img
-            src="https://image.p-c2-x.abema-tv.com/image/creatives/2b645eac-3646-441e-a266-12d473e8c785/2b645eac-3646-441e-a266-12d473e8c785?background=000000&fit=fill&height=576&quality=75&width=1024"
-            alt=""
-          />
+          <img src={thumbnail} alt="" />
           {is_live && (
             <div className="tag-on-thumb-wrapper">
               <span className="tag-on-thumb">
@@ -237,6 +235,45 @@ export const CardSquare = () => {
           </div>
         </div>
       </Link>
+    </div>
+  );
+};
+
+export const CardSkeleton = ({ width, height }) => {
+  return (
+    <div className="video-card-wrapper">
+      <div className="video-card-thumbnail">
+        <Skeleton width={width} height={height} />
+      </div>
+      <div className="video-card-detail-container">
+        <div className="video-card-detail">
+          <Skeleton width={"90%"} height={"10px"} borderRadius={"20px"} />
+          <Skeleton width={"30%"} height={"10px"} borderRadius={"20px"} />
+          <Skeleton width={"10%"} height={"15px"} borderRadius={"6px"} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const CardRankSkeleton = () => {
+  return (
+    <div className="video-card-wrapper">
+      <div className="video-card-thumbnail">
+        <Skeleton width={120} height={170} />
+      </div>
+    </div>
+  );
+};
+
+export const CardSquareSkeleton = () => {
+  return (
+    <div className="card-wrapper">
+      <div className="card-square-content">
+        <div className="card-square-thumbnail ">
+          <Skeleton width={135} height={135} />
+        </div>
+      </div>
     </div>
   );
 };

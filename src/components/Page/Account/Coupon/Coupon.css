@@ -7,3 +7,9 @@
 .manager-input-item input {
   max-width: 350px;
 }
+
+@media (max-width: 576px) {
+  .input-flex-with-button input {
+    max-width: auto !important;
+  }
+}

@@ -21,6 +21,7 @@ import Subscription from "./components/Page/Subscription/Subscription";
 import SignUp from "./components/Page/Subscription/SignUp/SignUp";
 import HeaderPromote from "./components/Global/Header/HeaderPromote";
 import Promote from "./components/Page/Subscription/Promote/Promote";
+import Skeleton from "./components/Global/Skeleton/Skeleton";
 
 function App() {
   const { size } = UseResponsiveContext();
