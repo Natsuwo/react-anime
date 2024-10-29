@@ -1,27 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
+import { getTime, formatViews } from "../../../features/helper";
 
 const CardListEpsiode = ({
   showSupplements = true,
   showDesc = true,
   sidebar = false,
+  data,
+  playingId,
 }) => {
   return (
     <>
       <li className="episode-list-item">
-        <Link className="link-block" to="#">
+        <Link className="link-block" to={`/video/episode/${data?.id}`}>
           <div className="episode-list-item-wrapper">
-            <div className="episode-list-current-play">
+            <div
+              className={`episode-list-current-play${
+                playingId && playingId === data?.id ? " active" : ""
+              }`}
+            >
               <span className="current-play-icon">
                 <UseIconList icon="play" />
               </span>
             </div>
             <div className="episode-list-item-thumbnail">
-              <img
-                src="https://image.p-c2-x.abema-tv.com/image/programs/149-19_s2_p1/thumb002.png?background=000000&fit=fill&height=144&quality=75&version=1702539828&width=256"
-                alt=""
-              />
+              <img src={data?.thumbnail_url} alt="" />
             </div>
             <div className="episode-list-item-details">
               <div className="episode-list-item-title">
@@ -29,14 +33,14 @@ const CardListEpsiode = ({
                   className="clamp-text"
                   style={{ WebkitLineClamp: sidebar ? 3 : 2 }}
                 >
-                  第2話『フロム トーキョー トゥ ネオ ベイサイド』
+                  {data?.title}
                 </span>
               </div>
               {showSupplements && (
                 <ul className="episode-list-item-info">
-                  <li>24分</li>
-                  <li>2023年</li>
-                  <li>9.0 万視聴</li>
+                  <li>{data?.duration / 60} minutes</li>
+                  <li>{getTime(data?.last_modified_date)}</li>
+                  <li>{formatViews(data?.views_count)} views</li>
                 </ul>
               )}
 
@@ -47,9 +51,7 @@ const CardListEpsiode = ({
               </div>
               {showDesc && (
                 <div className="episode-list-item-desc">
-                  <span className="clamp-text">
-                    東京で活躍する若き吸血鬼退治人・籠目原ミカヅキが新横浜にやってきた。ロナルドたちは滅多に来ない後輩を歓迎するが、ミカヅキは冷めた態度を崩さない。討伐要請が入り、ロナルドらに実力を見せつけようとするが……？
-                  </span>
+                  <span className="clamp-text">{data?.description}</span>
                 </div>
               )}
             </div>

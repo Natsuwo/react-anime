@@ -56,11 +56,11 @@ function App() {
             <Route path="*" element={"404 not found"}></Route>
             <Route path="/" element={<Home />}></Route>
             <Route
-              path="/video/detail/:params"
+              path="/video/detail/:videoId"
               element={<DetailVideo />}
             ></Route>
             <Route
-              path="/video/episode/:videoId"
+              path="/video/episode/:episodeId"
               element={<EpisodeVideo />}
             ></Route>
             <Route element={<Account />}>

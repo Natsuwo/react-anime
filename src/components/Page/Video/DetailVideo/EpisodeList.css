@@ -188,6 +188,7 @@
 }
 
 .episode-list-current-play {
+  align-self: center;
   display: none;
 }
 

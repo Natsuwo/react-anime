@@ -12,6 +12,11 @@
   color: var(--text-color);
 }
 
+.detail-thumbnail-container {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
 .detail-infomation-wrapper .detail-main-title {
   line-height: 1;
   font-size: 32px;

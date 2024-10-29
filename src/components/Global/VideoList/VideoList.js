@@ -49,13 +49,33 @@ const VideoList = ({
   totalSlides = 12,
   slidesToShow = 3,
   ChildComponent,
+  width,
   height,
-  items = [{}],
+  items = Array.from({ length: totalSlides }, (_, i) => ({
+    id: i,
+    title: `Video ${i + 1}`,
+  })),
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  const handleBeforeChange = () => {
+    setIsScrolling(true);
+  };
+
+  const handleAfterChange = () => {
+    setIsScrolling(false);
+  };
+
+  const handleLinkClick = (e) => {
+    if (isScrolling) {
+      e.preventDefault(); // Chặn hành vi chuyển trang
+    }
+  };
 
   const lastSlide = totalSlides - slidesToShow;
   const settings = {
+    beforeChange: handleBeforeChange,
     dots: true,
     // centerMode: true,
     infinite: false,
@@ -68,7 +88,10 @@ const VideoList = ({
         : eightCardResponsive || [],
     slidesToShow: slidesToShow,
     slidesToScroll: slidesToShow,
-    afterChange: (index) => setCurrentSlide(index),
+    afterChange: (index) => {
+      handleAfterChange();
+      setCurrentSlide(index);
+    },
     nextArrow:
       currentSlide >= lastSlide ? (
         <NextArrow state={true} />
@@ -99,12 +122,17 @@ const VideoList = ({
           <Slider {...settings}>
             {items.map((video, index) => (
               <ChildComponent
+                onClick={handleLinkClick}
+                width={width}
                 height={height}
                 video_id={video.id}
                 key={index}
-                thumbnail={video.thumbnail_url}
+                highlighted_thumbnail={video.highlighted_thumbnail}
+                vertical_thumbnail={video.thumbnail_vertical_url}
+                horizontal_thumbnail={video.thumbnail_horizontal_url}
+                upload_date={video.upload_date}
                 url={video.video_url}
-                rank={video.id + 1}
+                rank={index + 1}
                 title={video.title}
               />
             ))}

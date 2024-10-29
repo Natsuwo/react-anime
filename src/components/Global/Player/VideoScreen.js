@@ -13,6 +13,32 @@ const VideoScreen = ({
   handleDoubleClickTime,
   skipState,
 }) => {
+  const handleVideoError = () => {
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      const error = videoElement.error;
+      if (error) {
+        // Mã lỗi và thông tin lỗi chi tiết
+        switch (error.code) {
+          case error.MEDIA_ERR_ABORTED:
+            console.error("Video loading aborted.");
+            break;
+          case error.MEDIA_ERR_NETWORK:
+            console.error("Network error - please check your connection.");
+            break;
+          case error.MEDIA_ERR_DECODE:
+            console.error("Video decoding error - file may be corrupted.");
+            break;
+          case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+            console.error("Video format is not supported.");
+            break;
+          default:
+            console.error("An unknown error occurred.");
+            break;
+        }
+      }
+    }
+  };
   return (
     <div
       className="player-container"
@@ -23,15 +49,14 @@ const VideoScreen = ({
     >
       <div className="player" onClick={togglePlayPause}>
         <video
+          src={Video}
           ref={videoRef}
           id="main-video"
           onTimeUpdate={() => setCurrentTime(videoRef.current.currentTime)}
           onLoadedData={() => setTotalTime(videoRef.current.duration)}
           playsInline
-          onError={(err) => console.error(err)}
-        >
-          <source src={Video} type="video/mp4" />
-        </video>
+          onError={handleVideoError}
+        ></video>
         {isMobile && (
           <>
             <div

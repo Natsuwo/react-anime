@@ -9,33 +9,32 @@ import Recommend from "../../../Global/Recommend/Recommend";
 import Player from "../../../Global/Player/Player";
 import { UsePlayerWide } from "../../../../context/PlayerWideContext";
 import { useParams } from "react-router-dom";
-import db from "../../../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  GetDocument,
+  GetDocumentsByQuery,
+} from "../../../../features/useFetch";
+import { getTime, formatViews } from "../../../../features/helper";
 
 const EpisodeVideo = () => {
   const descRef = useRef(null);
-  const { videoId } = useParams();
+  const { episodeId } = useParams();
   const [isShow, setIsShow] = useState(false);
   const [oriHeight, setOriHeight] = useState(0);
   const { wideMode } = UsePlayerWide();
-  const [value, setValue] = useState({});
+
+  const { value: data, loading: episodeLoading } = GetDocument(
+    "Episode",
+    episodeId
+  );
+  const { value: episodeListArr, loading: episodeListLoading } =
+    GetDocumentsByQuery("Episode", "video_id", data?.video_id);
 
   useEffect(() => {
     if (descRef.current) {
       setOriHeight(descRef.current.scrollHeight);
     }
-    const getData = async () => {
-      const docRef = doc(db, "Episode", videoId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setValue(docSnap.data());
-      } else {
-        console.log("No such document!");
-      }
-    };
-    getData();
-    return () => {};
-  }, [videoId]);
+  }, []);
+
   const items = Array.from({ length: 12 }, (_, i) => ({ id: i + 1 }));
   return (
     <main className="page-main">
@@ -44,27 +43,35 @@ const EpisodeVideo = () => {
         <div className="episode-wrapper">
           <div className="episode-inner">
             <div className="player-wrapper">
-              <Player url={value.video_url} />
+              <Player url={data?.video_url} />
             </div>
 
             <h1 className="episode-main-title">
-              <span
-                className="season-title clamp-text"
-                style={{ WebkitLineClamp: 1 }}
-              >
-                吸血鬼すぐ死ぬ
-              </span>
+              {data?.season_title && (
+                <span
+                  className="season-title clamp-text"
+                  style={{ WebkitLineClamp: 1 }}
+                >
+                  吸血鬼すぐ死ぬ
+                </span>
+              )}
               <span
                 className="episode-title clamp-text"
                 style={{ WebkitLineClamp: 1 }}
               >
-                第1話 『退治人（ハンター）来たりて空を跳ぶ 前編』ほか２本
+                {data.title}
               </span>
             </h1>
             <div className="episode-supplement">
-              <div className="supplement-item">24 minutes</div>
-              <div className="supplement-item">2021年</div>
-              <div className="supplement-item">397k views</div>
+              <div className="supplement-item">
+                {data?.duration / 60} minutes
+              </div>
+              <div className="supplement-item">
+                {getTime(data?.last_modified_date)}
+              </div>
+              <div className="supplement-item">
+                {formatViews(data?.views_count)} views
+              </div>
             </div>
             <div className="episode-tag">
               <div className="video-label">
@@ -77,25 +84,31 @@ const EpisodeVideo = () => {
                 className={`detail-description${isShow ? " expanded" : ""}`}
                 style={{ maxHeight: isShow ? oriHeight : null }}
               >
-                韓国から香港に向かう飛行機に4人の男女が偶然乗り合わせていた。企業グループ代表のユ・セヨン(チェ・ジウ)は、香港のホテルの買収を検討するために搭乗。近くの座席でひとりはしゃぐ旧知の会社社長、カン・ミヌ(イ・ジョンジン)を見つけ、うんざりした顔をする。ミヌは、男の子の跡取りができないことを責める母親と、4人目の出産は身体上無理だという妻との板挟みになり、現実逃避の香港“出張”を決め込んでいた。一方、エコノミークラスには、10億ウォンの負債を抱えるチャ・ソックン(クォン・サンウ)と妻のナ・ホンジュ(パク・ハソン)の姿が。共同経営者の先輩に会社の金を横領され窮地に陥っていたところ、その先輩が香港にいることが分かったのだ。だが、香港に着き先輩の自殺を知る。途方にくれるソックンだったが、因縁のあるセヨンに再会し、彼女から「あなたの3日間を10億ウォンで買い取る」という条件付きの提案を受ける。
+                {data?.description}
               </div>
-              <button
-                onClick={() => setIsShow(!isShow)}
-                className="detail-toggle btn-default"
-              >
-                <span className="detail-toggle-icon">
-                  <UseIconList
-                    icon={isShow ? "dropup" : "dropdown"}
-                  ></UseIconList>
-                </span>
-                <span className="detail-toggle-text">More Detail</span>
-              </button>
+              {data?.description && (
+                <button
+                  onClick={() => setIsShow(!isShow)}
+                  className="detail-toggle btn-default"
+                >
+                  <span className="detail-toggle-icon">
+                    <UseIconList
+                      icon={isShow ? "dropup" : "dropdown"}
+                    ></UseIconList>
+                  </span>
+                  <span className="detail-toggle-text">More Detail</span>
+                </button>
+              )}
             </div>
             <div className="episode-action">
               <ActionButton />
             </div>
             <div className="recent-episode-wrapper mt">
-              <EpisodeList />
+              <EpisodeList
+                playingId={episodeId}
+                value={episodeListArr}
+                loading={episodeListLoading}
+              />
             </div>
           </div>
           {!wideMode && (

@@ -1,26 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./EpisodeList.css";
 import SeasonList from "./SeasonList";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import CardListEpsiode from "../../../Global/CardListEpisode/CardListEpisode";
+import Skeleton from "../../../Global/Skeleton/Skeleton";
 
-const EpisodeList = () => {
+const EpisodeList = ({ title, value, loading, playingId }) => {
   const [sortDesc, setSortDesc] = useState(true);
-  const arrTabList = ["Official", "Trailer", "PV"];
-  const [tablist, setTablist] = useState(0);
+  const [arrTabList, setArrTabList] = useState([]);
+  const [episodesByType, setEpisodesByType] = useState({});
+  const [tablist, setTablist] = useState("");
+
+  useEffect(() => {
+    const types = [];
+    const episodesMap = {};
+
+    value?.forEach((item) => {
+      if (item.id === playingId) {
+        setTablist(item.type);
+      }
+      if (!types.includes(item.type)) {
+        types.push(item.type);
+      }
+      if (!episodesMap[item.type]) {
+        episodesMap[item.type] = []; // Khởi tạo mảng nếu chưa tồn tại
+      }
+      episodesMap[item.type] = [...episodesMap[item.type], item];
+    });
+
+    setArrTabList(types);
+    if (!playingId) {
+      setTablist(types[0]);
+    }
+    setEpisodesByType(episodesMap);
+  }, [value]);
+
   return (
     <div className="episode-list-wrapper">
       <div className="episode-list-container">
-        <h2 className="episode-sub-title">吸血鬼すぐ死ぬ</h2>
+        <h2 className="episode-sub-title">{title}</h2>
         <SeasonList />
         <div className="episode-list-control-bar">
           <div className="control-bar-wrapper">
             <ul className="control-group-tab-list">
               {arrTabList.map((item, index) => (
                 <li
-                  onClick={() => setTablist(index)}
+                  onClick={() => setTablist(item)}
                   key={index}
-                  className={`${tablist === index ? "active" : ""}`}
+                  className={`${tablist === item ? "active" : ""}`}
                 >
                   <button>{item}</button>
                 </li>
@@ -40,8 +67,9 @@ const EpisodeList = () => {
           </div>
         </div>
         <ul className="episode-list">
-          <CardListEpsiode />
-          <CardListEpsiode />
+          {episodesByType[tablist]?.map((item, index) => (
+            <CardListEpsiode playingId={playingId} key={index} data={item} />
+          ))}
         </ul>
       </div>
     </div>

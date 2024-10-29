@@ -518,7 +518,11 @@ const Player = ({ url }) => {
           handlePlay={handlePlay}
         />
 
-        <PiPButon readyToPlay={readyToPlay} handlePlay={handlePlay} />
+        <PiPButon
+          isLoading={isLoading}
+          readyToPlay={readyToPlay}
+          handlePlay={handlePlay}
+        />
         <VideoPlayerControls
           isMute={isMute}
           isPlaying={isPlaying}

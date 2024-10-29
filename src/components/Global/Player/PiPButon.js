@@ -1,10 +1,10 @@
 import React from "react";
 import UseIconList from "../SvgList/UseIconList";
 
-const PiPButon = ({ readyToPlay, handlePlay }) => {
+const PiPButon = ({ readyToPlay, handlePlay, isLoading }) => {
   return (
     <>
-      {!readyToPlay && (
+      {!readyToPlay && !isLoading && (
         <div
           onClick={() => handlePlay("play")}
           className="play-button-onload-wrapper"

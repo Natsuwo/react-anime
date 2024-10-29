@@ -3,6 +3,7 @@ import "./Card.css";
 import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import Skeleton from "../Skeleton/Skeleton";
+import { getDays } from "../../../features/helper";
 
 export const CardSlide = ({ index, isActive, onCardClick }) => {
   return (
@@ -69,7 +70,10 @@ export const CardVideo = ({
   date,
   is_new = false,
   role_tag = "",
-  thumbnail,
+  highlighted_thumbnail,
+  onClick,
+  width,
+  height,
 }) => {
   return (
     <div className="video-card-wrapper">
@@ -77,6 +81,7 @@ export const CardVideo = ({
         to={`/video/detail/${video_id}`}
         className="link-block video-card"
         draggable="false"
+        onClick={onClick}
       >
         <div className="video-card-thumbnail">
           {Object.keys(video_tags).length !== 0 &&
@@ -86,7 +91,7 @@ export const CardVideo = ({
                 <div className="card-tag-time">{video_tags.time}</div>
               </div>
             )}
-          <img src={thumbnail} alt="" />
+          <img style={{ width, height }} src={highlighted_thumbnail} alt="" />
           {is_live && (
             <div className="tag-on-thumb-wrapper">
               <span className="tag-on-thumb">
@@ -139,7 +144,15 @@ export const CardVideo = ({
   );
 };
 
-export const CardRank = ({ rank }) => {
+export const CardRank = ({
+  rank,
+  video_id,
+  vertical_thumbnail,
+  upload_date,
+  onClick,
+  width,
+  height,
+}) => {
   return (
     <div className="card-wrapper">
       <div className="card-rank-wrapper">
@@ -147,21 +160,30 @@ export const CardRank = ({ rank }) => {
           <div className="card-rank-text">
             <span className="rank-text">{rank}</span>
           </div>
-          <Link className="card-rank link-block" to="#">
+          <Link
+            onClick={onClick}
+            className="card-rank link-block"
+            to={`/video/detail/${video_id}`}
+          >
             <div className="card-rank-details">
-              <div className="card-rank-thumbnail">
-                <img
-                  src="https://image.p-c2-x.abema-tv.com/image/creatives/50808e91-1d71-4134-a6e4-e91616ce6fc5/50808e91-1d71-4134-a6e4-e91616ce6fc5?height=546&quality=75&width=384"
-                  alt=""
-                />
-                <div className="card-rank-tag">
-                  <span
-                    className="rank-tag-text clamp-text"
-                    style={{ WebkitLineClamp: 1 }}
-                  >
-                    New Episode
-                  </span>
-                </div>
+              <div
+                className="card-rank-thumbnail"
+                style={{
+                  width: width ? width : "128px",
+                  height: height ? height : "182px",
+                }}
+              >
+                <img src={vertical_thumbnail} alt="" />
+                {getDays(upload_date) < 10 && (
+                  <div className="card-rank-tag">
+                    <span
+                      className="rank-tag-text clamp-text"
+                      style={{ WebkitLineClamp: 1 }}
+                    >
+                      New Episode
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </Link>
@@ -256,11 +278,20 @@ export const CardSkeleton = ({ width, height }) => {
   );
 };
 
-export const CardRankSkeleton = () => {
+export const CardRankSkeleton = ({ rank = 0 }) => {
   return (
-    <div className="video-card-wrapper">
-      <div className="video-card-thumbnail">
-        <Skeleton width={120} height={170} />
+    <div className="card-wrapper">
+      <div className="card-rank-wrapper">
+        <div className="card-rank-content">
+          <div className="card-rank-text">
+            <span className="rank-text">{rank}</span>
+          </div>
+          <div className="card-rank-details">
+            <div className="card-rank-thumbnail">
+              <Skeleton width={120} height={170} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
