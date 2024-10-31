@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import {
   GetDocument,
   GetDocumentsByQuery,
+  GetAllSort,
 } from "../../../../features/useFetch";
 import { getTime, formatViews } from "../../../../features/helper";
 
@@ -29,13 +30,20 @@ const EpisodeVideo = () => {
   const { value: episodeListArr, loading: episodeListLoading } =
     GetDocumentsByQuery("Episode", "video_id", data?.video_id);
 
+  const { value: mostViewData, loading: isLoadingMostView } = GetAllSort(
+    "Videos",
+    "views_count",
+    "desc",
+    12
+  );
+
   useEffect(() => {
     if (descRef.current) {
       setOriHeight(descRef.current.scrollHeight);
     }
   }, []);
 
-  const items = Array.from({ length: 12 }, (_, i) => ({ id: i + 1 }));
+  const preLoadData = Array.from({ length: 12 }, (_, i) => ({ id: i + 1 }));
   return (
     <main className="page-main">
       <div className="page-container">
@@ -116,8 +124,16 @@ const EpisodeVideo = () => {
               <div className="episode-sidebar-inner">
                 <h2 className="episode-sidebar-title mb-md">Popular Stuffs</h2>
                 <ul className="episode-sidebar-ep-list">
-                  {items.map((item, index) => (
-                    <CardListEpsiode key={index} sidebar={true} />
+                  {isLoadingMostView &&
+                    preLoadData.map((item, index) => (
+                      <CardListEpsiode
+                        key={index}
+                        sidebar={true}
+                        loading={true}
+                      />
+                    ))}
+                  {mostViewData.map((item, index) => (
+                    <CardListEpsiode data={item} key={index} sidebar={true} />
                   ))}
                 </ul>
               </div>
@@ -126,7 +142,11 @@ const EpisodeVideo = () => {
         </div>
         <div className="mt">
           <Recommend title={"Recent Category"} />
-          <Recommend title={"Most Popular"} />
+          <Recommend
+            value={mostViewData}
+            loading={isLoadingMostView}
+            title={"Most Popular"}
+          />
         </div>
       </div>
     </main>

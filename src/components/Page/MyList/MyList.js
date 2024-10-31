@@ -2,12 +2,25 @@ import React, { useEffect, useRef, useState } from "react";
 import Breadcumb from "../../Global/Breadcrumb/Breadcumb";
 import CardListEpsiode from "../../Global/CardListEpisode/CardListEpisode";
 import UseIconList from "../../Global/SvgList/UseIconList";
+
+import AddToListImg from "../../../assets/images/png/Add-To-List-Img.png";
+import AddToListImg2X from "../../../assets/images/png/Add-To-List-Img@2x.png";
+import AddToListImgWebp from "../../../assets/images/webp/Add-To-List-Img.webp";
+import AddToListImgWebp2X from "../../../assets/images/webp/Add-To-List-Img_2x.webp";
+
+import ResponsiveImage from "../../Global/ResponsiveImage/ResponsiveImage";
 import "./Mylist.css";
+
+import { UseMyListContext } from "../../../context/MyListContext";
+import { handleSortData } from "../../../features/helper";
 
 const MyList = () => {
   const sortRef = useRef(null);
+  const { dataMyList } = UseMyListContext();
+  const [isLoading, setLoading] = useState(true);
   const [sortAcitve, setSortActive] = useState(0);
   const [showSort, setShowSort] = useState(false);
+  const [sortData, setSortData] = useState([]);
   const arrSortList = [
     "Update (Newest)",
     "Update (Latest)",
@@ -15,7 +28,39 @@ const MyList = () => {
     "Release (Latest)",
   ];
 
+  const handleDeleteItemSort = (index) => {
+    const newSortData = sortData;
+    newSortData.splice(index, 1);
+    setSortData(newSortData);
+  };
+
+  const handleSortItem = (index) => {
+    switch (index) {
+      case 0:
+        setSortData(handleSortData(dataMyList, "last_modified_date", "desc"));
+        break;
+      case 1:
+        setSortData(handleSortData(dataMyList, "last_modified_date", "asc"));
+        break;
+      case 2:
+        setSortData(handleSortData(dataMyList, "upload_date", "desc"));
+        break;
+      case 3:
+        setSortData(handleSortData(dataMyList, "upload_date", "asc"));
+        break;
+    }
+  };
+
   useEffect(() => {
+    const updateSort = () => {
+      handleSortItem(sortAcitve);
+    };
+
+    if (isLoading) {
+      setLoading(false);
+      updateSort();
+    }
+
     const handleClickOutside = (event) => {
       if (sortRef.current && !sortRef.current.contains(event.target)) {
         setShowSort(false);
@@ -56,7 +101,10 @@ const MyList = () => {
                 className={`episode-list-sort-item${
                   sortAcitve === index ? " active" : ""
                 }`}
-                onClick={() => setSortActive(index)}
+                onClick={() => {
+                  handleSortItem(index);
+                  setSortActive(index);
+                }}
               >
                 <span className="sort-item-text">{item}</span>
               </li>
@@ -64,13 +112,41 @@ const MyList = () => {
           </ul>
         </div>
         <div className="episode-list-wrapper">
-          <div className="episode-list-container">
-            <ul className="episode-list">
-              <CardListEpsiode showDesc={false} showSupplements={false} />
-              <CardListEpsiode showDesc={false} showSupplements={false} />
-              <CardListEpsiode showDesc={false} showSupplements={false} />
-            </ul>
-          </div>
+          <section className="episode-list-container">
+            {sortData.length > 0 ? (
+              <ul className="episode-list">
+                {sortData.map((item, index) => (
+                  <CardListEpsiode
+                    onClick={() => handleDeleteItemSort(index)}
+                    key={index}
+                    data={item}
+                    mylist={true}
+                    showDesc={false}
+                    showSupplements={false}
+                  />
+                ))}
+              </ul>
+            ) : (
+              <div className="add-to-list-empty">
+                <div className="add-to-list-empty-title">
+                  Create your own watchlist so you don't miss any videos you
+                  want to watch.
+                </div>
+                <div className="add-to-list-empty-desc">
+                  You can add videos by pressing the 'Add to My List' button."
+                </div>
+                <div className="add-to-my-list-image-demo">
+                  <ResponsiveImage
+                    webpSrcSet={`${AddToListImgWebp} 1x, ${AddToListImgWebp2X} 2x`}
+                    pngSrcSet={`${AddToListImg} 1x, ${AddToListImg2X} 2x`}
+                    alt="Add To List Empty Image Demo"
+                    width="348"
+                    height="264"
+                  />
+                </div>
+              </div>
+            )}
+          </section>
         </div>
       </div>
     </main>

@@ -109,7 +109,6 @@ const VideoList = ({
   //   id: i,
   //   title: `Video ${i + 1}`,
   // }));
-
   return (
     <div className="video-list-wrapper">
       <div className="video-list-content">
@@ -118,26 +117,53 @@ const VideoList = ({
             <h2>{categoryTitle}</h2>
           </div>
         </div>
-        <div className="flex-container">
-          <Slider {...settings}>
+
+        {items.length > 4 && (
+          <div className="flex-container">
+            <Slider {...settings}>
+              {items.map((video, index) => (
+                <ChildComponent
+                  onClick={handleLinkClick}
+                  width={width}
+                  height={height}
+                  video_id={video.id}
+                  key={index}
+                  highlighted_thumbnail={video.highlighted_thumbnail}
+                  vertical_thumbnail={video.thumbnail_vertical_url}
+                  horizontal_thumbnail={video.thumbnail_horizontal_url}
+                  last_modified_date={video.last_modified_date}
+                  upload_date={video.upload_date}
+                  url={video.video_url}
+                  rank={index + 1}
+                  title={video.title}
+                />
+              ))}
+            </Slider>
+          </div>
+        )}
+        {items.length <= 4 && (
+          <div className="flex-container-less-wrapper">
             {items.map((video, index) => (
-              <ChildComponent
-                onClick={handleLinkClick}
-                width={width}
-                height={height}
-                video_id={video.id}
-                key={index}
-                highlighted_thumbnail={video.highlighted_thumbnail}
-                vertical_thumbnail={video.thumbnail_vertical_url}
-                horizontal_thumbnail={video.thumbnail_horizontal_url}
-                upload_date={video.upload_date}
-                url={video.video_url}
-                rank={index + 1}
-                title={video.title}
-              />
+              <div className="flex-container-less-item" key={index}>
+                <ChildComponent
+                  onClick={handleLinkClick}
+                  width={width}
+                  height={height}
+                  video_id={video.id}
+                  key={index}
+                  highlighted_thumbnail={video.highlighted_thumbnail}
+                  vertical_thumbnail={video.thumbnail_vertical_url}
+                  horizontal_thumbnail={video.thumbnail_horizontal_url}
+                  last_modified_date={video.last_modified_date}
+                  upload_date={video.upload_date}
+                  url={video.video_url}
+                  rank={index + 1}
+                  title={video.title}
+                />
+              </div>
             ))}
-          </Slider>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

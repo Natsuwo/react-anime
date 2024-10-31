@@ -276,6 +276,17 @@
   }
 }
 
+.modal-error-alert {
+  min-height: 1em;
+  text-align: left;
+}
+
+.modal-error-alert-text {
+  color: var(--color-danger);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 @media (max-width: 576px) {
   .input-flex-with-button {
     flex-direction: column;

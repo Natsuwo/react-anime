@@ -1,29 +1,94 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UseIconList from "../../Global/SvgList/UseIconList";
 import InputForm from "../../Global/FormInput/FormInput";
+import Avatar from "react-avatar";
+import { UseUserMetaContext } from "../../../context/UserMeta";
 
 const EditAccountModal = ({ visible, setVisible }) => {
+  const avatarRef = useRef(null);
+  const { userMetaData, handleUserMetaData } = UseUserMetaContext();
+  const [values, setValues] = useState({
+    user_name: userMetaData.user_name || "",
+    avatar: userMetaData.avatar || "",
+  });
+  const [onError, setError] = useState("");
+  const [isShow, setIsShow] = useState(false);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      setError("Please select a file to upload!");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      // 2MB
+      setError("Do not upload a file more than 2MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result.split(",")[1]; // Lấy chuỗi base64 mà không có tiền tố data
+      setValues({
+        ...values,
+        [event.target.name]: base64String,
+      });
+    };
+    reader.readAsDataURL(file); // Chuyển đổi file thành chuỗi Base64
+    setError(""); // Reset lỗi nếu có
+    setIsShow(false);
+  };
   const handleSumbit = (e) => {
     e.preventDefault();
+    handleUserMetaData(values);
+    setVisible(false);
   };
-  const [isShow, setIsShow] = useState(false);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+
+  useEffect(() => {
+    setValues({
+      user_name: userMetaData.user_name || "",
+      avatar: userMetaData.avatar || "",
+    });
+    const handleClickOutside = (event) => {
+      if (avatarRef.current && !avatarRef.current.contains(event.target)) {
+        setIsShow(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   return (
     <>
-      <form onSubmit={handleSumbit} className="modal-form">
+      <form
+        onSubmit={handleSumbit}
+        onKeyDown={handleKeyDown}
+        className="modal-form"
+      >
         <fieldset>
           <legend>
             <h1 className="modal-item-title">Profile</h1>
           </legend>
-          <div className="upload-avatar">
+          <div className="upload-avatar" ref={avatarRef}>
             <button
+              type="button"
               className="modal-upload-btn"
               onClick={() => setIsShow(!isShow)}
             >
               <span className="avatar-img">
-                <img
-                  src="https://image.p-c2-x.abema-tv.com/image/user/profile/thumb/default/human2.jpg"
-                  alt=""
-                />
+                {values && values?.avatar ? (
+                  <img
+                    src={`data:image/jpeg;base64,${values?.avatar}`}
+                    alt=""
+                  />
+                ) : (
+                  <Avatar name="Guest" size={120} />
+                )}
               </span>
               <span className="upload-icon">
                 <UseIconList icon="camera" />
@@ -34,6 +99,8 @@ const EditAccountModal = ({ visible, setVisible }) => {
                 <li className="upload-action-item">
                   <span className="upload-action-text">Choose a image</span>
                   <input
+                    name="avatar"
+                    onChange={handleFileChange}
                     className="modal-input-file"
                     type="file"
                     accept="image/*"
@@ -51,14 +118,31 @@ const EditAccountModal = ({ visible, setVisible }) => {
             )}
           </div>
           <div className="modal-description">
-            利用規約に反する内容を設定しないでください。運営によりアカウントを削除、または停止する場合があります。
+            Please do not set content that violates the Terms of Service. <br />
+            We may delete or suspend your account.
           </div>
-          <InputForm placeholder={"Enter your Nickname"} />
+          <InputForm
+            value={values?.user_name}
+            name="user_name"
+            onChange={(e) =>
+              setValues({ ...values, [e.target.name]: e.target.value })
+            }
+            placeholder={"Enter your Nickname"}
+          />
+          <div className="modal-error-alert">
+            <p className="modal-error-alert-text">{onError}</p>
+          </div>
           <div className="modal-actions">
-            <button onClick={() => setVisible(false)} className="btn">
+            <button
+              type="button"
+              onClick={() => setVisible(false)}
+              className="btn"
+            >
               Cancel
             </button>
-            <button className="btn btn-active">Confirm</button>
+            <button type="submit" className="btn btn-active">
+              Confirm
+            </button>
           </div>
         </fieldset>
       </form>

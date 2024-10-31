@@ -13,6 +13,9 @@ import {
 } from "../../Global/Card/Card";
 import VideoList from "../../Global/VideoList/VideoList";
 import { UseResponsiveContext } from "../../../context/ResponsiveContext";
+import { GetAllSort, GetDocumentsByQuery } from "../../../features/useFetch";
+import { UseMyListContext } from "../../../context/MyListContext";
+
 import db from "../../../firebase";
 import {
   collection,
@@ -25,8 +28,6 @@ import {
 } from "firebase/firestore";
 import Database from "../../../database";
 import EpisodeData from "../../../DataEpisode";
-
-import { GetAllSort, GetDocumentsByQuery } from "../../../features/useFetch";
 
 const AppBaner = () => {
   const { size } = UseResponsiveContext();
@@ -76,6 +77,8 @@ const Home = () => {
     true
   );
 
+  const { dataMyList } = UseMyListContext();
+
   // useEffect(() => {
   //   const getData = async () => {
   //     const docRef = await addDoc(collection(db, "Episode"), EpisodeData[0]);
@@ -118,12 +121,20 @@ const Home = () => {
       )}
 
       {/* My List */}
-      <VideoList
+      {dataMyList?.length > 0 && (
+        <VideoList
+          categoryTitle={"My List"}
+          ChildComponent={CardVideo}
+          slidesToShow={4}
+          items={dataMyList}
+        ></VideoList>
+      )}
+      {/* <VideoList
         categoryTitle={"My List"}
         ChildComponent={CardSkeleton}
         slidesToShow={4}
         height={175}
-      ></VideoList>
+      ></VideoList> */}
       {/* Card Rank */}
       {/* CardRank */}
       {!isLoadingMostView ? (

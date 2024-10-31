@@ -13,20 +13,23 @@
 }
 
 .flex-container {
-  /* position: absolute; */
-  /* display: flex; */
-  /* flex-wrap: wrap; */
-  /* max-width: calc(100vw - 188px); */
   max-width: 100vw;
   margin-right: -188px;
   width: 100%;
   overflow: hidden;
+}
 
-  /* Using flexbox */
-  /* display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-content: stretch;
-  align-items: center; */
+.flex-container-less-wrapper {
+  margin: 0 24px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.flex-container-less-item:first-child {
+  margin-left: 16px;
+}
+
+.flex-container-less-item {
+  width: calc(100% / 4 - 12px);
 }

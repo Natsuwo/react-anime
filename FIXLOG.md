@@ -1,8 +1,11 @@
 1. Nút đè không hoạt động trên mobile [FIXED]
 2. Double Tap bị pause trên mobile [FIXED]
-3. Lỗi tap true, tap lại lần nữa thì không tính
-4. Lỗi click lại x2 thì k tắt [HOVER]
-5. Lỗi không ẩn control bar [FIXED]
+3. Lỗi click lại x2 thì k tắt [HOVER]
+4. Lỗi không ẩn control bar [FIXED]
+5. Lưu Tooltip vào component [DONE]
+6. Tạo context có usermetadata [DONE]
+7. Upload file lên firebase
+8. Sign in Sign Up
 
 Update
 

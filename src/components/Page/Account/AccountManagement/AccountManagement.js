@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./AccountManagement.css";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import Modal from "../../../Modal/Modal";
 import EditAccountModal from "../../../Modal/children/EditAccountModal";
 import EditEmailPassword from "../../../Modal/children/EditEmailPassword";
 import CreateOTPModal from "../../../Modal/children/CreateOTPModal";
+import Avatar from "react-avatar";
 import { Link } from "react-router-dom";
+import { UseUserMetaContext } from "../../../../context/UserMeta";
+import Skeleton from "../../../Global/Skeleton/Skeleton";
 
 const AccountManagement = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [modalName, setModalName] = useState("");
+  const { user, userId, userLevel, userMetaData, loadingUser } =
+    UseUserMetaContext();
+
   return (
     <>
       <h2 className="manager-title">Account Manager</h2>
@@ -18,14 +24,25 @@ const AccountManagement = () => {
           <div className="manager-item-wrapper">
             <div className="manager-item-left">
               <span className="manager-item-icon">
-                <img
-                  src="https://image.p-c2-x.abema-tv.com/image/user/profile/thumb/default/human2.jpg"
-                  alt=""
-                />
+                {userMetaData && userMetaData.avatar ? (
+                  <img
+                    src={`data:image/jpeg;base64,${userMetaData.avatar}`}
+                    alt=""
+                  />
+                ) : (
+                  <Avatar name="Guest" />
+                )}
               </span>
               <div className="manager-text">
-                <div className="text-account-id">ID: Em5oCBavHD2jVR</div>
-                <div className="text-account-username">ニックネーム未設定</div>
+                <div className="text-account-id">
+                  {!userId && <Skeleton width="50px" height="6px" />}
+                  {userId && "ID: " + userId}
+                </div>
+                <div className="text-account-username">
+                  {userMetaData.user_name
+                    ? userMetaData.user_name
+                    : "Nickname not set"}
+                </div>
               </div>
             </div>
             <div className="manager-item-right">
@@ -49,7 +66,10 @@ const AccountManagement = () => {
               </span>
               <div className="manager-item-text">
                 <div className="item-main-text">Plan</div>
-                <div className="item-sub-text">Free</div>
+                <div className="item-sub-text">
+                  {!userLevel[0] && <Skeleton width="50px" height="6px" />}
+                  {userLevel ? userLevel[0]?.level_text : ""}
+                </div>
               </div>
             </div>
             <div className="manager-item-right">
@@ -67,7 +87,10 @@ const AccountManagement = () => {
               </span>
               <div className="manager-item-text">
                 <div className="item-main-text">Email/Password</div>
-                <div className="item-sub-text">deptrai@gmail.com</div>
+                <div className="item-sub-text">
+                  {loadingUser && <Skeleton width="90px" height="6px" />}
+                  {user ? user?.email : ""}
+                </div>
               </div>
             </div>
             <div className="manager-item-right">

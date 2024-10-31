@@ -607,9 +607,10 @@
   }
 }
 
-.yurei-player-wrapper button:hover .player-tooltip {
+.yurei-player-wrapper button:hover .main-tooltip {
   opacity: 1;
   visibility: visible;
+  transition: opacity 0.1s linear 0.3s;
 }
 
 .holding-mouse-tooltip {

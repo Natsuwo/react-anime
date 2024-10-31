@@ -20,7 +20,7 @@ const EmailSetting = () => {
     {
       id: "item2",
       title: "My List",
-      desc: `We will send you updates on works you have added to your "My List".`,
+      desc: `We will send you updates on videos you have added to your "My List".`,
     },
     {
       id: "item3",

@@ -9,19 +9,26 @@ import { BrowserRouter } from "react-router-dom";
 import { ToggleContextProvider } from "./context/ToggleContext";
 import { ResponsiveContextPrivider } from "./context/ResponsiveContext";
 import { PlayerWideContextProvider } from "./context/PlayerWideContext";
+import { MyListContextProvider } from "./context/MyListContext";
+import { UserMetaContextProvider } from "./context/UserMeta";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
-    <PlayerWideContextProvider>
-      <ResponsiveContextPrivider>
-        <ToggleContextProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ToggleContextProvider>
-      </ResponsiveContextPrivider>
-    </PlayerWideContextProvider>
+    <UserMetaContextProvider>
+      <MyListContextProvider>
+        <PlayerWideContextProvider>
+          <ResponsiveContextPrivider>
+            <ToggleContextProvider>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </ToggleContextProvider>
+          </ResponsiveContextPrivider>
+        </PlayerWideContextProvider>
+      </MyListContextProvider>
+    </UserMetaContextProvider>
   </React.StrictMode>
 );
 

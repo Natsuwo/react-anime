@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import "./AccountBar.css";
+import { GetDocumentsByQuery } from "../../../features/useFetch";
+import Skeleton from "../Skeleton/Skeleton";
+import { UseUserMetaContext } from "../../../context/UserMeta";
 
 const AccountBar = () => {
   const location = useLocation();
@@ -13,6 +16,9 @@ const AccountBar = () => {
     "/subscription/status",
   ];
   const isInPath = accountChildPath.some((item) => item === location.pathname);
+  const { userId, userMetaData, userLevel, levelLoading } =
+    UseUserMetaContext();
+
   return (
     <NavLink
       to="/account"
@@ -26,11 +32,25 @@ const AccountBar = () => {
       </span>
       <span className="account-nav-item">
         <span className="account-item-tag">ID</span>
-        <span className="account-nav-text">SDSJ*721asd</span>
+        {levelLoading ? (
+          <Skeleton width={"50px"} height={"8px"} />
+        ) : (
+          <span className="account-nav-text">
+            {userMetaData && userMetaData?.user_name
+              ? userMetaData?.user_name
+              : userId}
+          </span>
+        )}
       </span>
       <span className="account-nav-item">
         <span className="account-item-tag">Plan</span>
-        <span className="account-nav-text free">Free</span>
+        {levelLoading ? (
+          <Skeleton width={"50px"} height={"8px"} />
+        ) : (
+          <span className="account-nav-text free">
+            {userLevel && userLevel[0]?.level_text}
+          </span>
+        )}
       </span>
     </NavLink>
   );

@@ -3,7 +3,6 @@ import "./EpisodeList.css";
 import SeasonList from "./SeasonList";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import CardListEpsiode from "../../../Global/CardListEpisode/CardListEpisode";
-import Skeleton from "../../../Global/Skeleton/Skeleton";
 
 const EpisodeList = ({ title, value, loading, playingId }) => {
   const [sortDesc, setSortDesc] = useState(true);
@@ -68,7 +67,12 @@ const EpisodeList = ({ title, value, loading, playingId }) => {
         </div>
         <ul className="episode-list">
           {episodesByType[tablist]?.map((item, index) => (
-            <CardListEpsiode playingId={playingId} key={index} data={item} />
+            <CardListEpsiode
+              loading={loading}
+              playingId={playingId}
+              key={index}
+              data={item}
+            />
           ))}
         </ul>
       </div>

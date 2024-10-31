@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import Skeleton from "../Skeleton/Skeleton";
 import { getDays } from "../../../features/helper";
+import { UseMyListContext } from "../../../context/MyListContext";
+import Tooltip from "../Tooltip/Tooltip";
 
 export const CardSlide = ({ index, isActive, onCardClick }) => {
   return (
@@ -63,18 +65,32 @@ export const CardList = () => {
 };
 
 export const CardVideo = ({
-  video_id = "1",
   title,
+  video_id = "1",
   video_tags = {},
-  is_live = false,
   date,
+  is_live = false,
   is_new = false,
   role_tag = "",
   highlighted_thumbnail,
   onClick,
   width,
   height,
+  upload_date,
+  last_modified_date,
 }) => {
+  const { addToList, handleAddToList } = UseMyListContext();
+  const handleClick = (e) => {
+    e.stopPropagation();
+    handleAddToList(video_id, {
+      last_modified_date,
+      upload_date,
+      id: video_id,
+      video_id,
+      title,
+      highlighted_thumbnail,
+    });
+  };
   return (
     <div className="video-card-wrapper">
       <Link
@@ -92,6 +108,7 @@ export const CardVideo = ({
               </div>
             )}
           <img style={{ width, height }} src={highlighted_thumbnail} alt="" />
+
           {is_live && (
             <div className="tag-on-thumb-wrapper">
               <span className="tag-on-thumb">
@@ -135,11 +152,31 @@ export const CardVideo = ({
               </div>
             )}
           </div>
-          <button className="video-card-action">
-            <UseIconList width="24" height="24" icon={"add"}></UseIconList>
-          </button>
+          <div className="video-card-action-placeholder"></div>
         </div>
       </Link>
+      <div className="main-add-to-list-btn">
+        <button
+          onClick={(e) => (addToList ? handleClick(e) : null)}
+          className={`btn-tooltip main-add-to-list-inner${
+            addToList && addToList[video_id] ? " added" : ""
+          }`}
+        >
+          <Tooltip
+            condition={addToList && addToList[video_id]}
+            textTrue={"Remove to My List"}
+            textFalse={"Add to My List"}
+            position={"right"}
+          />
+          <span className="main-add-to-list-icon">
+            <UseIconList
+              width="24"
+              height="24"
+              icon={addToList && addToList[video_id] ? "done" : "add"}
+            ></UseIconList>
+          </span>
+        </button>
+      </div>
     </div>
   );
 };

@@ -2,6 +2,8 @@ import React from "react";
 import "./Skeleton.css";
 
 const Skeleton = ({
+  customStyle,
+  className,
   width = "100%",
   height = "100%",
   rounded,
@@ -10,8 +12,13 @@ const Skeleton = ({
 }) => {
   return (
     <div
-      className="skeleton-card loading"
-      style={{ width, height, borderRadius: rounded ? "50%" : borderRadius }}
+      className={`skeleton-card loading ${className ? className : ""}`}
+      style={{
+        width: width,
+        height: height,
+        borderRadius: rounded ? "50%" : borderRadius,
+        ...customStyle,
+      }}
     >
       <div className="skeleton"></div>
       {children}

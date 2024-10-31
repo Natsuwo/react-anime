@@ -14,8 +14,12 @@ const PasswordForm = ({
   widthForm,
   heightForm,
   children,
+  onChange,
+  errorText,
+  name,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
+
   return (
     <span className="form-input-wrapper">
       <label htmlFor={idFor}>{label}</label>
@@ -31,6 +35,9 @@ const PasswordForm = ({
 
       <span className="form-input-password" style={{ width: widthForm }}>
         <input
+          name={name}
+          onChange={onChange}
+          value={value}
           className={className}
           style={{ width: widthForm, height: heightForm }}
           id={idFor}
@@ -45,6 +52,9 @@ const PasswordForm = ({
           <UseIconList icon={showPassword ? "view" : "view-off"} />
         </span>
       </span>
+      <div className="modal-error-alert">
+        <p className="modal-error-alert-text">{errorText}</p>
+      </div>
     </span>
   );
 };
@@ -71,6 +81,7 @@ const InputCheckBoxForm = ({ name, onChange, checked }) => {
 };
 
 const InputFormDefault = ({
+  name,
   className,
   value,
   subtitle,
@@ -84,13 +95,15 @@ const InputFormDefault = ({
   buttonText,
   autocomplete,
   onChange,
+  errorText,
 }) => {
   return (
     <span className="form-input-wrapper">
-      <label htmlFor={idFor}>{label}</label>
+      {label && <label htmlFor={idFor}>{label}</label>}
       {subtitle && <span className="modal-sub-text">{subtitle}</span>}
       <div className="input-flex-with-button">
         <input
+          name={name}
           className={className}
           style={{ maxWidth: widthForm, height: heightForm }}
           value={value}
@@ -102,6 +115,9 @@ const InputFormDefault = ({
           onChange={onChange}
         />
         {buttonText && <button className="btn btn-active">{buttonText}</button>}
+      </div>
+      <div className="modal-error-alert">
+        <p className="modal-error-alert-text">{errorText}</p>
       </div>
     </span>
   );
@@ -123,6 +139,7 @@ const InputForm = ({
   onChange,
   heightForm = "44px",
   autocomplete,
+  errorText,
 }) => {
   return (
     <>
@@ -131,6 +148,7 @@ const InputForm = ({
       )}
       {type === "password" && (
         <PasswordForm
+          name={name}
           className={className}
           value={value}
           subtitle={subtitle}
@@ -141,10 +159,13 @@ const InputForm = ({
           disabled={disabled}
           widthForm={widthForm}
           heightForm={heightForm}
+          onChange={onChange}
+          errorText={errorText}
         />
       )}
       {type !== "checkbox" && type !== "password" && (
         <InputFormDefault
+          name={name}
           className={className}
           value={value}
           subtitle={subtitle}
@@ -158,6 +179,7 @@ const InputForm = ({
           buttonText={buttonText}
           autocomplete={autocomplete}
           onChange={onChange}
+          errorText={errorText}
         />
       )}
     </>

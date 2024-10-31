@@ -7,6 +7,10 @@
   font-size: 14px;
 }
 
+.episode-list-container {
+  min-height: 540px;
+}
+
 .episode-list-sort-btn {
   display: flex;
   justify-content: space-between;
@@ -72,4 +76,30 @@
 
 .episode-list-sort-item:hover {
   background-color: var(--secondary-color);
+}
+
+.add-to-list-empty {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 540px;
+}
+
+.add-to-list-empty-title {
+  color: var(--text-color);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-top: 80px;
+}
+
+.add-to-list-empty-desc {
+  color: var(--sub-title-color);
+  font-size: 16px;
+  line-height: 1.5;
+  margin-top: 16px;
+}
+
+.add-to-list-empty-image-demo {
+  margin-top: 32px;
 }

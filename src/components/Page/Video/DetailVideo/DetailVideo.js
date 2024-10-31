@@ -12,6 +12,7 @@ import Skeleton from "../../../Global/Skeleton/Skeleton";
 import {
   GetDocumentsByQuery,
   GetDocument,
+  GetAllSort,
 } from "../../../../features/useFetch";
 
 const DetailVideo = () => {
@@ -24,6 +25,12 @@ const DetailVideo = () => {
   const { value: data, loading: isLoading } = GetDocument("Videos", videoId);
   const { value: episodeListArr, loading: episodeListLoading } =
     GetDocumentsByQuery("Episode", "video_id", videoId);
+  const { value: mostViewData, loading: isLoadingMostView } = GetAllSort(
+    "Videos",
+    "views_count",
+    "desc",
+    12
+  );
 
   useEffect(() => {
     if (descRef.current) {
@@ -131,11 +138,19 @@ const DetailVideo = () => {
             </div>
           )}
         </div>
-        <EpisodeList value={episodeListArr} loading={episodeListLoading} />
+        {episodeListLoading ? (
+          <Skeleton width="100%" height={250} />
+        ) : (
+          <EpisodeList value={episodeListArr} loading={episodeListLoading} />
+        )}
         <div className="container__mobile">
           <div className="mt">
             <Recommend title={"Recent Category"} />
-            <Recommend title={"Most Popular"} />
+            <Recommend
+              value={mostViewData}
+              loading={isLoadingMostView}
+              title={"Most Popular"}
+            />
           </div>
         </div>
       </div>

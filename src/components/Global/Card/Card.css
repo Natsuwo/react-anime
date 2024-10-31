@@ -343,22 +343,47 @@
   color: var(--sub-title-color);
 }
 
-.video-card-detail-container .video-card-action {
-  width: 40px;
-  height: 40px;
+.video-card-detail-container .video-card-action-placeholder {
+  flex-grow: 0;
   flex-shrink: 0;
-  overflow: hidden;
-  transition: transform 300ms;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-  color: white;
+  height: 40px;
+  margin: -8px -8px 0 0;
+  width: 40px;
 }
 
-.video-card-detail-container .video-card-action:hover {
+.main-add-to-list-btn {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.main-add-to-list-btn::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%;
+}
+
+.main-add-to-list-inner {
+  height: 40px;
+  pointer-events: auto;
+  width: 40px;
+  cursor: pointer;
+  transition: color 0.1s linear, transform 0.1s linear;
+  background-color: transparent;
+  color: var(--text-color);
+}
+
+.main-add-to-list-inner.added .main-add-to-list-icon {
+  color: var(--link-active);
+}
+
+.main-add-to-list-inner:hover {
   transform: scale(1.3);
 }
 

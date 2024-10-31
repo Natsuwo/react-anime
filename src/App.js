@@ -22,8 +22,10 @@ import SignUp from "./components/Page/Subscription/SignUp/SignUp";
 import HeaderPromote from "./components/Global/Header/HeaderPromote";
 import Promote from "./components/Page/Subscription/Promote/Promote";
 import Skeleton from "./components/Global/Skeleton/Skeleton";
+import useUniqueShortUserId from "./features/useUniqueShortUserId";
 
 function App() {
+  useUniqueShortUserId();
   const { size } = UseResponsiveContext();
   const location = useLocation();
 
@@ -36,7 +38,6 @@ function App() {
 
   // const isSubscriptionPage =
   // /^\/subscription\/(?!status\b)(?!signup\b)\w+/i.test(location.pathname);
-
   return (
     <>
       {size.width < 992 ? (
@@ -48,6 +49,8 @@ function App() {
       ) : (
         <Header />
       )}
+      {/* Create User Unique ID IF First Time Access */}
+      {/* <useUniqueShortUserId /> */}
 
       <div className={`main-container${size.width < 992 ? " __mobile" : ""}`}>
         {!isSubscriptionPage && size.width >= 992 && <Navbar />}
@@ -86,7 +89,8 @@ function App() {
             <Route path="/mylist" element={<MyList />}></Route>
             <Route path="/history" element={<History />}></Route>
           </Routes>
-          {!isSubscriptionPage || (isPromotePage && <Footer />)}
+          {!isSubscriptionPage && <Footer />}
+          {isPromotePage && <Footer />}
         </div>
       </div>
     </>

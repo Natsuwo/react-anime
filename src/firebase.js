@@ -3,19 +3,17 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBl5ZyQgnLMtGL6iTUiF6SxMIOWMlPu89E",
-  authDomain: "yureitv-8fded.firebaseapp.com",
-  databaseURL:
-    "https://yureitv-8fded-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "yureitv-8fded",
-  storageBucket: "yureitv-8fded.appspot.com",
-  messagingSenderId: "22772155926",
-  appId: "1:22772155926:web:9018150d7f47507dd2d737",
-  measurementId: "G-QS82G5D5B8",
+  apiKey: process.env.REACT_APP_FIREBASE_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+  appId: process.env.REACT_APP_MESSAGING_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
-
 export const auth = getAuth();
 
 export default getFirestore(app);

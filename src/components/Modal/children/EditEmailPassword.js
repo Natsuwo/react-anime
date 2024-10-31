@@ -4,11 +4,73 @@ import { Link } from "react-router-dom";
 import Alert from "../component/Alert";
 import HeadlineBack from "../component/HeadlineBack";
 import InputForm from "../../Global/FormInput/FormInput";
+import { isValidEmail, validatePassword } from "../../../features/helper";
+import { FireBaseSignUp } from "../../../features/useFetch";
+import VerifyEmailModal from "./VerifyEmailModal";
+import { UseUserMetaContext } from "../../../context/UserMeta";
 
 const ModalSignUp = ({ visible, setVisible, openModal }) => {
-  const handleSumbit = (e) => {
-    e.preventDefault();
+  const [errorText, setError] = useState({ email: "", password: "" });
+  const [isError, setIsError] = useState(false);
+  const [values, setValues] = useState({ email: "", password: "" });
+  const [modalError, setModalError] = useState("");
+  const [isSent, setSent] = useState(false);
+
+  const { userId, userMetaData } = UseUserMetaContext();
+
+  const onValidEmail = (e) => {
+    if (!isValidEmail(e.target.value)) {
+      setError((prev) => ({
+        ...prev,
+        email: "Your email address is not valid!",
+      }));
+      setIsError(true);
+    } else {
+      setIsError(false);
+      setError((prev) => ({
+        ...prev,
+        email: "",
+      }));
+    }
+
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
+
+  const onValidPassword = (e) => {
+    const isPass = validatePassword(e.target.value);
+
+    if (!isPass.success) {
+      setError((prev) => ({
+        ...prev,
+        password: isPass.error,
+      }));
+      setIsError(true);
+    } else {
+      setIsError(false);
+      setError((prev) => ({
+        ...prev,
+        password: "",
+      }));
+    }
+
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const handleSumbit = async (e) => {
+    e.preventDefault();
+    if (!isError) {
+      setSent(true);
+      const combinedObject = { ...values, userId, userMetaData };
+      const signUp = await FireBaseSignUp(combinedObject);
+      if (signUp.success) {
+        openModal("verify-email");
+      } else {
+        setSent(false);
+        setModalError(signUp.error);
+      }
+    }
+  };
+
   return (
     <>
       <form onSubmit={handleSumbit} className="modal-form">
@@ -19,8 +81,9 @@ const ModalSignUp = ({ visible, setVisible, openModal }) => {
           <div className="modal-long-content-wrapper">
             <div className="modal-scroll-area">
               <div className="modal-description">
-                To register for YUREITV Premium and purchase pay-per-view,
-                please register your email address and password.
+                By registering for a YUREITV account, you can freely watch
+                videos on the website, save your favorite stuffs to a playlist,
+                and gain access to exclusive videos.
               </div>
               <Alert title="If you're already have an account just sign in.">
                 <Link
@@ -31,30 +94,51 @@ const ModalSignUp = ({ visible, setVisible, openModal }) => {
                 </Link>
               </Alert>
               <InputForm
+                onChange={onValidEmail}
+                value={values.email}
                 idFor="email"
+                name="email"
                 label="Email Address"
                 type="text"
                 placeholder="Enter your email"
+                autocomplete={"true"}
+                errorText={errorText["email"]}
               />
-              <InputForm type="password" />
+              <InputForm
+                onChange={onValidPassword}
+                idFor={"password"}
+                name={"password"}
+                type="password"
+                errorText={errorText["password"]}
+              />
               <div className="modal-description modal-supplement">
-                当社の利用規約及びプライバシーポリシーを確認の上、同意して送信してください。
-                取得したメールアドレスは、以下の目的で使用します。
+                Please read our privacy policy and terms carefully before
+                registering. Your email address will be used for the following
+                purposes:
                 <ol>
-                  <li>問い合わせ対応、アンケートに関する連絡</li>
-                  <li>購入内容、サービスに関する連絡</li>
-                  <li>新着、おすすめなど、番組情報の案内</li>
-                  <li>キャンペーン、プレゼントに関する連絡</li>
+                  <li>To send you information about upcoming videos</li>
+                  <li>
+                    To update you on new episodes for the videos you’ve saved to
+                    My List
+                  </li>
+                  <li>To send surveys so we can improve our service</li>
+                  <li>To send you videos that you may be interested in</li>
                 </ol>
-                当社が委託する提携会社から上記の連絡をする場合があります。
+                Please note that the above communications may also come from our
+                partner companies that we have contracted.
               </div>
             </div>
+          </div>
+          <div className="modal-error-alert">
+            <p className="modal-error-alert-text">{modalError}</p>
           </div>
           <div className="modal-actions">
             <button onClick={() => setVisible(false)} className="btn">
               Cancel
             </button>
-            <button className="btn btn-active">Confirm</button>
+            <button className="btn btn-active" disabled={isSent}>
+              Confirm
+            </button>
           </div>
         </fieldset>
       </form>
@@ -213,6 +297,10 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
 
       {modalState === "id-otp-signin" && (
         <ID_OTPSignIn setVisible={setVisible} openModal={openModal} />
+      )}
+
+      {modalState === "verify-email" && (
+        <VerifyEmailModal setVisible={setVisible} openModal={openModal} />
       )}
     </>
   );

@@ -154,6 +154,8 @@
 }
 
 .episode-list-item-add-to-list {
+  width: 44px;
+  height: 44px;
   align-self: center;
 }
 
@@ -173,11 +175,35 @@
   transform: scale(1.3);
 }
 
-.add-to-list-btn .add-to-list-icon {
+.add-to-list-btn .add-to-list-icon,
+.add-to-list-btn-mylist .add-to-list-icon {
+  display: block;
   line-height: 24px;
   width: 24px;
   height: 24px;
   color: var(--text-color);
+}
+
+.add-to-list-btn-mylist {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-to-list-btn-mylist-inner {
+  pointer-events: auto;
+  cursor: pointer;
+  transition: color 0.1s linear, transform 0.1s linear;
+  background-color: transparent;
+  color: var(--text-color);
+}
+
+.add-to-list-btn-mylist-inner:hover {
+  transform: scale(1.3);
 }
 
 .episode-list-current-play .current-play-icon {
