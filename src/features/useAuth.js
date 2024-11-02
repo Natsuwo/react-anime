@@ -4,6 +4,11 @@ import { auth } from "../firebase";
 const useAuth = () => {
   const [user, setUser] = useState(null);
 
+  const signOut = async () => {
+    await auth.signOut();
+    setUser(false);
+  };
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -15,7 +20,7 @@ const useAuth = () => {
     return () => unsubscribe();
   }, []);
 
-  return { user };
+  return { user, signOut };
 };
 
 export default useAuth;

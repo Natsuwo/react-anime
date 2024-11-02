@@ -40,6 +40,10 @@
   justify-content: center;
 }
 
+.manager-item-left .manager-item-icon img {
+  object-fit: cover;
+}
+
 .manager-item-left .manager-item-icon.small {
   width: 44px;
   height: 44px;
@@ -96,4 +100,9 @@
 .manager-sub-text {
   font-size: 13px;
   color: var(--sub-title-color);
+}
+
+.switch-bottom-action {
+  display: flex;
+  gap: 16px;
 }

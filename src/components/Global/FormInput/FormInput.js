@@ -114,7 +114,11 @@ const InputFormDefault = ({
           autoComplete={autocomplete}
           onChange={onChange}
         />
-        {buttonText && <button className="btn btn-active">{buttonText}</button>}
+        {buttonText && (
+          <button type="submit" className="btn btn-active">
+            {buttonText}
+          </button>
+        )}
       </div>
       <div className="modal-error-alert">
         <p className="modal-error-alert-text">{errorText}</p>

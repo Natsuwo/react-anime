@@ -1,3 +1,62 @@
+import emailjs from "@emailjs/browser";
+
+export const sendMail = async (params) => {
+  // require, to_email, to_name, otp_code for OTP
+  try {
+    console.log(
+      process.env.REACT_APP_EMAILJS_SERVICE_ID,
+      process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+    );
+
+    const result = await emailjs.send(
+      process.env.REACT_APP_EMAILJS_SERVICE_ID, // service_id
+      "template_dxnqicp", // template_id otp
+      params,
+      process.env.REACT_APP_EMAILJS_PUBLIC_KEY // user_id
+    );
+    return { success: true, data: result.text };
+  } catch (error) {
+    return { success: false, data: error.text };
+  }
+};
+
+export const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000);
+};
+
+export const validateOTP = (otp, userId) => {
+  // Kiểm tra độ dài
+  if (otp.length < 6 || otp.length > 10) {
+    return { valid: false, message: "OTP must be 6 to 10 characters long." };
+  }
+
+  // Kiểm tra không được trùng với userId
+  if (otp === userId) {
+    return { valid: false, message: "OTP cannot be the same as user ID." };
+  }
+
+  // Kiểm tra không phải chỉ là cùng một ký tự lặp lại
+  const isRepeatingChars = otp.split("").every((char) => char === otp[0]);
+  if (isRepeatingChars) {
+    return { valid: false, message: "OTP cannot be repeating characters." };
+  }
+
+  // Kiểm tra không phải là dãy số liên tiếp
+  const isSequential = (str) => {
+    for (let i = 0; i < str.length - 1; i++) {
+      if (parseInt(str[i]) + 1 !== parseInt(str[i + 1])) return false;
+    }
+    return true;
+  };
+
+  if (isSequential(otp) || isSequential(otp.split("").reverse().join(""))) {
+    return { valid: false, message: "OTP cannot be sequential numbers." };
+  }
+
+  // Nếu tất cả các điều kiện đều đúng
+  return { valid: true, message: "OTP is valid." };
+};
+
 export const getTime = (timestamp) => {
   const uploadTime = new Date(timestamp?.seconds * 1000);
   const timeElapsed = Date.now() - uploadTime.getTime();

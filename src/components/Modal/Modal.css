@@ -82,6 +82,10 @@
   border-radius: 50%;
 }
 
+.avatar-img img {
+  object-fit: cover;
+}
+
 .modal-upload-btn .upload-icon {
   bottom: 0;
   fill: #fff;
@@ -256,6 +260,20 @@
 .modal-headline-back-icon {
   float: left;
   cursor: pointer;
+}
+
+.modal-form-disabled {
+  align-items: center;
+  background-color: var(--secondary-color-2);
+  border-radius: 4px;
+  color: var(--text-color);
+  display: flex;
+  font-size: 16px;
+  padding: 12px 8px;
+  margin: 12px 0;
+  text-align: left;
+  width: 100%;
+  word-break: break-all;
 }
 
 @media (max-width: 767px) {

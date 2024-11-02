@@ -61,7 +61,8 @@ const UserMetaContextProvider = ({ children }) => {
       ) {
         setPrevMetaData(userMetaData);
         UpdateDocument(userMetaData, "UserMetaData", user.uid);
-      } else {
+      }
+      if (user === false) {
         localStorage.setItem("USER_METADATA", JSON.stringify(userMetaData));
       }
     }

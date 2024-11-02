@@ -2,14 +2,34 @@ import React, { useEffect, useState } from "react";
 import { ReactComponent as YureiLogo } from "../../../assets/images/yurei/yurei.svg";
 import { ReactComponent as YureiLogoCompleted } from "../../../assets/images/yurei/yurei_oowarai.svg";
 import Alert from "../component/Alert";
-import { CheckEmailVerification } from "../../../features/useFetch";
+import {
+  CheckEmailVerification,
+  SendMailAgain,
+} from "../../../features/useFetch";
 
 const VerifyEmailModal = ({ setVisible, openModal }) => {
   const [isVerify, setVerify] = useState(false);
+  const [isSend, setSend] = useState(false);
+  const [errorText, setError] = useState("");
+
+  const onSend = async () => {
+    setSend(true);
+    try {
+      const data = await SendMailAgain();
+      if (data.success) {
+        setError("Another email has sent to your email! Check it!");
+      } else {
+        setError(data.error);
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
   useEffect(() => {
     const interval = setInterval(async () => {
       const reloadUser = await CheckEmailVerification();
       if (reloadUser.success) {
+        setError("");
         setVerify(true);
         clearInterval(interval);
       }
@@ -45,13 +65,22 @@ const VerifyEmailModal = ({ setVisible, openModal }) => {
             ? "Wow! All Done! You can close this tab!"
             : "Just wait a little bit..."}
         </div>
+        <div className="modal-error-alert">
+          <p className="modal-error-alert-text __text-center">{errorText}</p>
+        </div>
         <div className="modal-actions">
           {isVerify ? (
             <button onClick={() => setVisible(false)} className="btn">
               Close
             </button>
           ) : (
-            <button className="btn btn-green mt-2">Send another email</button>
+            <button
+              disabled={isSend}
+              onClick={onSend}
+              className="btn btn-green mt-2"
+            >
+              Send another email
+            </button>
           )}
         </div>
       </div>

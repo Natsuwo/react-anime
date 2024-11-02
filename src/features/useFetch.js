@@ -1,15 +1,24 @@
 import { useEffect, useState } from "react";
 import db, { auth } from "../firebase";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendEmailVerification,
+  verifyBeforeUpdateEmail,
   signOut,
+  sendPasswordResetEmail,
+  getAuth,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateEmail,
+  updatePassword,
 } from "firebase/auth";
 import {
   doc,
   getDoc,
   setDoc,
+  addDoc,
   updateDoc,
   query,
   collection,
@@ -19,6 +28,16 @@ import {
   limit,
   serverTimestamp,
 } from "firebase/firestore";
+
+export const CreateDocument = async (document, userId, params) => {
+  try {
+    // const docRef = await addDoc(collection(db, document), params);
+    const docRef = await setDoc(doc(db, document, userId), params);
+    return { success: true, docRef };
+  } catch (error) {
+    return { success: false, error: error.message, errorCode: error.code };
+  }
+};
 
 export const GetDocument = (document, id) => {
   const [value, setValue] = useState({});
@@ -131,8 +150,8 @@ export const FireBaseSignUp = async ({
       is_verified: false,
       ...userMetaData,
     });
-
-    console.log("User registered:", user);
+    localStorage.setItem("USER_LIST", JSON.stringify([]));
+    localStorage.setItem("USER_METADATA", JSON.stringify({}));
     sendEmailVerification(user);
     return { success: true, user };
   } catch (error) {
@@ -152,11 +171,19 @@ export const FireBaseSignIn = async ({ email, password }) => {
       email,
       password
     );
-    console.log("User logged in:", userCredential.user);
-    return true;
+
+    localStorage.setItem("USER_LIST", JSON.stringify([]));
+    localStorage.setItem("USER_METADATA", JSON.stringify({}));
+    return { success: true, user: userCredential.user };
   } catch (error) {
-    console.error("Error logging in:", error.message);
-    return false;
+    if (error.code === "auth/invalid-credential") {
+      error.message = "Email or password incorrect!";
+    } else if (error.code === "auth/too-many-requests") {
+      error.message = "Too Many Requests";
+    } else if (error.code === "auth/wrong-password") {
+      error.message = "Wrong Password!";
+    }
+    return { success: false, error: error.message, errorCode: error.code };
   }
 };
 
@@ -205,5 +232,61 @@ export const FetchDocument = async (document, uid) => {
     return userSnapshot.data();
   } else {
     console.log("Không tìm thấy dữ liệu người dùng.");
+  }
+};
+
+export const FetchSingleDocumentByKey = async (document, find, key) => {
+  const q = query(collection(db, document), where(find, "==", key), limit(1));
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    const doc = querySnapshot.docs[0];
+    return { success: true, id: doc.id, ...doc.data() };
+  } else {
+    return { success: false, error: "User not found" };
+  }
+};
+
+export const FetchResetPassword = async (email) => {
+  const auth = getAuth(); // Khởi tạo Firebase Auth
+  try {
+    await sendPasswordResetEmail(auth, email);
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message, errorCode: error.code };
+  }
+};
+
+export const FetchReAuthenticateUser = async (currentPassword) => {
+  const user = auth.currentUser;
+  const credential = EmailAuthProvider.credential(user.email, currentPassword);
+
+  try {
+    await reauthenticateWithCredential(user, credential);
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message, errorCode: error.code };
+  }
+};
+
+export const FetchChangeUserEmail = async (newEmail) => {
+  const user = auth.currentUser;
+  try {
+    await updateEmail(user, newEmail);
+    await SendMailAgain(user);
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message, errorCode: error.code };
+  }
+};
+
+export const FetchChangePassword = async (newPassword) => {
+  try {
+    await updatePassword(auth.currentUser, newPassword);
+    console.log("Password updated successfully!");
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating password:", error);
+    return { success: false, error: error.message, errorCode: error.code };
   }
 };
