@@ -97,7 +97,7 @@ const ModalSignUp = ({ visible, setVisible, openModal }) => {
               </div>
               <Alert title="If you're already have an account just sign in.">
                 <Link
-                  onClick={() => openModal("modal-switch-account")}
+                  onClick={() => openModal("email-password-signin")}
                   className="sign-in-link"
                 >
                   Sign in for already have an account user!
@@ -143,10 +143,14 @@ const ModalSignUp = ({ visible, setVisible, openModal }) => {
             <p className="modal-error-alert-text">{modalError}</p>
           </div>
           <div className="modal-actions">
-            <button onClick={() => setVisible(false)} className="btn">
+            <button
+              type="button"
+              onClick={() => setVisible(false)}
+              className="btn"
+            >
               Cancel
             </button>
-            <button className="btn btn-active" disabled={isSent}>
+            <button type="submit" className="btn btn-active" disabled={isSent}>
               Confirm
             </button>
           </div>
@@ -197,13 +201,7 @@ const ChangeEmailPassword = ({ setVisible, openModal }) => {
       <div className="modal-content-wrapper">
         <button
           className="btn modal-btn"
-          onClick={() =>
-            openModal(
-              "confirm-password",
-              "change-email-password",
-              "change-email"
-            )
-          }
+          onClick={() => openModal("confirm-password", false, "change-email")}
         >
           <span className="modal-btn-icon">
             <UseIconList icon="mail" />
@@ -221,11 +219,7 @@ const ChangeEmailPassword = ({ setVisible, openModal }) => {
         <button
           className="btn modal-btn"
           onClick={() =>
-            openModal(
-              "confirm-password",
-              "change-email-password",
-              "change-password"
-            )
+            openModal("confirm-password", false, "change-password")
           }
         >
           <span className="modal-btn-icon">
@@ -243,7 +237,7 @@ const ChangeEmailPassword = ({ setVisible, openModal }) => {
   );
 };
 
-const ConfirmPassword = ({ setVisible, openModal, backModal, nextModal }) => {
+const ConfirmPassword = ({ setVisible, openModal, nextModal }) => {
   const { user } = UseUserMetaContext();
   const [isDisable, setDisable] = useState(false);
   const [password, setPassword] = useState("");
@@ -254,7 +248,7 @@ const ConfirmPassword = ({ setVisible, openModal, backModal, nextModal }) => {
     setDisable(true);
     const checkPass = await FetchReAuthenticateUser(password);
     if (checkPass.success) {
-      openModal(nextModal, backModal);
+      openModal(nextModal, false);
     } else {
       setError(checkPass.error);
       setDisable(false);
@@ -264,7 +258,7 @@ const ConfirmPassword = ({ setVisible, openModal, backModal, nextModal }) => {
     <>
       <HeadlineBack
         title="Confirm Password"
-        openModal={() => openModal(backModal, nextModal)}
+        openModal={() => openModal("", true, nextModal)}
       />
       <div className="modal-content-wrapper">
         <form onSubmit={handleSubmit} className="modal-form mt-2">
@@ -282,7 +276,7 @@ const ConfirmPassword = ({ setVisible, openModal, backModal, nextModal }) => {
             <p className="modal-error-alert-text">{errorText}</p>
           </div>
           <Link
-            onClick={() => openModal("reset-password", backModal)}
+            onClick={() => openModal("reset-password", false)}
             className="__link-active"
           >
             Reset Password
@@ -309,7 +303,7 @@ const ConfirmPassword = ({ setVisible, openModal, backModal, nextModal }) => {
   );
 };
 
-const ChangeEmail = ({ setVisible, openModal, backModal, nextModal }) => {
+const ChangeEmail = ({ setVisible, openModal, nextModal }) => {
   const [isDisable, setDisable] = useState(false);
   const [email, setEmail] = useState("");
   const [errorText, setError] = useState("");
@@ -346,7 +340,7 @@ const ChangeEmail = ({ setVisible, openModal, backModal, nextModal }) => {
     <>
       <HeadlineBack
         title="Change Email"
-        openModal={() => openModal(backModal, "change-email-password")}
+        openModal={() => openModal("", true, "")}
       />
       <div className="modal-content-wrapper">
         <Alert
@@ -420,60 +414,69 @@ const ChangeEmail = ({ setVisible, openModal, backModal, nextModal }) => {
 
 const ResetPassword = ({ setVisible, openModal, backModal, nextModal }) => {
   const { user } = UseUserMetaContext();
+  const [email, setEmail] = useState("");
   const [errorText, setError] = useState("");
   const [isSend, setSend] = useState(false);
   const [isDisable, setDisable] = useState(false);
 
   const handleResetPassword = async () => {
-    if (user.email) {
-      setDisable(true);
-      const data = await FetchResetPassword(user.email);
-      if (data.success) {
-        setSend(true);
-      } else {
-        setError(data.error);
-        console.error(data?.errorCode);
-        setDisable(false);
-      }
+    setDisable(true);
+    const data = await FetchResetPassword(
+      user && user?.email ? user.email : email
+    );
+    if (data.success) {
+      setSend(true);
+    } else {
+      setError(data.error);
+      console.error(data?.errorCode);
+      setDisable(false);
     }
   };
   return (
     <>
       <HeadlineBack
         title="Reset Password"
-        openModal={() => openModal(backModal)}
+        openModal={() => openModal("", true)}
       />
       <div className="modal-content-wrapper">
+        <InputForm
+          label={"Your Email"}
+          onChange={(e) => setEmail(e.target.value)}
+          name={"email"}
+          type="email"
+          subtitle={false}
+          placeholder={"Enter your email"}
+        />
+        <div className="modal-error-alert">
+          <p className="modal-error-alert-text">{errorText}</p>
+        </div>
         <div className="modal-description">
           {isSend
             ? "Please check your email! If you can’t find it, please look in your spam folder."
             : `An email with instructions on how to reset your password will be sent
-          to ${user?.email}`}
+          to ${user?.email ? user?.email : email}`}
         </div>
-        <div className="modal-error-alert">
-          <p className="modal-error-alert-text">{errorText}</p>
+        <div className="modal-actions">
+          <button onClick={() => setVisible(false)} className="btn">
+            Cancel
+          </button>
+          {isSend ? (
+            <button
+              onClick={() => openModal("", true)}
+              className="btn btn-active"
+            >
+              Back to main menu
+            </button>
+          ) : (
+            <button
+              disabled={isDisable}
+              onClick={handleResetPassword}
+              className="btn btn-active"
+            >
+              Confirm
+            </button>
+          )}
         </div>
-      </div>
-      <div className="modal-actions">
-        <button onClick={() => setVisible(false)} className="btn">
-          Cancel
-        </button>
-        {isSend ? (
-          <button
-            onClick={() => openModal("change-email-password")}
-            className="btn btn-active"
-          >
-            Back to main menu
-          </button>
-        ) : (
-          <button
-            disabled={isDisable}
-            onClick={handleResetPassword}
-            className="btn btn-active"
-          >
-            Confirm
-          </button>
-        )}
       </div>
     </>
   );
@@ -524,7 +527,7 @@ const EmailPasswordSignIn = ({ setVisible, openModal }) => {
       } else {
         setSent(false);
         setModalError(dataAuth.error);
-        console.log(dataAuth.errorCode);
+        console.error(dataAuth.errorCode);
       }
     }
   };
@@ -535,7 +538,7 @@ const EmailPasswordSignIn = ({ setVisible, openModal }) => {
     <>
       <HeadlineBack
         title="Email & Password Sign In"
-        openModal={() => openModal("modal-switch-account")}
+        openModal={() => openModal("", true)}
       />
       <div className="modal-content-wrapper">
         <Alert title={title} />
@@ -570,7 +573,7 @@ const EmailPasswordSignIn = ({ setVisible, openModal }) => {
             <p className="modal-error-alert-text">{modalError}</p>
           </div>
           <Link
-            onClick={() => openModal("reset-password", "email-password-signin")}
+            onClick={() => openModal("reset-password")}
             className="__link-active"
           >
             Forgot Password
@@ -601,7 +604,7 @@ const ID_OTPSignIn = ({ setVisible, openModal }) => {
     <>
       <HeadlineBack
         title="ID & OTP Sign In"
-        openModal={() => openModal("modal-switch-account")}
+        openModal={() => openModal("", true)}
       />
       <div className="modal-content-wrapper">
         <Alert title={title} />
@@ -645,22 +648,39 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
   const [modalState, setModalState] = useState(
     modalType ? modalType : "modal-sign-up"
   );
-  const [backModal, setBackModal] = useState("");
-  const [nextModal, setNextModal] = useState("");
 
-  const openModal = (
-    state,
-    backModal = "change-email-password",
-    nextModal = ""
-  ) => {
-    setModalState(state);
-    setBackModal(backModal);
-    setNextModal(nextModal);
+  const [nextModal, setNextModal] = useState("");
+  const [modalRoute, setModalRoute] = useState([]);
+  const openModal = (state, isBack = false, nextMdl) => {
+    if (isBack) {
+      const prevRoute = modalRoute[modalRoute.length - 2];
+      setModalState(prevRoute);
+      const updateRoute = modalRoute.slice(0, modalRoute.length - 1);
+      setModalRoute(updateRoute);
+    } else {
+      if (modalRoute[modalRoute.length - 1] !== state) {
+        setModalRoute((prev) => [...prev, state]);
+      }
+      setModalState(state);
+    }
+
+    if (nextMdl) {
+      setNextModal();
+    }
   };
 
   useEffect(() => {
     if (!visible && !modalType) {
       setModalState("modal-sign-up");
+    }
+
+    if (visible) {
+      const initialModalState = modalType || modalState;
+      setModalState(initialModalState);
+      setModalRoute([initialModalState]);
+    } else {
+      setModalRoute([]);
+      setModalState(modalType || "modal-sign-up");
     }
   }, [visible]);
 
@@ -670,7 +690,6 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
         <ModalSignUp
           setVisible={setVisible}
           openModal={openModal}
-          backModal={backModal}
           nextModal={nextModal}
         />
       )}
@@ -678,7 +697,6 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
         <ModalSwitchAccount
           setVisible={setVisible}
           openModal={openModal}
-          backModal={backModal}
           nextModal={nextModal}
         />
       )}
@@ -687,7 +705,6 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
         <EmailPasswordSignIn
           setVisible={setVisible}
           openModal={openModal}
-          backModal={backModal}
           nextModal={nextModal}
         />
       )}
@@ -696,7 +713,6 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
         <ID_OTPSignIn
           setVisible={setVisible}
           openModal={openModal}
-          backModal={backModal}
           nextModal={nextModal}
         />
       )}
@@ -705,7 +721,6 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
         <VerifyEmailModal
           setVisible={setVisible}
           openModal={openModal}
-          backModal={backModal}
           nextModal={nextModal}
         />
       )}
@@ -714,7 +729,6 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
         <ChangeEmailPassword
           setVisible={setVisible}
           openModal={openModal}
-          backModal={backModal}
           nextModal={nextModal}
         />
       )}
@@ -723,7 +737,6 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
         <ConfirmPassword
           setVisible={setVisible}
           openModal={openModal}
-          backModal={backModal}
           nextModal={nextModal}
         />
       )}
@@ -731,7 +744,6 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
         <ResetPassword
           setVisible={setVisible}
           openModal={openModal}
-          backModal={backModal}
           nextModal={nextModal}
         />
       )}
@@ -739,7 +751,6 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
         <ChangeEmail
           setVisible={setVisible}
           openModal={openModal}
-          backModal={backModal}
           nextModal={nextModal}
         />
       )}
@@ -747,7 +758,6 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
         <ChangePasswordModal
           setVisible={setVisible}
           openModal={openModal}
-          backModal={backModal}
           nextModal={nextModal}
         />
       )}
