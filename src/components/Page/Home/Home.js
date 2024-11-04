@@ -83,12 +83,22 @@ const Home = () => {
 
   const { myList, dataMyList, isLoading: myListLoading } = UseMyListContext();
 
+  // let testRun = false;
   // useEffect(() => {
+  //   // console.log("chay");
   //   const getData = async () => {
-  //     const docRef = await addDoc(collection(db, "Episode"), EpisodeData[0]);
-  //     console.log("Document written with ID: ", docRef.id);
+  //     testRun = true;
+  //     // const docRef = await addDoc(collection(db, "Episode"), EpisodeData[0]);
+  //     Database.map(async (item) => {
+  //       const docRef = await addDoc(collection(db, "Videos"), item);
+  //       console.log("Document written with ID: ", docRef.id);
+  //     });
   //   };
-  //   getData();
+
+  //   if (!testRun) {
+  //     console.log("chay");
+  //     getData();
+  //   }
   // }, []);
   return (
     <>
@@ -99,6 +109,7 @@ const Home = () => {
           categoryTitle={"Most viewed"}
           ChildComponent={CardVideo}
           items={mostViewData}
+          totalSlides={mostViewData?.length}
         ></VideoList>
       ) : (
         <VideoList
@@ -122,6 +133,7 @@ const Home = () => {
             categoryTitle={"My List"}
             ChildComponent={CardVideo}
             slidesToShow={4}
+            totalSlides={myList?.length}
             items={myList}
           ></VideoList>
         )
@@ -140,6 +152,7 @@ const Home = () => {
           categoryTitle={"Action List"}
           ChildComponent={CardVideo}
           slidesToShow={4}
+          totalSlides={actionData?.length}
           items={actionData}
         ></VideoList>
       ) : (
@@ -157,8 +170,9 @@ const Home = () => {
         <VideoList
           categoryTitle={"Top Rank"}
           ChildComponent={CardRank}
-          slidesToShow={7}
+          slidesToShow={6}
           items={mostViewData}
+          totalSlides={mostViewData?.length}
         ></VideoList>
       ) : (
         <VideoList

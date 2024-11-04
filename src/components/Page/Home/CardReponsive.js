@@ -58,13 +58,6 @@ const sevenCardResponsive = [
       slidesToScroll: 2,
     },
   },
-  {
-    breakpoint: 420,
-    settings: {
-      slidesToShow: 1,
-      slidesToScroll: 1,
-    },
-  },
 ];
 
 const eightCardResponsive = [

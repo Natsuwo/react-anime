@@ -6,8 +6,9 @@ import Skeleton from "../Skeleton/Skeleton";
 import { getDays } from "../../../features/helper";
 import { UseMyListContext } from "../../../context/MyListContext";
 import Tooltip from "../Tooltip/Tooltip";
+import CategoryTag from "../CategoryTag/CategoryTag";
 
-export const CardSlide = ({ index, isActive, onCardClick }) => {
+export const CardSlide = ({ index, isActive, onCardClick, props }) => {
   return (
     <div
       onClick={() => onCardClick(index)}
@@ -18,23 +19,18 @@ export const CardSlide = ({ index, isActive, onCardClick }) => {
         <img
           width="208"
           height="117"
-          src="https://image.p-c2-x.abema-tv.com/media/channels/time/20241013035220/abema-anime.webp?height=288&quality=75&width=512"
+          src={props.highlighted_thumbnail}
           alt=""
         />
       </div>
       <div className="main-tag">
-        <img
-          width="146"
-          height="55"
-          src="https://image.p-c2-x.abema-tv.com/image/channels/abema-anime/logo.png?height=96&quality=75&version=20200413&width=256"
-          alt=""
-        />
+        <CategoryTag type={props?.category_name && props?.category_name} />
       </div>
     </div>
   );
 };
 
-export const CardList = () => {
+export const CardList = ({ props }) => {
   return (
     <div className="card-list-wrapper">
       <div className="card-content">
@@ -43,17 +39,12 @@ export const CardList = () => {
           <img
             width="208"
             height="117"
-            src="https://image.p-c2-x.abema-tv.com/media/channels/time/20241013035220/abema-anime.webp?height=288&quality=75&width=512"
+            src={props.highlighted_thumbnail}
             alt=""
           />
         </div>
         <div className="main-tag">
-          <img
-            width="146"
-            height="55"
-            src="https://image.p-c2-x.abema-tv.com/image/channels/abema-anime/logo.png?height=96&quality=75&version=20200413&width=256"
-            alt=""
-          />
+          <CategoryTag type={props?.category_name && props?.category_name} />
         </div>
       </div>
       <div className="watch-now-text">

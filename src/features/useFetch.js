@@ -29,8 +29,6 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { firestore } from "firebase/app";
-
 export const CreateDocument = async (document, userId, params) => {
   try {
     // const docRef = await addDoc(collection(db, document), params);
@@ -68,9 +66,10 @@ export const GetDocument = (document, id) => {
 
 export const GetDocumentsByQuery = (
   document,
-  qry,
+  find,
   id = null,
-  array = false
+  array = false,
+  maxDoc = 12
 ) => {
   const [value, setValue] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,7 +78,8 @@ export const GetDocumentsByQuery = (
     try {
       const q = query(
         collection(db, document),
-        where(qry, array ? "array-contains" : "==", id)
+        where(find, array ? "array-contains" : "==", id),
+        limit(maxDoc)
       );
       const querySnapshot = await getDocs(q);
 
@@ -129,6 +129,20 @@ export const GetAllSort = (document, field, order_by, maxDoc) => {
     getData();
   }, [document, field]);
   return { value, loading };
+};
+
+export const FetchAllLimit = async (document, customLimit = 20) => {
+  // Tạo truy vấn tới collection Category và áp dụng limit
+  const q = query(collection(db, document), limit(customLimit));
+
+  const querySnapshot = await getDocs(q);
+  const categories = [];
+
+  querySnapshot.forEach((doc) => {
+    categories.push({ id: doc.id, ...doc.data() });
+  });
+
+  return categories;
 };
 
 export const FireBaseSignUp = async ({
@@ -235,8 +249,17 @@ export const FetchDocument = async (document, uid) => {
   }
 };
 
-export const FetchSingleDocumentByKey = async (document, find, key) => {
-  const q = query(collection(db, document), where(find, "==", key), limit(1));
+export const FetchSingleDocumentByKey = async (
+  document,
+  find,
+  key,
+  array = false
+) => {
+  const q = query(
+    collection(db, document),
+    where(find, array ? "array-contains" : "==", key),
+    limit(1)
+  );
   const querySnapshot = await getDocs(q);
 
   if (!querySnapshot.empty) {

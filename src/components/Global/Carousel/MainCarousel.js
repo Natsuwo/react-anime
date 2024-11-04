@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CardSlide } from "../../../Global/Card/Card";
-import UseIconList from "../../../Global/SvgList/UseIconList";
-import "./Carousel.css";
-import Skeleton from "../../../Global/Skeleton/Skeleton";
+import "./MainCarousel.css";
+import UseIconList from "../SvgList/UseIconList";
+import Skeleton from "../Skeleton/Skeleton";
 
-const Carousel = ({
+const MainCarousel = ({
   data = [],
   isLoading = false,
   itemsPerPage = 5,
@@ -87,61 +86,60 @@ const Carousel = ({
   const defaultArr = Array.from({ length: 12 });
 
   return (
-    <div className="carousel-wrapper">
-      <div className="carousel-content">
+    <div className="main-carousel-wrapper">
+      <div className="main-carousel-content">
         {currentPage > 0 && (
-          <span onClick={() => handleClick("left")} className="arrow-icon left">
-            <UseIconList icon="chevron-left" />
-          </span>
+          <div className="carousel-arrow-warpper __left">
+            <div className="carousel-arrow">
+              <span
+                onClick={() => handleClick("left")}
+                className="arrow-icon left"
+              >
+                <UseIconList icon="chevron-left" />
+              </span>
+            </div>
+          </div>
         )}
-        <div
-          ref={scrollRef}
-          className="carousel"
-          onMouseMove={dragging}
-          onMouseDown={handleDragStart}
-          onMouseLeave={handleDragEnd}
-          onMouseUp={handleDragEnd}
-          style={{
-            left: `${position}px`,
-            cursor: isDragging ? "grabbing" : "grab",
-          }}
-        >
-          {isLoading && (
-            <>
-              {defaultArr.map((item, index) => (
-                <Skeleton
-                  className={"main-card"}
-                  key={index}
-                  width={208}
-                  height={117}
-                />
-              ))}
-            </>
-          )}
+        <div className="main-carousel-inner">
+          <div
+            ref={scrollRef}
+            className="main-carousel"
+            onMouseMove={dragging}
+            onMouseDown={handleDragStart}
+            onMouseLeave={handleDragEnd}
+            onMouseUp={handleDragEnd}
+            style={{
+              left: `${position}px`,
+              cursor: isDragging ? "grabbing" : "grab",
+            }}
+          >
+            {isLoading && (
+              <>
+                {defaultArr.map((item, index) => (
+                  <Skeleton
+                    className={"__slide-zone"}
+                    key={index}
+                    width={208}
+                    height={117}
+                  />
+                ))}
+              </>
+            )}
 
-          {children ? (
-            children
-          ) : (
-            <>
-              {data?.map((item, index) => (
-                <CardSlide
-                  props={item}
-                  key={index}
-                  index={index}
-                  isActive={activeCard === index}
-                  onCardClick={handleCardClick}
-                ></CardSlide>
-              ))}
-            </>
-          )}
+            {children}
+          </div>
         </div>
         {totalPages - 1 > currentPage && (
-          <span
-            onClick={() => handleClick("right")}
-            className="arrow-icon right"
-          >
-            <UseIconList icon="chevron-right" />
-          </span>
+          <div className="carousel-arrow-warpper __right">
+            <div className="carousel-arrow">
+              <span
+                onClick={() => handleClick("right")}
+                className="arrow-icon right"
+              >
+                <UseIconList icon="chevron-right" />
+              </span>
+            </div>
+          </div>
         )}
       </div>
       {!hiddenPage && (
@@ -161,4 +159,4 @@ const Carousel = ({
   );
 };
 
-export default Carousel;
+export default MainCarousel;

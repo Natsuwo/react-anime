@@ -53,6 +53,11 @@
   z-index: 1;
 }
 
+.carousel-wrapper .small .arrow-icon {
+  width: 24px;
+  height: 24px;
+}
+
 .carousel-wrapper .arrow-icon.left {
   left: 12px;
 }

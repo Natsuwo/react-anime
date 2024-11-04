@@ -50,9 +50,11 @@ const MyListContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user || user === false) {
+    if (user) {
       const initialMyList = userMetaData?.my_list || [];
-      setDataMyList(initialMyList);
+      if (!dataMyList.length && userMetaData?.my_list) {
+        setDataMyList(initialMyList);
+      }
     }
   }, [user, userMetaData]);
 
@@ -66,8 +68,12 @@ const MyListContextProvider = ({ children }) => {
       // localStorage.setItem("USER_METADATA", JSON.stringify({myList: dataMyList}));
     };
 
-    updateMyList();
-    handleMyList();
+    if (dataMyList.length) {
+      updateMyList();
+    }
+    if (user) {
+      handleMyList();
+    }
   }, [dataMyList, user]);
 
   useEffect(() => {

@@ -1,10 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Banner.css";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import trailerVideo from "../../../../assets/videos/trailer-1.mp4";
 import Carousel from "./Carousel";
+import {
+  FetchAllLimit,
+  FetchSingleDocumentByKey,
+} from "../../../../features/useFetch";
+import LayoutSwitcher from "../../../Global/Banner/LayoutSwitcher/LayoutSwitcher";
+import { UseToggleContext } from "../../../../context/ToggleContext";
+
 const Banner = ({ isHovered, handleHovered }) => {
   const [isMute, setIsMute] = useState(true);
+  // Category Data
+  const [categoryData, setCategoryData] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+
+  // active sort
+  const { isSwitcher, handleSwitch } = UseToggleContext();
+
+  const handleCategoriesList = async () => {
+    setLoading(true);
+    const categorysList = await FetchAllLimit("Categories");
+    categorysList.map(async (item) => {
+      const data = await FetchSingleDocumentByKey(
+        "Videos",
+        "category_id",
+        item.category_id,
+        true
+      );
+      const dataWithCategory = { ...data, category_name: item.category_id };
+      setCategoryData((prev) => {
+        if (
+          !prev.some(
+            (existingItem) => existingItem.category_name === item.category_id
+          )
+        ) {
+          return [...prev, dataWithCategory];
+        }
+        return prev;
+      });
+      setLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    handleCategoriesList();
+  }, []);
+
   return (
     <div className="main-banner">
       <div
@@ -48,7 +91,24 @@ const Banner = ({ isHovered, handleHovered }) => {
             Watch now
           </button>
         </div>
-        <Carousel handleHovered={handleHovered}></Carousel>
+        <div className="main-carousel">
+          <div
+            className="slide-carousel-switch"
+            onMouseEnter={() => handleHovered(false)}
+            onMouseLeave={() => handleHovered(true)}
+          >
+            <LayoutSwitcher
+              handleSwitch={handleSwitch}
+              isSwitcher={isSwitcher}
+            ></LayoutSwitcher>
+          </div>
+          <div
+            onMouseEnter={() => handleHovered(false)}
+            onMouseLeave={() => handleHovered(true)}
+          >
+            <Carousel data={categoryData} isLoading={isLoading} />
+          </div>
+        </div>
         <div className="overlay-left-side-wrapper">
           <div className="overlay-left-side"></div>
         </div>

@@ -112,7 +112,12 @@ svg:not(:root) {
 }
 
 .main-content {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-height: 100vh;
+  min-width: 772px;
 }
 
 .__half-container {
@@ -138,6 +143,7 @@ svg:not(:root) {
   /* Tránh bị phóng to theo chiều cao */
   display: inline-block; /* Giữ các slide không bị giãn */
   box-sizing: border-box;
+  margin-right: 24px;
 }
 
 /* .slick-slide {
@@ -146,7 +152,7 @@ svg:not(:root) {
 
 .slick-track {
   display: flex !important; /* Kích hoạt flex layout cho slick track */
-  gap: 16px; /* Thêm khoảng cách giữa các card */
+  /* gap: 16px; Thêm khoảng cách giữa các card */
 }
 
 /* the parent */
@@ -370,6 +376,10 @@ button.btn-default:hover::after {
   right: 8px;
 }
 
+.page-container-fluid .slick-slider .arrow-icon.right {
+  right: 24px;
+}
+
 .slick-slider .arrow-icon.left {
   left: 8px;
 }
@@ -392,6 +402,10 @@ button.btn-default:hover::after {
   margin: 0 24px;
 }
 
+.page-container-fluid .slick-slider {
+  margin: 0;
+}
+
 .container {
   margin: 0 auto;
   position: relative;
@@ -408,6 +422,23 @@ main.page-main {
   overflow: hidden;
   padding: 0 24px;
   max-width: 1024px;
+}
+
+.page-container-fluid {
+  margin-top: 68px;
+  overflow: hidden;
+  padding: 0 24px;
+}
+
+.main-content-wrapper {
+  margin: 0 auto;
+  /* max-width: 1024px; */
+  min-width: 724px;
+  overflow-x: visible;
+}
+
+.feature-section + .feature-section {
+  margin-top: 24px;
 }
 
 /* Mobile side */
@@ -551,6 +582,14 @@ input.dark-theme:focus {
 @media (max-width: 991px) {
   .page-container {
     padding: 0 0;
+  }
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 100vh;
+    min-width: auto;
   }
 }
 

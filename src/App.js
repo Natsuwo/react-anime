@@ -21,8 +21,8 @@ import Subscription from "./components/Page/Subscription/Subscription";
 import SignUp from "./components/Page/Subscription/SignUp/SignUp";
 import HeaderPromote from "./components/Global/Header/HeaderPromote";
 import Promote from "./components/Page/Subscription/Promote/Promote";
-import Skeleton from "./components/Global/Skeleton/Skeleton";
 import useUniqueShortUserId from "./features/useUniqueShortUserId";
+import Category from "./components/Page/Category/Category";
 
 function App() {
   useUniqueShortUserId();
@@ -88,6 +88,7 @@ function App() {
             ></Route>
             <Route path="/mylist" element={<MyList />}></Route>
             <Route path="/history" element={<History />}></Route>
+            <Route path="/genre/:slug" element={<Category />}></Route>
           </Routes>
           {!isSubscriptionPage && <Footer />}
           {isPromotePage && <Footer />}

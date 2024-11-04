@@ -23,13 +23,25 @@
   margin: 0 24px;
   display: flex;
   gap: 16px;
-  align-items: center;
+  align-items: stretch;
 }
 
-.flex-container-less-item:first-child {
+/* .flex-container-less-item:first-child {
   margin-left: 16px;
-}
+} */
 
 .flex-container-less-item {
   width: calc(100% / 4 - 12px);
+}
+
+@media (max-width: 767px) {
+  .flex-container-less-item {
+    width: calc(100% / 3 - 12px);
+  }
+}
+
+@media (max-width: 576px) {
+  .flex-container-less-item {
+    width: calc(100% / 2 - 12px);
+  }
 }

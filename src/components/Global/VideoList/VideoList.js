@@ -48,6 +48,7 @@ const VideoList = ({
   categoryTitle,
   totalSlides = 12,
   slidesToShow = 3,
+  slidesToScroll,
   ChildComponent,
   width,
   height,
@@ -87,7 +88,7 @@ const VideoList = ({
         ? sevenCardResponsive
         : eightCardResponsive || [],
     slidesToShow: slidesToShow,
-    slidesToScroll: slidesToShow,
+    slidesToScroll: slidesToScroll ? slidesToScroll : slidesToShow,
     afterChange: (index) => {
       handleAfterChange();
       setCurrentSlide(index);
@@ -114,7 +115,7 @@ const VideoList = ({
       <div className="video-list-content">
         <div className="container mt">
           <div className="video-list-category-title">
-            <h2>{categoryTitle}</h2>
+            {categoryTitle && <h2>{categoryTitle}</h2>}
           </div>
         </div>
 

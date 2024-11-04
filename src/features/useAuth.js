@@ -12,6 +12,7 @@ const useAuth = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        localStorage.setItem("USER_METADATA", JSON.stringify({}));
         setUser(user);
       } else {
         setUser(false);

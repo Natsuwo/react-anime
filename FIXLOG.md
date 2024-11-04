@@ -6,11 +6,12 @@
 6. Tạo context có usermetadata [DONE]
 7. Upload file lên firebase
 8. Sign in Sign Up [DONE]
-9. My list Database
+9. My list Database [DONE]
 10. Tách component Modal
-11. Category
+11. Category [DONE]
 12. Premium Payment
 13. Mobile
+14. Fix sao cho chỉ get 1 lần category ở banner
 
 Update
 

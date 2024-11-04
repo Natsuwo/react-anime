@@ -11,24 +11,27 @@ import { ResponsiveContextPrivider } from "./context/ResponsiveContext";
 import { PlayerWideContextProvider } from "./context/PlayerWideContext";
 import { MyListContextProvider } from "./context/MyListContext";
 import { UserMetaContextProvider } from "./context/UserMeta";
+import { CategoryContextProvider } from "./context/CategoryContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
-    <UserMetaContextProvider>
-      <MyListContextProvider>
-        <PlayerWideContextProvider>
-          <ResponsiveContextPrivider>
-            <ToggleContextProvider>
-              <BrowserRouter>
-                <App />
-              </BrowserRouter>
-            </ToggleContextProvider>
-          </ResponsiveContextPrivider>
-        </PlayerWideContextProvider>
-      </MyListContextProvider>
-    </UserMetaContextProvider>
+    <CategoryContextProvider>
+      <UserMetaContextProvider>
+        <MyListContextProvider>
+          <PlayerWideContextProvider>
+            <ResponsiveContextPrivider>
+              <ToggleContextProvider>
+                <BrowserRouter>
+                  <App />
+                </BrowserRouter>
+              </ToggleContextProvider>
+            </ResponsiveContextPrivider>
+          </PlayerWideContextProvider>
+        </MyListContextProvider>
+      </UserMetaContextProvider>
+    </CategoryContextProvider>
   </React.StrictMode>
 );
 
