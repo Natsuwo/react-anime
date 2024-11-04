@@ -1,0 +1,61 @@
+.yurei-logo-loading .yurei-right-eye,
+.yurei-logo-loading .yurei-left-eye {
+  animation: blink 1.5s infinite;
+}
+
+.yurei-logo-loading svg {
+  animation: sway 1.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.yurei-logo-loading .yurei-tsue {
+  animation: spin 3s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-20deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes sway {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  20% {
+    ry: 2.81386; /* Kích thước bình thường */
+    opacity: 1; /* Đầy đủ hiển thị */
+  }
+  10% {
+    ry: 1; /* Giảm kích thước để tạo hiệu ứng chớp */
+    opacity: 0; /* Ẩn hình */
+  }
+  30%,
+  100% {
+    ry: 2.81386; /* Trở lại kích thước bình thường */
+    opacity: 1; /* Hiển thị lại hình */
+  }
+}

@@ -13,7 +13,11 @@ import {
 } from "../../Global/Card/Card";
 import VideoList from "../../Global/VideoList/VideoList";
 import { UseResponsiveContext } from "../../../context/ResponsiveContext";
-import { GetAllSort, GetDocumentsByQuery } from "../../../features/useFetch";
+import {
+  FetchMyList,
+  GetAllSort,
+  GetDocumentsByQuery,
+} from "../../../features/useFetch";
 import { UseMyListContext } from "../../../context/MyListContext";
 
 import db from "../../../firebase";
@@ -77,7 +81,7 @@ const Home = () => {
     true
   );
 
-  const { dataMyList } = UseMyListContext();
+  const { myList, dataMyList, isLoading: myListLoading } = UseMyListContext();
 
   // useEffect(() => {
   //   const getData = async () => {
@@ -103,6 +107,33 @@ const Home = () => {
           height={215}
         ></VideoList>
       )}
+
+      {/* My List */}
+      {myListLoading ? (
+        <VideoList
+          categoryTitle={"My List"}
+          ChildComponent={CardSkeleton}
+          slidesToShow={4}
+          height={175}
+        ></VideoList>
+      ) : (
+        dataMyList?.length > 0 && (
+          <VideoList
+            categoryTitle={"My List"}
+            ChildComponent={CardVideo}
+            slidesToShow={4}
+            items={myList}
+          ></VideoList>
+        )
+      )}
+
+      {/* <VideoList
+        categoryTitle={"My List"}
+        ChildComponent={CardSkeleton}
+        slidesToShow={4}
+        height={175}
+      ></VideoList> */}
+
       {/* Action */}
       {!isLoadingAcion ? (
         <VideoList
@@ -120,21 +151,6 @@ const Home = () => {
         ></VideoList>
       )}
 
-      {/* My List */}
-      {dataMyList?.length > 0 && (
-        <VideoList
-          categoryTitle={"My List"}
-          ChildComponent={CardVideo}
-          slidesToShow={4}
-          items={dataMyList}
-        ></VideoList>
-      )}
-      {/* <VideoList
-        categoryTitle={"My List"}
-        ChildComponent={CardSkeleton}
-        slidesToShow={4}
-        height={175}
-      ></VideoList> */}
       {/* Card Rank */}
       {/* CardRank */}
       {!isLoadingMostView ? (

@@ -16,10 +16,13 @@ const useUniqueShortUserId = () => {
           .replace(/\//g, "_") // Thay ký tự đặc biệt
           .replace(/\+/g, "-") // Thay ký tự đặc biệt
           .substring(0, 14); // Giới hạn độ dài
-        localStorage.setItem("USER_LIST", JSON.stringify([]));
         localStorage.setItem(
           "USER_METADATA",
-          JSON.stringify({ userId: base64Id, subscription_level: 1 })
+          JSON.stringify({
+            userId: base64Id,
+            subscription_level: 1,
+            my_list: [],
+          })
         );
         console.log("New unique user ID generated and saved:", base64Id);
       } else {

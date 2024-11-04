@@ -5,7 +5,12 @@
 5. Lưu Tooltip vào component [DONE]
 6. Tạo context có usermetadata [DONE]
 7. Upload file lên firebase
-8. Sign in Sign Up
+8. Sign in Sign Up [DONE]
+9. My list Database
+10. Tách component Modal
+11. Category
+12. Premium Payment
+13. Mobile
 
 Update
 

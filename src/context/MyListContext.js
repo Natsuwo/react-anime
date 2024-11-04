@@ -1,4 +1,6 @@
 import { useContext, createContext, useState, useEffect } from "react";
+import { UseUserMetaContext } from "./UserMeta";
+import { FetchMyList } from "../features/useFetch";
 
 // create
 const MyListContext = createContext();
@@ -7,43 +9,85 @@ const MyListContext = createContext();
 const MyListContextProvider = ({ children }) => {
   const [addToList, setAddToList] = useState({});
   const [isLoading, setLoading] = useState(true);
+  const {
+    user,
+    userMetaData,
+    handleUserMetaData,
+    isLoading: userMetaLoading,
+  } = UseUserMetaContext();
 
-  const dataMyListLocal = localStorage.getItem("USER_LIST")
-    ? JSON.parse(localStorage.getItem("USER_LIST"))
-    : [];
+  const [dataMyList, setDataMyList] = useState([]);
+  // My List Fetch
+  const [myList, setMyList] = useState([]);
 
-  const [dataMyList, setDataMyList] = useState(dataMyListLocal);
+  const handleAddToList = async (video_id) => {
+    setDataMyList((prevList) => {
+      const exists = prevList.includes(video_id);
+      const updatedList = exists
+        ? prevList.filter((video) => video !== video_id)
+        : [...prevList, video_id];
 
-  const handleAddToList = (video_id, data) => {
-    const exists = dataMyList.findIndex((video) => video.video_id === video_id);
-    if (exists === -1) {
-      const updatedList = [...dataMyList, data];
-      setDataMyList(updatedList);
-      setAddToList((prev) => ({ ...prev, [video_id]: true }));
-    } else {
-      const updatedList = dataMyList.filter(
-        (video) => video.video_id !== video_id
-      );
-      setDataMyList(updatedList);
-      setAddToList((prev) => ({ ...prev, [video_id]: false }));
+      setAddToList((prev) => ({ ...prev, [video_id]: !exists }));
+
+      return updatedList;
+    });
+  };
+
+  const handleMyList = async () => {
+    if (Object.keys(userMetaData).length && dataMyList) {
+      const handleFetchMyList = await FetchMyList(dataMyList);
+      setLoading(false);
+      if (handleFetchMyList.success) {
+        setMyList(handleFetchMyList.videos);
+      } else {
+        setMyList([]);
+      }
+    }
+
+    if (user === false) {
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user || user === false) {
+      const initialMyList = userMetaData?.my_list || [];
+      setDataMyList(initialMyList);
+    }
+  }, [user, userMetaData]);
 
   useEffect(() => {
     const updateMyList = () => {
       const newAddToList = {};
       dataMyList.forEach((item) => {
-        newAddToList[item.video_id] = true;
+        newAddToList[item] = true;
       });
       setAddToList(newAddToList);
-      localStorage.setItem("USER_LIST", JSON.stringify(dataMyList));
+      // localStorage.setItem("USER_METADATA", JSON.stringify({myList: dataMyList}));
     };
+
     updateMyList();
-  }, [dataMyList]);
+    handleMyList();
+  }, [dataMyList, user]);
+
+  useEffect(() => {
+    const updateUserMetaData = async () => {
+      if (
+        user !== null &&
+        userMetaData &&
+        Object.keys(userMetaData).length &&
+        JSON.stringify(userMetaData?.my_list) !== JSON.stringify(dataMyList) &&
+        !isLoading
+      ) {
+        handleUserMetaData({ my_list: dataMyList });
+      }
+    };
+    updateUserMetaData();
+  }, [dataMyList, user, userMetaData]);
 
   return (
     <MyListContext.Provider
-      value={{ dataMyList, addToList, handleAddToList, isLoading }}
+      value={{ myList, dataMyList, addToList, handleAddToList, isLoading }}
     >
       {children}
     </MyListContext.Provider>

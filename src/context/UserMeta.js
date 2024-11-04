@@ -21,7 +21,7 @@ const UserMetaContextProvider = ({ children }) => {
   const { value: userLevel, loading: levelLoading } = GetDocumentsByQuery(
     "Subscription_Level",
     "level_id",
-    userMetaData.subscription_level
+    userMetaData?.subscription_level
   );
 
   const handleUserMetaData = (data) => {
@@ -53,14 +53,20 @@ const UserMetaContextProvider = ({ children }) => {
     fetchUserMetaData();
   }, [user]);
 
+  const handeUpdateUserMeta = async () => {
+    setLoading(true);
+    await UpdateDocument(userMetaData, "UserMetaData", user.uid);
+    setPrevMetaData(userMetaData);
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (!isLoading) {
       if (
         user &&
         JSON.stringify(prevMetaData) !== JSON.stringify(userMetaData)
       ) {
-        setPrevMetaData(userMetaData);
-        UpdateDocument(userMetaData, "UserMetaData", user.uid);
+        handeUpdateUserMeta();
       }
       if (user === false) {
         localStorage.setItem("USER_METADATA", JSON.stringify(userMetaData));
@@ -72,6 +78,7 @@ const UserMetaContextProvider = ({ children }) => {
     <UserMetaContext.Provider
       value={{
         user,
+        isLoading,
         handleUserMetaData,
         userMetaData,
         userId,

@@ -29,6 +29,8 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
+import { firestore } from "firebase/app";
+
 export const CreateDocument = async (document, userId, params) => {
   try {
     // const docRef = await addDoc(collection(db, document), params);
@@ -150,7 +152,6 @@ export const FireBaseSignUp = async ({
       is_verified: false,
       ...userMetaData,
     });
-    localStorage.setItem("USER_LIST", JSON.stringify([]));
     localStorage.setItem("USER_METADATA", JSON.stringify({}));
     sendEmailVerification(user);
     return { success: true, user };
@@ -172,7 +173,6 @@ export const FireBaseSignIn = async ({ email, password }) => {
       password
     );
 
-    localStorage.setItem("USER_LIST", JSON.stringify([]));
     localStorage.setItem("USER_METADATA", JSON.stringify({}));
     return { success: true, user: userCredential.user };
   } catch (error) {
@@ -209,7 +209,7 @@ export const SendMailAgain = async () => {
   }
 };
 
-export const UpdateDocument = (objUpdate, document, id) => {
+export const UpdateDocument = async (objUpdate, document, id) => {
   const newObjUpdate = {
     ...objUpdate,
     last_modified_date: serverTimestamp(),
@@ -217,7 +217,7 @@ export const UpdateDocument = (objUpdate, document, id) => {
 
   try {
     const updateRef = doc(db, document, id);
-    updateDoc(updateRef, newObjUpdate);
+    await updateDoc(updateRef, newObjUpdate);
     return { success: true };
   } catch (error) {
     return { success: false, error: error.message, errorCode: error.code };
@@ -287,6 +287,27 @@ export const FetchChangePassword = async (newPassword) => {
     return { success: true };
   } catch (error) {
     console.error("Error updating password:", error);
+    return { success: false, error: error.message, errorCode: error.code };
+  }
+};
+
+export const FetchMyList = async (myList) => {
+  if (!myList || myList.length === 0) {
+    return [];
+  }
+
+  try {
+    const videosRef = collection(db, "Videos");
+    const videosQuery = query(videosRef, where("__name__", "in", myList));
+    const videosSnapshot = await getDocs(videosQuery);
+
+    const videos = [];
+    videosSnapshot.forEach((doc) => {
+      videos.push({ id: doc.id, ...doc.data() });
+    });
+
+    return { success: true, videos };
+  } catch (error) {
     return { success: false, error: error.message, errorCode: error.code };
   }
 };

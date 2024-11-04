@@ -80,9 +80,9 @@ export const CardVideo = ({
   last_modified_date,
 }) => {
   const { addToList, handleAddToList } = UseMyListContext();
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.stopPropagation();
-    handleAddToList(video_id, {
+    await handleAddToList(video_id, {
       last_modified_date,
       upload_date,
       id: video_id,

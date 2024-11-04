@@ -13,11 +13,11 @@ import "./Mylist.css";
 
 import { UseMyListContext } from "../../../context/MyListContext";
 import { handleSortData } from "../../../features/helper";
+import YureiLoading from "../../Global/YureiLoading/YureiLoading";
 
 const MyList = () => {
   const sortRef = useRef(null);
-  const { dataMyList } = UseMyListContext();
-  const [isLoading, setLoading] = useState(true);
+  const { myList, isLoading } = UseMyListContext();
   const [sortAcitve, setSortActive] = useState(0);
   const [showSort, setShowSort] = useState(false);
   const [sortData, setSortData] = useState([]);
@@ -37,16 +37,16 @@ const MyList = () => {
   const handleSortItem = (index) => {
     switch (index) {
       case 0:
-        setSortData(handleSortData(dataMyList, "last_modified_date", "desc"));
+        setSortData(handleSortData(myList, "last_modified_date", "desc"));
         break;
       case 1:
-        setSortData(handleSortData(dataMyList, "last_modified_date", "asc"));
+        setSortData(handleSortData(myList, "last_modified_date", "asc"));
         break;
       case 2:
-        setSortData(handleSortData(dataMyList, "upload_date", "desc"));
+        setSortData(handleSortData(myList, "upload_date", "desc"));
         break;
       case 3:
-        setSortData(handleSortData(dataMyList, "upload_date", "asc"));
+        setSortData(handleSortData(myList, "upload_date", "asc"));
         break;
     }
   };
@@ -56,8 +56,7 @@ const MyList = () => {
       handleSortItem(sortAcitve);
     };
 
-    if (isLoading) {
-      setLoading(false);
+    if (!isLoading) {
       updateSort();
     }
 
@@ -75,7 +74,7 @@ const MyList = () => {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [showSort]);
+  }, [showSort, isLoading]);
   return (
     <main className="page-main">
       <div className="page-container">
@@ -113,38 +112,55 @@ const MyList = () => {
         </div>
         <div className="episode-list-wrapper">
           <section className="episode-list-container">
-            {sortData.length > 0 ? (
-              <ul className="episode-list">
-                {sortData.map((item, index) => (
-                  <CardListEpsiode
-                    onClick={() => handleDeleteItemSort(index)}
-                    key={index}
-                    data={item}
-                    mylist={true}
-                    showDesc={false}
-                    showSupplements={false}
-                  />
-                ))}
-              </ul>
-            ) : (
-              <div className="add-to-list-empty">
-                <div className="add-to-list-empty-title">
-                  Create your own watchlist so you don't miss any videos you
-                  want to watch.
-                </div>
-                <div className="add-to-list-empty-desc">
-                  You can add videos by pressing the 'Add to My List' button."
-                </div>
-                <div className="add-to-my-list-image-demo">
-                  <ResponsiveImage
-                    webpSrcSet={`${AddToListImgWebp} 1x, ${AddToListImgWebp2X} 2x`}
-                    pngSrcSet={`${AddToListImg} 1x, ${AddToListImg2X} 2x`}
-                    alt="Add To List Empty Image Demo"
-                    width="348"
-                    height="264"
-                  />
-                </div>
+            {isLoading ? (
+              <div
+                style={{
+                  width: "100%",
+                  minHeight: "540px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <YureiLoading />
               </div>
+            ) : (
+              <>
+                {sortData.length > 0 ? (
+                  <ul className="episode-list">
+                    {sortData.map((item, index) => (
+                      <CardListEpsiode
+                        onClick={() => handleDeleteItemSort(index)}
+                        key={index}
+                        data={item}
+                        mylist={true}
+                        showDesc={false}
+                        showSupplements={false}
+                      />
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="add-to-list-empty">
+                    <div className="add-to-list-empty-title">
+                      Create your own watchlist so you don't miss any videos you
+                      want to watch.
+                    </div>
+                    <div className="add-to-list-empty-desc">
+                      You can add videos by pressing the 'Add to My List'
+                      button."
+                    </div>
+                    <div className="add-to-my-list-image-demo">
+                      <ResponsiveImage
+                        webpSrcSet={`${AddToListImgWebp} 1x, ${AddToListImgWebp2X} 2x`}
+                        pngSrcSet={`${AddToListImg} 1x, ${AddToListImg2X} 2x`}
+                        alt="Add To List Empty Image Demo"
+                        width="348"
+                        height="264"
+                      />
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </section>
         </div>
