@@ -3,11 +3,6 @@ import emailjs from "@emailjs/browser";
 export const sendMail = async (params) => {
   // require, to_email, to_name, otp_code for OTP
   try {
-    console.log(
-      process.env.REACT_APP_EMAILJS_SERVICE_ID,
-      process.env.REACT_APP_EMAILJS_PUBLIC_KEY
-    );
-
     const result = await emailjs.send(
       process.env.REACT_APP_EMAILJS_SERVICE_ID, // service_id
       "template_dxnqicp", // template_id otp

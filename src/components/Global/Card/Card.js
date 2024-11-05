@@ -14,15 +14,17 @@ export const CardSlide = ({ index, isActive, onCardClick, props }) => {
       onClick={() => onCardClick(index)}
       className={`main-card nobold${isActive ? " active" : ""}`}
     >
-      <div className="card-overlay"></div>
       <div className="thumbnail">
-        <img
-          width="208"
-          height="117"
-          src={props.highlighted_thumbnail}
-          alt=""
-        />
+        <Skeleton>
+          <img
+            width="208"
+            height="117"
+            src={props.highlighted_thumbnail}
+            alt=""
+          />
+        </Skeleton>
       </div>
+      <div className="card-overlay"></div>
       <div className="main-tag">
         <CategoryTag type={props?.category_name && props?.category_name} />
       </div>
@@ -34,15 +36,17 @@ export const CardList = ({ props }) => {
   return (
     <div className="card-list-wrapper">
       <div className="card-content">
-        <div className="card-overlay"></div>
         <div className="thumbnail">
-          <img
-            width="208"
-            height="117"
-            src={props.highlighted_thumbnail}
-            alt=""
-          />
+          <Skeleton>
+            <img
+              width="208"
+              height="117"
+              src={props.highlighted_thumbnail}
+              alt=""
+            />
+          </Skeleton>
         </div>
+        <div className="card-overlay"></div>
         <div className="main-tag">
           <CategoryTag type={props?.category_name && props?.category_name} />
         </div>
@@ -63,6 +67,7 @@ export const CardVideo = ({
   is_live = false,
   is_new = false,
   role_tag = "",
+  thumbnail_url,
   highlighted_thumbnail,
   onClick,
   width,
@@ -79,13 +84,19 @@ export const CardVideo = ({
       id: video_id,
       video_id,
       title,
-      highlighted_thumbnail,
+      highlighted_thumbnail: highlighted_thumbnail
+        ? highlighted_thumbnail
+        : thumbnail_url,
     });
   };
   return (
     <div className="video-card-wrapper">
       <Link
-        to={`/video/detail/${video_id}`}
+        to={
+          thumbnail_url
+            ? `/video/episode/${video_id}`
+            : `/video/detail/${video_id}`
+        }
         className="link-block video-card"
         draggable="false"
         onClick={onClick}
@@ -98,7 +109,15 @@ export const CardVideo = ({
                 <div className="card-tag-time">{video_tags.time}</div>
               </div>
             )}
-          <img style={{ width, height }} src={highlighted_thumbnail} alt="" />
+          <Skeleton>
+            <img
+              style={{ width, height }}
+              src={
+                highlighted_thumbnail ? highlighted_thumbnail : thumbnail_url
+              }
+              alt=""
+            />
+          </Skeleton>
 
           {is_live && (
             <div className="tag-on-thumb-wrapper">
@@ -194,14 +213,10 @@ export const CardRank = ({
             to={`/video/detail/${video_id}`}
           >
             <div className="card-rank-details">
-              <div
-                className="card-rank-thumbnail"
-                style={{
-                  width: width ? width : "128px",
-                  height: height ? height : "182px",
-                }}
-              >
-                <img src={vertical_thumbnail} alt="" />
+              <div className="card-rank-thumbnail">
+                <Skeleton>
+                  <img src={vertical_thumbnail} alt="" />
+                </Skeleton>
                 {getDays(upload_date) < 10 && (
                   <div className="card-rank-tag">
                     <span
@@ -316,7 +331,7 @@ export const CardRankSkeleton = ({ rank = 0 }) => {
           </div>
           <div className="card-rank-details">
             <div className="card-rank-thumbnail">
-              <Skeleton width={120} height={170} />
+              <Skeleton></Skeleton>
             </div>
           </div>
         </div>

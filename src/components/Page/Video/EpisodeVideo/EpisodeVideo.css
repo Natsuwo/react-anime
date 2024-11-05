@@ -1,3 +1,57 @@
+.episode-main-content {
+  margin-top: 68px;
+  overflow-x: hidden;
+  padding: 0 24px;
+
+  --space-below-player: 80;
+  --space-above-player: 114;
+  --content-min-width: 824;
+  --content-max-width: 7680;
+  --space-between-player-and-side-module: 24;
+  --side-module-min-width: 320;
+  --side-module-max-width: 360;
+  --player-aspect-ratio: 1.77778;
+  --player-min-width: calc(
+    var(--content-min-width) - var(--side-module-min-width) -
+      var(--space-between-player-and-side-module)
+  );
+  --player-max-width: calc(
+    var(--content-max-width) - var(--side-module-max-width) -
+      var(--space-between-player-and-side-module)
+  );
+
+  --space-vertical: calc(var(--space-above-player) + var(--space-below-player));
+  --viewport-min-height: calc(
+    var(--player-min-width) / var(--player-aspect-ratio) + var(--space-vertical)
+  );
+  --viewport-max-height: calc(
+    var(--player-max-width) / var(--player-aspect-ratio) + var(--space-vertical)
+  );
+  --content-width-range: calc(
+    var(--content-max-width) - var(--content-min-width)
+  );
+  --viewport-height-range: calc(
+    var(--viewport-max-height) - var(--viewport-min-height)
+  );
+}
+
+.episode-main-container {
+  margin: 0 auto;
+  max-width: calc(var(--content-max-width) * 1px);
+  overflow-x: visible;
+}
+
+.episode-main-inner {
+  --inner-max-width: calc(
+    (100vh - var(--viewport-min-height) * 1px) / var(--viewport-height-range) *
+      var(--content-width-range) + var(--content-min-width) * 1px
+  );
+  margin: 0 auto;
+  max-width: var(--inner-max-width);
+  min-width: calc(var(--content-min-width) * 1px);
+  overflow-x: visible;
+}
+
 .episode-main-title {
   display: flex;
   flex-direction: column;

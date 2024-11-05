@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./VideoList.css";
 import Slider from "react-slick";
 import UseIconList from "../SvgList/UseIconList";
@@ -7,6 +7,7 @@ import {
   eightCardResponsive,
   sevenCardResponsive,
 } from "../../Page/Home/CardReponsive";
+import Skeleton from "../Skeleton/Skeleton";
 
 function NextArrow(props) {
   const { style, onClick, state } = props;
@@ -52,13 +53,13 @@ const VideoList = ({
   ChildComponent,
   width,
   height,
-  items = Array.from({ length: totalSlides }, (_, i) => ({
-    id: i,
-    title: `Video ${i + 1}`,
-  })),
+  items = [],
+  isLoading = true,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
+  const defaultArr = Array.from({ length: 4 });
+  const cardRefs = useRef([]);
 
   const handleBeforeChange = () => {
     setIsScrolling(true);
@@ -106,10 +107,17 @@ const VideoList = ({
         <PrevArrow state={false} />
       ),
   };
-  // const videos = Array.from({ length: totalSlides }, (_, i) => ({
-  //   id: i,
-  //   title: `Video ${i + 1}`,
-  // }));
+
+  useEffect(() => {
+    const maxHeight = Math.max(
+      ...cardRefs.current.map((card) => card.offsetHeight)
+    );
+    cardRefs.current.forEach((card) => {
+      card.style.height = `${maxHeight}px`;
+    });
+
+    console.log(maxHeight);
+  }, [items]);
   return (
     <div className="video-list-wrapper">
       <div className="video-list-content">
@@ -118,26 +126,37 @@ const VideoList = ({
             {categoryTitle && <h2>{categoryTitle}</h2>}
           </div>
         </div>
+        {isLoading && items.length === 0 && (
+          <div className="flex-container-less-wrapper">
+            {defaultArr.map((_, index) => (
+              <div className="flex-container-less-item" key={index}>
+                <Skeleton></Skeleton>
+              </div>
+            ))}
+          </div>
+        )}
 
         {items.length > 4 && (
           <div className="flex-container">
             <Slider {...settings}>
               {items.map((video, index) => (
-                <ChildComponent
-                  onClick={handleLinkClick}
-                  width={width}
-                  height={height}
-                  video_id={video.id}
-                  key={index}
-                  highlighted_thumbnail={video.highlighted_thumbnail}
-                  vertical_thumbnail={video.thumbnail_vertical_url}
-                  horizontal_thumbnail={video.thumbnail_horizontal_url}
-                  last_modified_date={video.last_modified_date}
-                  upload_date={video.upload_date}
-                  url={video.video_url}
-                  rank={index + 1}
-                  title={video.title}
-                />
+                <div key={index} ref={(el) => (cardRefs.current[index] = el)}>
+                  <ChildComponent
+                    onClick={handleLinkClick}
+                    width={width}
+                    height={height}
+                    video_id={video.id}
+                    thumbnail_url={video.thumbnail_url}
+                    highlighted_thumbnail={video.highlighted_thumbnail}
+                    vertical_thumbnail={video.thumbnail_vertical_url}
+                    horizontal_thumbnail={video.thumbnail_horizontal_url}
+                    last_modified_date={video.last_modified_date}
+                    upload_date={video.upload_date}
+                    url={video.video_url}
+                    rank={index + 1}
+                    title={video.title}
+                  />
+                </div>
               ))}
             </Slider>
           </div>
@@ -147,6 +166,7 @@ const VideoList = ({
             {items.map((video, index) => (
               <div className="flex-container-less-item" key={index}>
                 <ChildComponent
+                  ref={(el) => (cardRefs.current[index] = el)}
                   onClick={handleLinkClick}
                   width={width}
                   height={height}

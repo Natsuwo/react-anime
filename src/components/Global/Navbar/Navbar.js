@@ -76,7 +76,6 @@ const Navbar = () => {
               <div className="sub-menu-collapsible-inner">
                 <ul className="sub-menu-list">
                   {categoryList &&
-                    categoryList.length &&
                     categoryList.map((item, index) => (
                       <li key={index} className="sub-menu-item">
                         <NavLink

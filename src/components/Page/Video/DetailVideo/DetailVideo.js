@@ -23,14 +23,28 @@ const DetailVideo = () => {
   const { size } = UseResponsiveContext();
 
   const { value: data, loading: isLoading } = GetDocument("Videos", videoId);
-  const { value: episodeListArr, loading: episodeListLoading } =
-    GetDocumentsByQuery("Episode", "video_id", videoId);
+
   const { value: mostViewData, loading: isLoadingMostView } = GetAllSort(
     "Videos",
     "views_count",
     "desc",
     12
   );
+
+  const [episodeListArr, setEpisodeList] = useState([]);
+  const [episodeListLoading, setElistLoading] = useState(true);
+
+  useEffect(() => {
+    const handleData = async () => {
+      const data = await GetDocumentsByQuery("Episode", "video_id", videoId);
+      if (data.success) {
+        setEpisodeList(data.doc);
+      }
+      setElistLoading(false);
+    };
+
+    handleData();
+  }, [videoId]);
 
   useEffect(() => {
     if (descRef.current) {
@@ -48,14 +62,14 @@ const DetailVideo = () => {
             <div className="detail-container">
               <div className="detail-thumbnail">
                 <div className="detail-thumbnail-container">
-                  {!isLoading ? (
-                    <img
-                      src={data?.thumbnail_vertical_url}
-                      alt={data?.title + " main thumbnail"}
-                    />
-                  ) : (
-                    <Skeleton height={318} />
-                  )}
+                  <Skeleton horizontal={false}>
+                    {data?.thumbnail_vertical_url && (
+                      <img
+                        src={data?.thumbnail_vertical_url}
+                        alt={data?.title + " main thumbnail"}
+                      />
+                    )}
+                  </Skeleton>
                 </div>
               </div>
               <div className="detail-infomation">
@@ -141,7 +155,10 @@ const DetailVideo = () => {
         {episodeListLoading ? (
           <Skeleton width="100%" height={250} />
         ) : (
-          <EpisodeList value={episodeListArr} loading={episodeListLoading} />
+          <EpisodeList
+            value={episodeListArr}
+            loading={episodeListLoading.current}
+          />
         )}
         <div className="container__mobile">
           <div className="mt">

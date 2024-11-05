@@ -64,40 +64,51 @@ export const GetDocument = (document, id) => {
   return { value, loading };
 };
 
-export const GetDocumentsByQuery = (
+export const GetDocumentsByQuery = async (
   document,
   find,
   id = null,
   array = false,
-  maxDoc = 12
+  maxDoc = 12,
+  sort = false,
+  sort_field,
+  sort_by
 ) => {
-  const [value, setValue] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const getData = async () => {
-    setLoading(true);
-    try {
-      const q = query(
-        collection(db, document),
-        where(find, array ? "array-contains" : "==", id),
-        limit(maxDoc)
-      );
-      const querySnapshot = await getDocs(q);
+  try {
+    let q;
 
-      const documents = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setValue(documents);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+    if (id) {
+      q = sort
+        ? query(
+            collection(db, document),
+            where(find, array ? "array-contains" : "==", id),
+            orderBy(sort_field, sort_by),
+            limit(maxDoc)
+          )
+        : query(
+            collection(db, document),
+            where(find, array ? "array-contains" : "==", id),
+            limit(maxDoc)
+          );
+    } else {
+      q = sort
+        ? query(
+            collection(db, document),
+            orderBy(sort_field, sort_by),
+            limit(maxDoc)
+          )
+        : query(collection(db, document), limit(maxDoc));
     }
-  };
-  useEffect(() => {
-    getData();
-  }, [document, id, array]);
-  return { value, loading };
+
+    const querySnapshot = await getDocs(q);
+    const documents = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return { success: true, doc: documents };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
 };
 
 export const GetAllSort = (document, field, order_by, maxDoc) => {

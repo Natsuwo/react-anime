@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Home.css";
 import Banner from "./Banner/Banner";
 import Sponsored from "./Sponsored/Sponsored";
@@ -74,18 +74,24 @@ const Home = () => {
     12
   );
 
-  const { value: actionData, loading: isLoadingAcion } = GetDocumentsByQuery(
-    "Videos",
-    "tags",
-    "Action",
-    true
-  );
+  const [actionData, setActionData] = useState([]);
+  const isLoadingAction = useRef(true);
+
+  useEffect(() => {
+    const handleActionData = async () => {
+      const data = await GetDocumentsByQuery("Videos", "tags", "Action", true);
+      if (data.success) {
+        setActionData(data.doc);
+      }
+      isLoadingAction.current = false;
+    };
+    handleActionData();
+  }, []);
 
   const { myList, dataMyList, isLoading: myListLoading } = UseMyListContext();
 
   // let testRun = false;
   // useEffect(() => {
-  //   // console.log("chay");
   //   const getData = async () => {
   //     testRun = true;
   //     // const docRef = await addDoc(collection(db, "Episode"), EpisodeData[0]);
@@ -96,7 +102,6 @@ const Home = () => {
   //   };
 
   //   if (!testRun) {
-  //     console.log("chay");
   //     getData();
   //   }
   // }, []);
@@ -147,7 +152,7 @@ const Home = () => {
       ></VideoList> */}
 
       {/* Action */}
-      {!isLoadingAcion ? (
+      {!isLoadingAction.current ? (
         <VideoList
           categoryTitle={"Action List"}
           ChildComponent={CardVideo}
@@ -166,21 +171,14 @@ const Home = () => {
 
       {/* Card Rank */}
       {/* CardRank */}
-      {!isLoadingMostView ? (
+      {mostViewData && (
         <VideoList
           categoryTitle={"Top Rank"}
           ChildComponent={CardRank}
-          slidesToShow={6}
+          slidesToShow={7}
           items={mostViewData}
           totalSlides={mostViewData?.length}
-        ></VideoList>
-      ) : (
-        <VideoList
-          categoryTitle={"Top Rank"}
-          ChildComponent={CardRankSkeleton}
-          slidesToShow={7}
-          width={120}
-          height={170}
+          isLoading={isLoadingMostView}
         ></VideoList>
       )}
       {/* Card Square */}
@@ -189,6 +187,7 @@ const Home = () => {
         categoryTitle={"Sport"}
         ChildComponent={CardSquare}
         slidesToShow={8}
+        isLoading={false}
       ></VideoList>
     </>
   );

@@ -9,6 +9,7 @@ const Skeleton = ({
   rounded,
   borderRadius,
   children,
+  horizontal = true,
 }) => {
   return (
     <div
@@ -20,8 +21,9 @@ const Skeleton = ({
         ...customStyle,
       }}
     >
-      <div className="skeleton"></div>
-      {children}
+      <div className={`skeleton${horizontal ? " horizontal" : " vertical"}`}>
+        <div className="skeleton-children">{children}</div>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import "./AccountBar.css";
-import { GetDocumentsByQuery } from "../../../features/useFetch";
 import Skeleton from "../Skeleton/Skeleton";
 import { UseUserMetaContext } from "../../../context/UserMeta";
 

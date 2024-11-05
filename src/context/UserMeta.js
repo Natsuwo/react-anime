@@ -18,15 +18,30 @@ const UserMetaContextProvider = ({ children }) => {
   const [userMetaData, setUserMetaData] = useState({});
   const [userId, setUserId] = useState("");
 
-  const { value: userLevel, loading: levelLoading } = GetDocumentsByQuery(
-    "Subscription_Level",
-    "level_id",
-    userMetaData?.subscription_level
-  );
-
   const handleUserMetaData = (data) => {
     setUserMetaData((prev) => ({ ...prev, ...data }));
   };
+
+  const [userLevel, setUserLevel] = useState([]);
+  const [levelLoading, setLevelLoading] = useState(true);
+
+  useEffect(() => {
+    const handleData = async () => {
+      if (Object.keys(userMetaData).length && levelLoading) {
+        const data = await GetDocumentsByQuery(
+          "Subscription_Level",
+          "level_id",
+          userMetaData?.subscription_level
+        );
+        if (data.success) {
+          setUserLevel(data.doc);
+        }
+        setLevelLoading(false);
+      }
+    };
+
+    handleData();
+  }, [userMetaData]);
 
   useEffect(() => {
     if (user === false) {
