@@ -38,7 +38,6 @@ const CreateOTPModal = ({ visible, setVisible }) => {
     const getOptCreated = async () => {
       if (user) {
         const otp = await FetchDocument("OTPRequests", user.uid);
-        console.log(Date.now() > otp?.expires_at.toMillis());
         if (otp?.expires_at.toMillis() > Date.now()) {
           setCreate(true);
           setOtpCode(otp.otp_code);

@@ -49,7 +49,7 @@ const Category = () => {
       }
     };
     handleData();
-  }, [category]);
+  }, [category, slug]);
 
   const [categoryRank, setCategoryRank] = useState([]);
   const [categoryRankLoading, setCategoryRankLoading] = useState(false);
@@ -78,19 +78,19 @@ const Category = () => {
       }
     };
     handleData();
-  }, [category]);
+  }, [category, slug]);
 
   const [categoryFree, setCategoryFree] = useState([]);
   const [freeLoading, setFreeLoading] = useState(false);
   useEffect(() => {
     const handleData = async () => {
-      if (category?.id && !freeLoading && Object.keys(category).length) {
+      if (!freeLoading && Object.keys(category).length) {
         setFreeLoading(true);
         const data = await GetDocumentsByQuery(
           "Episode",
-          "category_id",
-          category?.category_id,
-          true,
+          "level",
+          1,
+          false,
           12
         );
         if (data.success) {
@@ -100,7 +100,29 @@ const Category = () => {
       }
     };
     handleData();
-  }, [category]);
+  }, [category, slug]);
+
+  const [categoryPremium, setCategoryPremium] = useState([]);
+  const [premiumLoading, setPremiumLoading] = useState(false);
+  useEffect(() => {
+    const handleData = async () => {
+      if (!freeLoading && Object.keys(category).length) {
+        setPremiumLoading(true);
+        const data = await GetDocumentsByQuery(
+          "Episode",
+          "level",
+          2,
+          false,
+          12
+        );
+        if (data.success) {
+          setCategoryPremium(data.doc);
+        }
+        setPremiumLoading(false);
+      }
+    };
+    handleData();
+  }, [category, slug]);
 
   useEffect(() => {
     handleCategory();
@@ -154,6 +176,7 @@ const Category = () => {
               ></VideoList>
             )}
           </section>
+
           <section className="feature-section">
             {category?.name && (
               <VideoList
@@ -162,6 +185,18 @@ const Category = () => {
                 items={categoryFree}
                 slidesToShow={4}
                 totalSlides={categoryFree?.length}
+              ></VideoList>
+            )}
+          </section>
+          <section className="feature-section">
+            {category?.name && (
+              <VideoList
+                categoryTitle={category?.name + " Premium"}
+                ChildComponent={CardVideo}
+                items={categoryPremium}
+                slidesToShow={4}
+                totalSlides={categoryPremium?.length}
+                isLoading={premiumLoading}
               ></VideoList>
             )}
           </section>

@@ -3,10 +3,16 @@ import "./Card.css";
 import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import Skeleton from "../Skeleton/Skeleton";
-import { getDays } from "../../../features/helper";
+import {
+  formatDuration,
+  formatLevelText,
+  getDays,
+  getTime,
+} from "../../../features/helper";
 import { UseMyListContext } from "../../../context/MyListContext";
 import Tooltip from "../Tooltip/Tooltip";
 import CategoryTag from "../CategoryTag/CategoryTag";
+import { UseCategoryContext } from "../../../context/CategoryContext";
 
 export const CardSlide = ({ index, isActive, onCardClick, props }) => {
   return (
@@ -62,11 +68,6 @@ export const CardList = ({ props }) => {
 export const CardVideo = ({
   title,
   video_id = "1",
-  video_tags = {},
-  date,
-  is_live = false,
-  is_new = false,
-  role_tag = "",
   thumbnail_url,
   highlighted_thumbnail,
   onClick,
@@ -74,8 +75,16 @@ export const CardVideo = ({
   height,
   upload_date,
   last_modified_date,
+  props,
+  showTag = true,
+  dominant_color,
 }) => {
   const { addToList, handleAddToList } = UseMyListContext();
+  const { categoryList } = UseCategoryContext();
+  const [categoryName, setCategoryName] = useState("");
+  const [isLive, setLive] = useState(false);
+  const [isNew, setNew] = useState(false);
+
   const handleClick = async (e) => {
     e.stopPropagation();
     await handleAddToList(video_id, {
@@ -89,6 +98,20 @@ export const CardVideo = ({
         : thumbnail_url,
     });
   };
+
+  const handleCategory = () => {
+    const newCate = categoryList?.filter(
+      (item) => item.category_id === props?.category_id[0]
+    );
+    if (newCate.length) {
+      setCategoryName(newCate[0].name);
+    }
+  };
+
+  useEffect(() => {
+    handleCategory();
+  }, []);
+
   return (
     <div className="video-card-wrapper">
       <Link
@@ -102,13 +125,19 @@ export const CardVideo = ({
         onClick={onClick}
       >
         <div className="video-card-thumbnail">
-          {Object.keys(video_tags).length !== 0 &&
-            video_tags.constructor === Object && (
-              <div className="video-card-tags">
-                <div className="card-tag-name">{video_tags.title}</div>
-                <div className="card-tag-time">{video_tags.time}</div>
+          {showTag && (
+            <div
+              className="video-card-tags"
+              style={{
+                "--dominant-color": dominant_color ? dominant_color : "#fb5607",
+              }}
+            >
+              <div className="card-tag-name">{categoryName}</div>
+              <div className="card-tag-time">
+                {formatDuration(props?.duration)}
               </div>
-            )}
+            </div>
+          )}
           <Skeleton>
             <img
               style={{ width, height }}
@@ -119,7 +148,7 @@ export const CardVideo = ({
             />
           </Skeleton>
 
-          {is_live && (
+          {isLive && (
             <div className="tag-on-thumb-wrapper">
               <span className="tag-on-thumb">
                 <span className="tag-icon">
@@ -142,23 +171,29 @@ export const CardVideo = ({
             >
               {title}
             </div>
-            {date && (
+            {last_modified_date && (
               <time
                 className="video-release-date clamp-text"
                 style={{ WebkitLineClamp: 1 }}
               >
-                {date}
+                {getTime(last_modified_date)}
               </time>
             )}
-            {is_new && (
+            {isNew && (
               <div className="video-new-episode">
                 <div className="video-new-episode-text">New Episode</div>
               </div>
             )}
 
-            {role_tag && (
+            {props?.level && (
               <div className="video-label">
-                <span className="label-text free">Free</span>
+                <span
+                  className={`label-text${
+                    props?.level === 2 ? " premium" : " free"
+                  }`}
+                >
+                  {props?.level === 1 ? "Free" : "Premium"}
+                </span>
               </div>
             )}
           </div>

@@ -36,46 +36,50 @@ const EpisodeList = ({ title, value, loading, playingId }) => {
 
   return (
     <div className="episode-list-wrapper">
-      <div className="episode-list-container">
-        <h2 className="episode-sub-title">{title}</h2>
-        <SeasonList />
-        <div className="episode-list-control-bar">
-          <div className="control-bar-wrapper">
-            <ul className="control-group-tab-list">
-              {arrTabList.map((item, index) => (
-                <li
-                  onClick={() => setTablist(item)}
-                  key={index}
-                  className={`${tablist === item ? "active" : ""}`}
+      {arrTabList?.length > 0 && (
+        <div className="episode-list-container">
+          <h2 className="episode-sub-title">{title}</h2>
+          <SeasonList />
+          <div className="episode-list-control-bar">
+            <div className="control-bar-wrapper">
+              <ul className="control-group-tab-list">
+                {arrTabList.map((item, index) => (
+                  <li
+                    onClick={() => setTablist(item)}
+                    key={index}
+                    className={`${tablist === item ? "active" : ""}`}
+                  >
+                    <button>{item}</button>
+                  </li>
+                ))}
+              </ul>
+              <div className="sort-episode-wrapper">
+                <button
+                  onClick={() => setSortDesc(!sortDesc)}
+                  className="sort-episode-btn"
                 >
-                  <button>{item}</button>
-                </li>
-              ))}
-            </ul>
-            <div className="sort-episode-wrapper">
-              <button
-                onClick={() => setSortDesc(!sortDesc)}
-                className="sort-episode-btn"
-              >
-                <span className={`sort-btn-icon${sortDesc ? " reverce" : ""}`}>
-                  <UseIconList icon="sort" />
-                </span>
-                <span className="sort-episode-text">Sort</span>
-              </button>
+                  <span
+                    className={`sort-btn-icon${sortDesc ? " reverce" : ""}`}
+                  >
+                    <UseIconList icon="sort" />
+                  </span>
+                  <span className="sort-episode-text">Sort</span>
+                </button>
+              </div>
             </div>
           </div>
+          <ul className="episode-list">
+            {episodesByType[tablist]?.map((item, index) => (
+              <CardListEpsiode
+                loading={loading}
+                playingId={playingId}
+                key={index}
+                data={item}
+              />
+            ))}
+          </ul>
         </div>
-        <ul className="episode-list">
-          {episodesByType[tablist]?.map((item, index) => (
-            <CardListEpsiode
-              loading={loading}
-              playingId={playingId}
-              key={index}
-              data={item}
-            />
-          ))}
-        </ul>
-      </div>
+      )}
     </div>
   );
 };

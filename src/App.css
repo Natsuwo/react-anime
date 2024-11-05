@@ -501,6 +501,14 @@ main.page-main {
   );
 }
 
+.video-label .label-text.premium {
+  background: linear-gradient(
+    135deg,
+    var(--link-active),
+    hsla(30, 100%, 50%, 0.4)
+  );
+}
+
 .player-icon-circle {
   animation: player-circle 1.5s ease-in-out infinite;
   stroke: #fff;

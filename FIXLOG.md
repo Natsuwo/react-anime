@@ -12,6 +12,11 @@
 12. Premium Payment
 13. Mobile
 14. Fix sao cho chỉ get 1 lần category ở banner
+15. Lưu quá trình xem và phát lại
+16. Search
+17. Infinity Scroll
+18. Lưu myList ở detail và episode
+19. Category theo detail và episode
 
 Update
 
@@ -19,3 +24,4 @@ Update
 2. Mobile UI
 3. Loading on top
 4. API (Backend)
+5. Light Theme

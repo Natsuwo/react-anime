@@ -38,6 +38,7 @@ function App() {
 
   // const isSubscriptionPage =
   // /^\/subscription\/(?!status\b)(?!signup\b)\w+/i.test(location.pathname);
+
   return (
     <>
       {size.width < 992 ? (

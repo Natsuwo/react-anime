@@ -35,12 +35,6 @@ const EpisodeVideo = () => {
     12
   );
 
-  useEffect(() => {
-    if (descRef.current) {
-      setOriHeight(descRef.current.scrollHeight);
-    }
-  }, []);
-
   const [episodeListArr, setEpisodeList] = useState([]);
   const episodeListLoading = useRef(false);
 
@@ -61,6 +55,12 @@ const EpisodeVideo = () => {
     };
 
     handleData();
+  }, [dataEpisode]);
+
+  useEffect(() => {
+    if (dataEpisode && descRef.current) {
+      setOriHeight(descRef.current.scrollHeight);
+    }
   }, [dataEpisode]);
 
   const preLoadData = Array.from({ length: 12 }, (_, i) => ({ id: i + 1 }));

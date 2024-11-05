@@ -197,4 +197,19 @@
   .episode-sidebar {
     display: none;
   }
+
+  .episode-main-inner {
+    margin: 0 auto;
+    max-width: 640px;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .episode-wrapper {
+    grid-template-columns: 100%;
+  }
+  .episode-main-content {
+    padding: 0 8px;
+  }
 }

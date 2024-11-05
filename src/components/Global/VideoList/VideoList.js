@@ -110,13 +110,11 @@ const VideoList = ({
 
   useEffect(() => {
     const maxHeight = Math.max(
-      ...cardRefs.current.map((card) => card.offsetHeight)
+      ...cardRefs.current.map((card) => card?.offsetHeight)
     );
     cardRefs.current.forEach((card) => {
       card.style.height = `${maxHeight}px`;
     });
-
-    console.log(maxHeight);
   }, [items]);
   return (
     <div className="video-list-wrapper">
@@ -155,6 +153,7 @@ const VideoList = ({
                     url={video.video_url}
                     rank={index + 1}
                     title={video.title}
+                    props={video}
                   />
                 </div>
               ))}
@@ -166,12 +165,12 @@ const VideoList = ({
             {items.map((video, index) => (
               <div className="flex-container-less-item" key={index}>
                 <ChildComponent
-                  ref={(el) => (cardRefs.current[index] = el)}
                   onClick={handleLinkClick}
                   width={width}
                   height={height}
                   video_id={video.id}
                   key={index}
+                  thumbnail_url={video.thumbnail_url}
                   highlighted_thumbnail={video.highlighted_thumbnail}
                   vertical_thumbnail={video.thumbnail_vertical_url}
                   horizontal_thumbnail={video.thumbnail_horizontal_url}
@@ -180,6 +179,7 @@ const VideoList = ({
                   url={video.video_url}
                   rank={index + 1}
                   title={video.title}
+                  props={video}
                 />
               </div>
             ))}

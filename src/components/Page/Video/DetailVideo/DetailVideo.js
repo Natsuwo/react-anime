@@ -47,10 +47,14 @@ const DetailVideo = () => {
   }, [videoId]);
 
   useEffect(() => {
-    if (descRef.current) {
+    if (data && descRef.current) {
       setOriHeight(descRef.current.scrollHeight);
     }
-  }, []);
+  }, [data]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [videoId]);
   return (
     <main className="page-main">
       <div className="page-container">

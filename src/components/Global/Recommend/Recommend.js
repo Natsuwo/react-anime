@@ -13,6 +13,7 @@ const Recommend = ({ title, value }) => {
               title={item.title}
               video_id={item.id}
               highlighted_thumbnail={item.highlighted_thumbnail}
+              props={item}
             />
           </div>
         ))}

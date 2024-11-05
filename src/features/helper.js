@@ -74,6 +74,32 @@ export const getTime = (timestamp) => {
   return timeAgo;
 };
 
+export const formatDuration = (seconds) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  const formattedMinutes = String(minutes).padStart(2, "0");
+  const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+
+  return `${formattedMinutes}:${formattedSeconds}`;
+};
+
+export const formatLevelText = (level) => {
+  let levelText = "";
+  switch (level) {
+    case 1:
+      levelText = "Free";
+      break;
+    case 2:
+      levelText = "Premium";
+      break;
+    default:
+      levelText = "UWN";
+  }
+
+  return levelText;
+};
+
 export const getDays = (timestamp) => {
   const uploadTime = new Date(timestamp?.seconds * 1000);
   const timeElapsed = Date.now() - uploadTime.getTime();
