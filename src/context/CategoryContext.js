@@ -10,7 +10,7 @@ const CategoryContextProvider = ({ children }) => {
   const [isLoading, setLoading] = useState(false);
   useEffect(() => {
     const fetchCategory = async () => {
-      if (!isLoading) {
+      if (!isLoading && categoryList.length === 0) {
         setLoading(true);
         const cateList = await FetchAllLimit("Categories");
         setCategoryList(cateList);
@@ -19,7 +19,7 @@ const CategoryContextProvider = ({ children }) => {
     };
 
     fetchCategory();
-  }, [categoryList]);
+  }, [categoryList.length]);
 
   return (
     <CategoryContext.Provider value={{ isLoading, categoryList }}>

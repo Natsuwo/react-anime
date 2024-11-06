@@ -26,11 +26,13 @@ const Category = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [slug]);
 
+  const breadcrumb = [{ title: category?.name }];
+
   return (
     <main className="page-main">
       <div className="page-container-fluid">
         <div className="main-content-wrapper">
-          <Breadcumb />
+          <Breadcumb items={breadcrumb} />
           <h1 className="main-title mb-2">{category.name}</h1>
           <CategoryData category={category} slug={slug}></CategoryData>
           <CategoryTag category={category} slug={slug}></CategoryTag>

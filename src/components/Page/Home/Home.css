@@ -3,6 +3,10 @@
   /* min-height: 617px; */
 }
 
+.home-container {
+  padding: 0 24px;
+}
+
 .list-wrapper {
   display: flex;
   flex-wrap: wrap;

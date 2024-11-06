@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import db, { auth } from "../firebase";
 
 import {
@@ -40,29 +39,19 @@ export const CreateDocument = async (document, userId, params) => {
   }
 };
 
-export const GetDocument = (document, id) => {
-  const [value, setValue] = useState({});
-  const [loading, setLoading] = useState(true);
-  const getData = async () => {
-    setLoading(true);
-    const docRef = doc(db, document, id);
-    try {
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setValue(docSnap.data());
-      } else {
-        console.error("No such document!");
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+export const GetDocument = async (document, id) => {
+  const docRef = doc(db, document, id);
+  try {
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { success: true, docs: docSnap.data() };
+    } else {
+      console.error("No such document!");
+      return { success: true, docs: [] };
     }
-  };
-  useEffect(() => {
-    getData();
-  }, [document, id]);
-  return { value, loading };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
 };
 
 export const getDoubleFind = async (document, find1, find2, maxDoc = false) => {
@@ -228,40 +217,29 @@ export const FetchDocInfinity = async (
   }
 };
 
-export const GetAllSort = (document, field, order_by, maxDoc) => {
-  const [value, setValue] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const getData = async () => {
-    setLoading(true);
-    try {
-      const q = query(
-        collection(db, document),
-        orderBy(field, order_by),
-        limit(maxDoc)
-      );
-      const querySnapshot = await getDocs(q);
+export const GetAllSort = async (document, field, order_by, maxDoc) => {
+  try {
+    const q = query(
+      collection(db, document),
+      orderBy(field, order_by),
+      limit(maxDoc)
+    );
+    const querySnapshot = await getDocs(q);
 
-      const documents = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+    const documents = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
-      setValue(documents);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    getData();
-  }, [document, field]);
-  return { value, loading };
+    return { success: true, doc: documents };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
 };
 
-export const FetchAllLimit = async (document, customLimit = 20) => {
+export const FetchAllLimit = async (document, maxDoc) => {
   // Tạo truy vấn tới collection Category và áp dụng limit
-  const q = query(collection(db, document), limit(customLimit));
+  const q = query(collection(db, document), limit(maxDoc));
 
   const querySnapshot = await getDocs(q);
   const categories = [];

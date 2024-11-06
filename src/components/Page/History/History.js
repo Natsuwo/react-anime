@@ -6,7 +6,7 @@ const History = () => {
   return (
     <main className="page-main">
       <div className="page-container">
-        <Breadcumb />
+        <Breadcumb items={[{ title: "History" }]} />
         <h1 className="main-title mb-2">History</h1>
         <div className="episode-list-wrapper">
           <div className="episode-list-container">

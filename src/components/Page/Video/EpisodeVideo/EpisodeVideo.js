@@ -16,6 +16,7 @@ import {
 } from "../../../../features/useFetch";
 import { getTime, formatViews } from "../../../../features/helper";
 import CategoryData from "../../Category/CategoryData";
+import { UseCategoryContext } from "../../../../context/CategoryContext";
 
 const EpisodeVideo = () => {
   const descRef = useRef(null);
@@ -23,25 +24,60 @@ const EpisodeVideo = () => {
   const [isShow, setIsShow] = useState(false);
   const [oriHeight, setOriHeight] = useState(0);
   const { wideMode } = UsePlayerWide();
+  const [breadcrumb, setBreadCrumb] = useState([]);
+  const { categoryList } = UseCategoryContext();
 
-  const { value: dataEpisode, loading: episodeLoading } = GetDocument(
-    "Episode",
-    episodeId
-  );
+  const [mostViewData, setMostViewData] = useState([]);
+  const [isLoadingMostView, setLoadingMostView] = useState(false);
 
-  const { value: mostViewData, loading: isLoadingMostView } = GetAllSort(
-    "Videos",
-    "views_count",
-    "desc",
-    12
-  );
+  useEffect(() => {
+    (async () => {
+      setLoadingMostView(true);
+      const data = await GetAllSort("Videos", "views_count", "desc", 12);
+      if (data.success) {
+        setMostViewData(data.doc);
+      } else {
+        console.error(data.error);
+      }
+      setLoadingMostView(false);
+    })();
+  }, [episodeId]);
 
-  const { value: mostViewSidebar, loading: loadingSidebar } = GetAllSort(
-    "Episode",
-    "views_count",
-    "desc",
-    12
-  );
+  const [mostViewSidebar, setMostViewSidebar] = useState([]);
+  const [loadingSidebar, setLoadingSidebar] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setLoadingSidebar(true);
+      const data = await GetAllSort("Episode", "views_count", "desc", 12);
+
+      if (data.success) {
+        setMostViewSidebar(data.doc);
+      } else {
+        console.error(data.error);
+      }
+      setLoadingSidebar(false);
+    })();
+  }, [episodeId]);
+
+  const [dataEpisode, setDataEpisode] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+
+  const handleData = async () => {
+    setLoading(true);
+    const res = await GetDocument("Episode", episodeId);
+    if (res.success) {
+      setDataEpisode(res.docs);
+    } else {
+      console.error(res.error);
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    handleData();
+  }, [episodeId]);
 
   const [episodeListArr, setEpisodeList] = useState([]);
   const episodeListLoading = useRef(false);
@@ -76,6 +112,9 @@ const EpisodeVideo = () => {
   }, [episodeId]);
 
   const preLoadData = Array.from({ length: 12 }, (_, i) => ({ id: i + 1 }));
+
+  useEffect(() => {}, [episodeId, dataEpisode]);
+
   return (
     <main className="page-main">
       <div className="episode-main-content">
@@ -168,13 +207,14 @@ const EpisodeVideo = () => {
                             loading={true}
                           />
                         ))}
-                      {mostViewSidebar.map((item, index) => (
-                        <CardListEpsiode
-                          data={item}
-                          key={index}
-                          sidebar={true}
-                        />
-                      ))}
+                      {mostViewSidebar.length > 0 &&
+                        mostViewSidebar.map((item, index) => (
+                          <CardListEpsiode
+                            data={item}
+                            key={index}
+                            sidebar={true}
+                          />
+                        ))}
                     </ul>
                   </div>
                 </div>

@@ -53,7 +53,9 @@ export const validateOTP = (otp, userId) => {
 };
 
 export const getTime = (timestamp) => {
-  const uploadTime = new Date(timestamp?.seconds * 1000);
+  const uploadTime = new Date(
+    timestamp?.seconds ? timestamp?.seconds * 1000 : timestamp
+  );
   const timeElapsed = Date.now() - uploadTime.getTime();
   const secondsElapsed = Math.floor(timeElapsed / 1000);
   const formatTimeElapsed = (seconds) => {

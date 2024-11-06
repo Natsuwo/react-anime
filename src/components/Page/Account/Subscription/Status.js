@@ -3,11 +3,12 @@ import Breadcumb from "../../../Global/Breadcrumb/Breadcumb";
 import "./Status.css";
 
 const Subscription = () => {
+  const breadcrumb = [{ title: "Subscription" }];
   return (
     <main className="page-main">
       <div className="page-container">
         <div className="__half-container">
-          <Breadcumb />
+          <Breadcumb items={breadcrumb} />
           <h1 className="main-title">Purchase Plan</h1>
           <div className="sub-title mt-2 mb-2">Current Plan</div>
           <div className="plan-box">Free</div>

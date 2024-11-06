@@ -78,7 +78,7 @@ const MyList = () => {
   return (
     <main className="page-main">
       <div className="page-container">
-        <Breadcumb />
+        <Breadcumb items={[{ title: "My List" }]} />
         <h1 className="main-title">My List</h1>
         <div className="episode-list-sort-wrapper mt-2">
           <button

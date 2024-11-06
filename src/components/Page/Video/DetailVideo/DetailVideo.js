@@ -23,20 +23,46 @@ const DetailVideo = () => {
   const [oriHeight, setOriHeight] = useState(0);
   const { size } = UseResponsiveContext();
 
-  const { value: data, loading: isLoading } = GetDocument("Videos", videoId);
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
-  const { value: mostViewData, loading: isLoadingMostView } = GetAllSort(
-    "Videos",
-    "views_count",
-    "desc",
-    12
-  );
+  const [mostViewData, setMostViewData] = useState([]);
+  const [isLoadingMostView, setLoadingMostView] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setLoadingMostView(true);
+      const data = await GetAllSort("Videos", "views_count", "desc", 12);
+      if (data.success) {
+        setMostViewData(data.doc);
+      } else {
+        console.error(data.error);
+      }
+      setLoadingMostView(false);
+    })();
+  }, []);
+
+  const handleData = async () => {
+    setLoading(true);
+    const res = await GetDocument("Videos", videoId);
+    if (res.success) {
+      setData(res.docs);
+    } else {
+      console.error(res.error);
+    }
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    handleData();
+  }, [videoId]);
 
   const [episodeListArr, setEpisodeList] = useState([]);
   const [episodeListLoading, setElistLoading] = useState(true);
 
   useEffect(() => {
-    const handleData = async () => {
+    const handleDataQuery = async () => {
       const data = await GetDocumentsByQuery("Episode", "video_id", videoId);
       if (data.success) {
         setEpisodeList(data.doc);
@@ -44,7 +70,7 @@ const DetailVideo = () => {
       setElistLoading(false);
     };
 
-    handleData();
+    handleDataQuery();
   }, [videoId]);
 
   useEffect(() => {
@@ -56,11 +82,13 @@ const DetailVideo = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [videoId]);
+
+  const breadcrumb = [{ title: data.title }];
   return (
     <main className="page-main">
       <div className="page-container">
         <div className="container__mobile">
-          <Breadcumb />
+          <Breadcumb items={breadcrumb} />
         </div>
         <div className="detail-wrapper">
           {size.width > 991 ? (

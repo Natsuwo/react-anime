@@ -14,7 +14,6 @@ import {
 import VideoList from "../../Global/VideoList/VideoList";
 import { UseResponsiveContext } from "../../../context/ResponsiveContext";
 import {
-  FetchAllLimit,
   FetchSingleDocumentByKey,
   GetAllSort,
   GetDocumentsByQuery,
@@ -33,6 +32,7 @@ import {
 } from "firebase/firestore";
 import Database from "../../../database";
 import EpisodeData from "../../../DataEpisode";
+import { UseCategoryContext } from "../../../context/CategoryContext";
 
 const AppBaner = () => {
   const { size } = UseResponsiveContext();
@@ -45,11 +45,11 @@ const AppBaner = () => {
   // Category Data
   const [categoryData, setCategoryData] = useState([]);
   const [cateLoading, setCateLoading] = useState(false);
+  const { categoryList } = UseCategoryContext();
 
   const handleCategoriesList = async () => {
     setCateLoading(true);
-    const categorysList = await FetchAllLimit("Categories");
-    categorysList.map(async (item) => {
+    categoryList?.map(async (item) => {
       const data = await FetchSingleDocumentByKey(
         "Videos",
         "category_id",
@@ -72,8 +72,10 @@ const AppBaner = () => {
   };
 
   useEffect(() => {
-    handleCategoriesList();
-  }, []);
+    if (categoryList?.length > 0) {
+      handleCategoriesList();
+    }
+  }, [categoryList]);
   return size.width < 992 ? (
     ""
   ) : (
@@ -111,15 +113,24 @@ const AppBaner = () => {
 };
 
 const Home = () => {
-  const { value: mostViewData, loading: isLoadingMostView } = GetAllSort(
-    "Videos",
-    "views_count",
-    "desc",
-    12
-  );
+  const [mostViewData, setMostViewData] = useState([]);
+  const [isLoadingMostView, setLoadingMostView] = useState(false);
 
   const [actionData, setActionData] = useState([]);
   const isLoadingAction = useRef(true);
+
+  useEffect(() => {
+    (async () => {
+      setLoadingMostView(true);
+      const data = await GetAllSort("Videos", "views_count", "desc", 12);
+      if (data.success) {
+        setMostViewData(data.doc);
+      } else {
+        console.error(data.error);
+      }
+      setLoadingMostView(false);
+    })();
+  }, []);
 
   useEffect(() => {
     const handleActionData = async () => {
@@ -152,87 +163,82 @@ const Home = () => {
   return (
     <>
       <AppBaner />
-      {/* Most Viewed */}
-      {!isLoadingMostView ? (
-        <VideoList
-          categoryTitle={"Most viewed"}
-          ChildComponent={CardVideo}
-          items={mostViewData}
-          totalSlides={mostViewData?.length}
-        ></VideoList>
-      ) : (
-        <VideoList
-          categoryTitle={"Most viewed"}
-          ChildComponent={CardSkeleton}
-          height={215}
-        ></VideoList>
-      )}
+      <div className="home-container">
+        {/* Most Viewed */}
+        {!isLoadingMostView ? (
+          <VideoList
+            categoryTitle={"Most viewed"}
+            ChildComponent={CardVideo}
+            items={mostViewData}
+            totalSlides={mostViewData?.length}
+          ></VideoList>
+        ) : (
+          <VideoList
+            categoryTitle={"Most viewed"}
+            ChildComponent={CardSkeleton}
+            height={215}
+          ></VideoList>
+        )}
 
-      {/* My List */}
-      {myListLoading ? (
-        <VideoList
-          categoryTitle={"My List"}
-          ChildComponent={CardSkeleton}
-          slidesToShow={4}
-          height={175}
-        ></VideoList>
-      ) : (
-        dataMyList?.length > 0 && (
+        {/* My List */}
+        {myListLoading ? (
           <VideoList
             categoryTitle={"My List"}
+            ChildComponent={CardSkeleton}
+            slidesToShow={4}
+            height={175}
+          ></VideoList>
+        ) : (
+          dataMyList?.length > 0 && (
+            <VideoList
+              categoryTitle={"My List"}
+              ChildComponent={CardVideo}
+              slidesToShow={4}
+              totalSlides={myList?.length}
+              items={myList}
+            ></VideoList>
+          )
+        )}
+
+        {/* Action */}
+        {!isLoadingAction.current ? (
+          <VideoList
+            categoryTitle={"Action List"}
             ChildComponent={CardVideo}
             slidesToShow={4}
-            totalSlides={myList?.length}
-            items={myList}
+            totalSlides={actionData?.length}
+            items={actionData}
           ></VideoList>
-        )
-      )}
+        ) : (
+          <VideoList
+            categoryTitle={"Most viewed"}
+            ChildComponent={CardSkeleton}
+            slidesToShow={4}
+            height={175}
+          ></VideoList>
+        )}
 
-      {/* <VideoList
-        categoryTitle={"My List"}
-        ChildComponent={CardSkeleton}
-        slidesToShow={4}
-        height={175}
-      ></VideoList> */}
-
-      {/* Action */}
-      {!isLoadingAction.current ? (
+        {/* Card Rank */}
+        {/* CardRank */}
+        {mostViewData && (
+          <VideoList
+            categoryTitle={"Top Rank"}
+            ChildComponent={CardRank}
+            slidesToShow={7}
+            items={mostViewData}
+            totalSlides={mostViewData?.length}
+            isLoading={isLoadingMostView}
+          ></VideoList>
+        )}
+        {/* Card Square */}
+        {/* CardSquare */}
         <VideoList
-          categoryTitle={"Action List"}
-          ChildComponent={CardVideo}
-          slidesToShow={4}
-          totalSlides={actionData?.length}
-          items={actionData}
+          categoryTitle={"Sport"}
+          ChildComponent={CardSquare}
+          slidesToShow={8}
+          isLoading={false}
         ></VideoList>
-      ) : (
-        <VideoList
-          categoryTitle={"Most viewed"}
-          ChildComponent={CardSkeleton}
-          slidesToShow={4}
-          height={175}
-        ></VideoList>
-      )}
-
-      {/* Card Rank */}
-      {/* CardRank */}
-      {mostViewData && (
-        <VideoList
-          categoryTitle={"Top Rank"}
-          ChildComponent={CardRank}
-          slidesToShow={7}
-          items={mostViewData}
-          totalSlides={mostViewData?.length}
-          isLoading={isLoadingMostView}
-        ></VideoList>
-      )}
-      {/* Card Square */}
-      {/* CardSquare */}
-      <VideoList
-        categoryTitle={"Sport"}
-        ChildComponent={CardSquare}
-        slidesToShow={8}
-        isLoading={false}
-      ></VideoList>
+      </div>
     </>
   );
 };
