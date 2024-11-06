@@ -315,33 +315,28 @@
   }
 }
 
-.modal-alert--appear,
-.modal-alert--enter {
-  transform: translate3d(0, -100px, 0);
-}
-.modal-alert--appear-active,
-.modal-alert--enter-active {
-  transform: translateZ(0);
+.modal-alert.active {
+  transform: translateY(116px);
   transition: transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
 }
-.modal-alert--exit {
-  opacity: 1;
-}
-.modal-alert--exit-active {
+
+.modal-alert.exit {
   opacity: 0;
-  transition: opacity 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+  transition: all 0.5s cubic-bezier(0.33, 1, 0.68, 1);
 }
+
 .modal-alert {
+  opacity: 1;
   position: fixed;
   right: 16px;
-  top: 16px;
-  width: 508px;
+  top: -100px;
   z-index: 31;
+  background-color: transparent;
 }
 
 .modal-toast {
   align-items: center;
-  background-color: #e6e6e6;
+  background-color: var(--text-color);
   border-radius: 4px;
   box-shadow: 0 2px 16px var(--black-20);
   display: flex;
@@ -352,7 +347,7 @@
   width: 100%;
 }
 .modal-toast__symbol {
-  color: #212121;
+  color: var(--secondary-color-2);
   display: block;
   flex-grow: 0;
   flex-shrink: 0;
@@ -360,11 +355,11 @@
   width: 32px;
 }
 .modal-toast__symbol--color-danger {
-  color: #f0163a;
+  color: var(--color-danger);
 }
 .modal-toast__message {
   -webkit-box-orient: vertical;
-  color: #212121;
+  color: var(--secondary-color-2);
   display: -webkit-box;
   flex-grow: 1;
   font-size: 16px;
@@ -376,15 +371,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .modal-toast__button-wrapper {
   flex-grow: 0;
   flex-shrink: 0;
   width: 120px;
 }
-.modal-toast__close-button {
+.modal-toast-button {
   align-items: center;
   border-radius: 4px;
-  color: #212121;
+  color: var(--secondary-color-2);
   display: flex;
   flex-grow: 0;
   flex-shrink: 0;
@@ -393,10 +389,11 @@
   justify-content: center;
   transition: background-color 0.1s linear;
   width: 44px;
+  cursor: pointer;
 }
-.modal-toast__close-button:focus-visible,
-.modal-toast__close-button:hover {
-  background-color: rgba(0, 0, 0, 0.08);
+.modal-toast-button:focus-visible,
+.modal-toast-button:hover {
+  background-color: var(--black-8);
 }
 .modal-toast__close {
   display: block;

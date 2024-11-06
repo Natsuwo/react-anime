@@ -14,6 +14,7 @@ import {
   GetDocument,
   GetAllSort,
 } from "../../../../features/useFetch";
+import CategoryData from "../../Category/CategoryData";
 
 const DetailVideo = () => {
   const { videoId } = useParams();
@@ -166,7 +167,12 @@ const DetailVideo = () => {
         )}
         <div className="container__mobile">
           <div className="mt">
-            <Recommend title={"Recent Category"} />
+            <CategoryData
+              title={"Category"}
+              isGrid={true}
+              category={data}
+              slug={videoId}
+            />
             <Recommend
               value={mostViewData}
               loading={isLoadingMostView}

@@ -65,6 +65,44 @@ export const GetDocument = (document, id) => {
   return { value, loading };
 };
 
+export const getDoubleFind = async (document, find1, find2, maxDoc = false) => {
+  try {
+    // Kiểm tra điều kiện so sánh cho find1
+    const find1Condition =
+      find1[2] && Array.isArray(find1[1])
+        ? "array-contains-any"
+        : find1[2]
+        ? "array-contains"
+        : "==";
+
+    // Kiểm tra điều kiện so sánh cho find2
+    const find2Condition =
+      find2[2] && Array.isArray(find2[1])
+        ? "array-contains-any"
+        : find2[2]
+        ? "array-contains"
+        : "==";
+
+    // Tạo query
+    const q = query(
+      collection(db, document),
+      where(find1[0], find1Condition, find1[1]),
+      where(find2[0], find2Condition, find2[1]),
+      maxDoc ? limit(maxDoc) : undefined
+    );
+
+    const querySnapshot = await getDocs(q);
+    const documents = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return { success: true, doc: documents };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+};
+
 export const GetDocumentsByQuery = async (
   document,
   find,
@@ -82,13 +120,29 @@ export const GetDocumentsByQuery = async (
       q = sort
         ? query(
             collection(db, document),
-            where(find, array ? "array-contains" : "==", id),
+            where(
+              find,
+              array
+                ? Array.isArray(id)
+                  ? "array-contains-any"
+                  : "array-contains"
+                : "==",
+              id
+            ),
             orderBy(sort_field, sort_by),
             limit(maxDoc)
           )
         : query(
             collection(db, document),
-            where(find, array ? "array-contains" : "==", id),
+            where(
+              find,
+              array
+                ? Array.isArray(id)
+                  ? "array-contains-any"
+                  : "array-contains"
+                : "==",
+              id
+            ),
             limit(maxDoc)
           );
     } else {
@@ -117,25 +171,50 @@ export const FetchDocInfinity = async (
   sort_field,
   sort_by,
   lastDoc,
-  limitPerPage
+  limitPerPage,
+  find,
+  id,
+  array = false
 ) => {
+  if (find && !id) return { success: false, error: "Id not found" };
   try {
     let q;
+
     if (lastDoc) {
-      q = query(
-        collection(db, document),
-        orderBy(sort_field, sort_by),
-        startAfter(lastDoc),
-        limit(limitPerPage)
-      );
+      if (find) {
+        q = query(
+          collection(db, document),
+          where(find, array ? "array-contains" : "==", id),
+          orderBy(sort_field, sort_by),
+          startAfter(lastDoc),
+          limit(limitPerPage)
+        );
+      } else {
+        q = query(
+          collection(db, document),
+          orderBy(sort_field, sort_by),
+          startAfter(lastDoc),
+          limit(limitPerPage)
+        );
+      }
     } else {
-      q = query(
-        collection(db, document),
-        orderBy(sort_field, sort_by),
-        limit(limitPerPage)
-      );
+      if (find) {
+        q = query(
+          collection(db, document),
+          where(find, array ? "array-contains" : "==", id),
+          orderBy(sort_field, sort_by),
+          limit(limitPerPage)
+        );
+      } else {
+        q = query(
+          collection(db, document),
+          orderBy(sort_field, sort_by),
+          limit(limitPerPage)
+        );
+      }
     }
 
+    // Fetch dữ liệu
     const querySnapshot = await getDocs(q);
     const docs = querySnapshot.docs.map((doc) => ({
       id: doc.id,

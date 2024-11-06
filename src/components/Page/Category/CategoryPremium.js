@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetDocumentsByQuery } from "../../../features/useFetch";
+import { getDoubleFind } from "../../../features/useFetch";
 import VideoList from "../../Global/VideoList/VideoList";
 import { CardVideo } from "../../Global/Card/Card";
 
@@ -10,18 +10,17 @@ const CategoryPremium = ({ category, slug }) => {
     const handleData = async () => {
       if (!premiumLoading && Object.keys(category).length) {
         setPremiumLoading(true);
-        const data = await GetDocumentsByQuery(
+        const data = await getDoubleFind(
           "Episode",
-          "level",
-          2,
-          false,
+          ["level", 2, false],
+          ["category_id", category?.category_id, true],
           12
         );
         if (data.success) {
           setCategoryPremium(data.doc);
         }
-        setPremiumLoading(false);
       }
+      setPremiumLoading(false);
     };
     handleData();
   }, [category, slug]);

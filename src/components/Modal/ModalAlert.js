@@ -1,22 +1,29 @@
-import React from "react";
-import UseIconList from "../SvgList/UseIconList";
+import { createPortal } from "react-dom";
+import UseIconList from "../Global/SvgList/UseIconList";
+import { useEffect, useState } from "react";
 
 const modalRoot = document.getElementById("modal-root");
 const ModalAlert = ({ visible, setVisible, children }) => {
+  const [timer, setTimer] = useState(null);
+  useEffect(() => {
+    if (visible) {
+      clearTimeout(timer);
+      const time = setTimeout(() => {
+        setVisible(false);
+      }, 5000);
+      setTimer(time);
+    }
+  }, [visible]);
   return createPortal(
-    <div
-      class={`modal-alert${
-        visible ? " modal-alert--appear-active" : " modal-alert--exit-active"
-      }`}
-    >
-      <div class="modal-toast">
-        <p class="modal-toast__message">{children}</p>
+    <div className={`modal-alert${visible ? " active" : " exit"}`}>
+      <div className="modal-toast">
+        <div className="modal-toast__message">{children}</div>
         <button
           onClick={() => setVisible(false)}
           type="button"
-          class="modal-toast__close-button"
+          className="modal-toast-button"
         >
-          <span class="modal-toast__close">
+          <span className="modal-toast__close">
             <UseIconList icon="close"></UseIconList>
           </span>
         </button>

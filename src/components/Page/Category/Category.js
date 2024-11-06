@@ -1,19 +1,14 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Category.css";
 import { useParams } from "react-router-dom";
 import Breadcumb from "../../Global/Breadcrumb/Breadcumb";
-import {
-  FetchDocInfinity,
-  FetchSingleDocumentByKey,
-} from "../../../features/useFetch";
+import { FetchSingleDocumentByKey } from "../../../features/useFetch";
 import CategoryData from "./CategoryData";
 import CategoryTag from "./CategoryTag";
 import CategoryRank from "./CategoryRank";
 import CategoryFree from "./CategoryFree";
 import CategoryPremium from "./CategoryPremium";
-import Recommend from "../../Global/Recommend/Recommend";
-import Skeleton from "../../Global/Skeleton/Skeleton";
-import { CardSkeleton } from "../../Global/Card/Card";
+import CategoryAll from "./CategoryAll";
 
 const Category = () => {
   const { slug } = useParams();
@@ -28,53 +23,8 @@ const Category = () => {
 
   useEffect(() => {
     handleCategory();
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [slug]);
-
-  const [data, setData] = useState([]);
-  const [lastDoc, setLastDoc] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const limitPerPage = 8;
-
-  const fetchData = useCallback(async () => {
-    if (!hasMore) return;
-
-    setLoading(true);
-    const data = await FetchDocInfinity(
-      "Episode",
-      "upload_date",
-      "desc",
-      lastDoc,
-      limitPerPage
-    );
-
-    if (data.success) {
-      setLastDoc(data.lastDoc);
-      setData((prevData) => [...prevData, ...data.docs]);
-
-      if (data.docs.length < limitPerPage) {
-        setHasMore(false);
-      }
-    } else {
-      console.error(data.error);
-    }
-
-    setLoading(false);
-  }, [lastDoc, limitPerPage, hasMore]);
-
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop + 1 >=
-      document.documentElement.scrollHeight
-    ) {
-      fetchData();
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [fetchData, loading, hasMore]);
 
   return (
     <main className="page-main">
@@ -87,9 +37,9 @@ const Category = () => {
           <CategoryRank category={category} slug={slug}></CategoryRank>
           <CategoryFree category={category} slug={slug}></CategoryFree>
           <CategoryPremium category={category} slug={slug}></CategoryPremium>
-          <section className="feature-section">
-            <Recommend value={data} loading={loading} title={"All"} />
-          </section>
+          {category?.category_id && (
+            <CategoryAll category={category} slug={slug}></CategoryAll>
+          )}
         </div>
       </div>
     </main>

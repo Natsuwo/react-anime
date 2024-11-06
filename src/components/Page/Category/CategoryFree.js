@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetDocumentsByQuery } from "../../../features/useFetch";
+import { getDoubleFind } from "../../../features/useFetch";
 import VideoList from "../../Global/VideoList/VideoList";
 import { CardVideo } from "../../Global/Card/Card";
 
@@ -10,18 +10,17 @@ const CategoryFree = ({ category, slug }) => {
     const handleData = async () => {
       if (!freeLoading && Object.keys(category).length) {
         setFreeLoading(true);
-        const data = await GetDocumentsByQuery(
+        const data = await getDoubleFind(
           "Episode",
-          "level",
-          1,
-          false,
+          ["level", 1, false],
+          ["category_id", category?.category_id, true],
           12
         );
         if (data.success) {
           setCategoryFree(data.doc);
         }
-        setFreeLoading(false);
       }
+      setFreeLoading(false);
     };
     handleData();
   }, [category, slug]);
@@ -35,6 +34,7 @@ const CategoryFree = ({ category, slug }) => {
           items={categoryFree}
           slidesToShow={4}
           totalSlides={categoryFree?.length}
+          isLoading={freeLoading}
         ></VideoList>
       )}
     </section>

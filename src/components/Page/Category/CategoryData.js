@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { GetDocumentsByQuery } from "../../../features/useFetch";
 import VideoList from "../../Global/VideoList/VideoList";
 import { CardSkeleton, CardVideo } from "../../Global/Card/Card";
+import Recommend from "../../Global/Recommend/Recommend";
 
-const CategoryData = ({ category, slug }) => {
+const CategoryData = ({ title, category, slug, isGrid = false }) => {
   const [categoryData, setCategoryData] = useState([]);
   const [categoryDataLoading, setCategoryDataLoading] = useState(false);
 
@@ -17,6 +18,7 @@ const CategoryData = ({ category, slug }) => {
           category?.category_id,
           true
         );
+
         if (data.success) {
           setCategoryData(data.doc);
         }
@@ -28,10 +30,23 @@ const CategoryData = ({ category, slug }) => {
 
   return (
     <section className="feature-section">
-      {!categoryDataLoading ? (
-        <VideoList ChildComponent={CardVideo} items={categoryData}></VideoList>
+      {isGrid ? (
+        <Recommend
+          value={categoryData}
+          loading={categoryDataLoading}
+          title={title}
+        />
       ) : (
-        <VideoList ChildComponent={CardSkeleton} height={215}></VideoList>
+        <>
+          {!categoryDataLoading ? (
+            <VideoList
+              ChildComponent={CardVideo}
+              items={categoryData}
+            ></VideoList>
+          ) : (
+            <VideoList ChildComponent={CardSkeleton} height={215}></VideoList>
+          )}
+        </>
       )}
     </section>
   );

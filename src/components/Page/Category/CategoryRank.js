@@ -37,7 +37,7 @@ const CategoryRank = ({ category, slug }) => {
     <section className="feature-section">
       {category?.name && (
         <VideoList
-          categoryTitle={category?.name + " rank"}
+          categoryTitle={category?.name + " Rank"}
           ChildComponent={CardRank}
           items={categoryRank}
           slidesToShow={7}

@@ -15,8 +15,9 @@
 15. Lưu quá trình xem và phát lại
 16. Search
 17. Infinity Scroll [DONE]
-18. Lưu myList ở detail và episode
-19. Category theo detail và episode
+18. Lưu myList ở detail và episode [DONE]
+    18.5 Modal cho mylist ở detail [DONE]
+19. Category theo detail và episode [DONE]
 20. CSS Scroll bar
 21. BreachCrum
 

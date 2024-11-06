@@ -15,6 +15,7 @@ import {
   GetAllSort,
 } from "../../../../features/useFetch";
 import { getTime, formatViews } from "../../../../features/helper";
+import CategoryData from "../../Category/CategoryData";
 
 const EpisodeVideo = () => {
   const descRef = useRef(null);
@@ -30,6 +31,13 @@ const EpisodeVideo = () => {
 
   const { value: mostViewData, loading: isLoadingMostView } = GetAllSort(
     "Videos",
+    "views_count",
+    "desc",
+    12
+  );
+
+  const { value: mostViewSidebar, loading: loadingSidebar } = GetAllSort(
+    "Episode",
     "views_count",
     "desc",
     12
@@ -62,6 +70,10 @@ const EpisodeVideo = () => {
       setOriHeight(descRef.current.scrollHeight);
     }
   }, [dataEpisode]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [episodeId]);
 
   const preLoadData = Array.from({ length: 12 }, (_, i) => ({ id: i + 1 }));
   return (
@@ -148,7 +160,7 @@ const EpisodeVideo = () => {
                       Popular Stuffs
                     </h2>
                     <ul className="episode-sidebar-ep-list">
-                      {isLoadingMostView &&
+                      {loadingSidebar &&
                         preLoadData.map((item, index) => (
                           <CardListEpsiode
                             key={index}
@@ -156,7 +168,7 @@ const EpisodeVideo = () => {
                             loading={true}
                           />
                         ))}
-                      {mostViewData.map((item, index) => (
+                      {mostViewSidebar.map((item, index) => (
                         <CardListEpsiode
                           data={item}
                           key={index}
@@ -169,7 +181,12 @@ const EpisodeVideo = () => {
               )}
             </div>
             <div className="mt">
-              <Recommend title={"Recent Category"} />
+              <CategoryData
+                title={"Recent Category"}
+                isGrid={true}
+                category={dataEpisode}
+                slug={episodeId}
+              />
               <Recommend
                 value={mostViewData}
                 loading={isLoadingMostView}
