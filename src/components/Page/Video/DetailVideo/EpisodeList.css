@@ -127,6 +127,10 @@
   overflow: hidden;
 }
 
+.episode-list-item-wrapper .episode-list-item-thumbnail img {
+  object-fit: cover;
+}
+
 .episode-list-item-wrapper .episode-list-item-details {
   display: flex;
   flex-direction: column;

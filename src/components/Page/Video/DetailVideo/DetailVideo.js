@@ -101,7 +101,7 @@ const DetailVideo = () => {
                     <span className="detail-toggle-text">More Detail</span>
                   </button>
                   <div className="detail-actions mb-md">
-                    <ActionButton />
+                    <ActionButton items={data} />
                   </div>
                   <SuggestedBar />
                 </div>

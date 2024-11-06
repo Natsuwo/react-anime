@@ -144,7 +144,7 @@ export const CardVideo = ({
               src={
                 highlighted_thumbnail ? highlighted_thumbnail : thumbnail_url
               }
-              alt=""
+              alt={`${title} thumbnail`}
             />
           </Skeleton>
 
@@ -179,7 +179,8 @@ export const CardVideo = ({
                 {getTime(last_modified_date)}
               </time>
             )}
-            {isNew && (
+
+            {getDays(last_modified_date) < 10 && (
               <div className="video-new-episode">
                 <div className="video-new-episode-text">New Episode</div>
               </div>

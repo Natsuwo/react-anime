@@ -41,6 +41,14 @@
   opacity: 1;
 }
 
+.detail-button.add-to-list {
+  transition: 300ms;
+}
+
+.detail-button.add-to-list.added {
+  background-color: var(--link-active);
+}
+
 .detail-button.facebook {
   background-color: #1877f2;
   color: #fff;

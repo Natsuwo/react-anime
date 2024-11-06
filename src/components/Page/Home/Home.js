@@ -14,7 +14,8 @@ import {
 import VideoList from "../../Global/VideoList/VideoList";
 import { UseResponsiveContext } from "../../../context/ResponsiveContext";
 import {
-  FetchMyList,
+  FetchAllLimit,
+  FetchSingleDocumentByKey,
   GetAllSort,
   GetDocumentsByQuery,
 } from "../../../features/useFetch";
@@ -40,15 +41,58 @@ const AppBaner = () => {
   const handleHovered = (opt) => {
     setIsHovered(opt);
   };
+
+  // Category Data
+  const [categoryData, setCategoryData] = useState([]);
+  const [cateLoading, setCateLoading] = useState(false);
+
+  const handleCategoriesList = async () => {
+    setCateLoading(true);
+    const categorysList = await FetchAllLimit("Categories");
+    categorysList.map(async (item) => {
+      const data = await FetchSingleDocumentByKey(
+        "Videos",
+        "category_id",
+        item.category_id,
+        true
+      );
+      const dataWithCategory = { ...data, category_name: item.category_id };
+      setCategoryData((prev) => {
+        if (
+          !prev.some(
+            (existingItem) => existingItem.category_name === item.category_id
+          )
+        ) {
+          return [...prev, dataWithCategory];
+        }
+        return prev;
+      });
+      setCateLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    handleCategoriesList();
+  }, []);
   return size.width < 992 ? (
     ""
   ) : (
     <div className="banner-wrapper">
       {isSwitcher === 0 ? (
-        <Banner isHovered={isHovered} handleHovered={handleHovered} />
+        <Banner
+          categoryData={categoryData}
+          isLoading={cateLoading}
+          isHovered={isHovered}
+          handleHovered={handleHovered}
+        />
       ) : (
         <>
-          <Sponsored isHovered={isHovered} handleHovered={handleHovered} />
+          <Sponsored
+            categoryData={categoryData}
+            isLoading={cateLoading}
+            isHovered={isHovered}
+            handleHovered={handleHovered}
+          />
           {/* Set Gradient */}
           <div className="sponsored-overlay">
             <div className="sponsored-overlay-bg">

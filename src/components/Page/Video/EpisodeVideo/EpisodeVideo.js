@@ -131,7 +131,7 @@ const EpisodeVideo = () => {
                   )}
                 </div>
                 <div className="episode-action">
-                  <ActionButton />
+                  <ActionButton items={dataEpisode} />
                 </div>
                 <div className="recent-episode-wrapper mt">
                   <EpisodeList

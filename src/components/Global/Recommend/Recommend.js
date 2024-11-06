@@ -1,10 +1,10 @@
-import React from "react";
-import { CardVideo } from "../Card/Card";
+import React, { useEffect, useState } from "react";
+import { CardSkeleton, CardVideo } from "../Card/Card";
 import "./Recommend.css";
 
-const Recommend = ({ title, value }) => {
+const Recommend = ({ title, value, loading }) => {
   return (
-    <div className="main-recommend-wrapper ">
+    <div className="main-recommend-wrapper">
       <h3>{title}</h3>
       <div className="recommend-inner">
         {value?.map((item, index) => (
@@ -12,6 +12,7 @@ const Recommend = ({ title, value }) => {
             <CardVideo
               title={item.title}
               video_id={item.id}
+              thumbnail_url={item.thumbnail_url}
               highlighted_thumbnail={item.highlighted_thumbnail}
               props={item}
             />

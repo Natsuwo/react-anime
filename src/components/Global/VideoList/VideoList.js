@@ -109,10 +109,10 @@ const VideoList = ({
   };
 
   useEffect(() => {
-    const maxHeight = Math.max(
-      ...cardRefs.current.map((card) => card?.offsetHeight)
-    );
-    cardRefs.current.forEach((card) => {
+    const validCards = cardRefs.current.filter((card) => card); // Lọc các phần tử null/undefined
+    const maxHeight = Math.max(...validCards.map((card) => card.offsetHeight));
+
+    validCards.forEach((card) => {
       card.style.height = `${maxHeight}px`;
     });
   }, [items]);

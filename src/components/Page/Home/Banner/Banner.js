@@ -1,52 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Banner.css";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import trailerVideo from "../../../../assets/videos/trailer-1.mp4";
 import Carousel from "./Carousel";
-import {
-  FetchAllLimit,
-  FetchSingleDocumentByKey,
-} from "../../../../features/useFetch";
 import LayoutSwitcher from "../../../Global/Banner/LayoutSwitcher/LayoutSwitcher";
 import { UseToggleContext } from "../../../../context/ToggleContext";
 
-const Banner = ({ isHovered, handleHovered }) => {
+const Banner = ({ isHovered, handleHovered, categoryData, isLoading }) => {
   const [isMute, setIsMute] = useState(true);
-  // Category Data
-  const [categoryData, setCategoryData] = useState([]);
-  const [isLoading, setLoading] = useState(false);
 
   // active sort
   const { isSwitcher, handleSwitch } = UseToggleContext();
-
-  const handleCategoriesList = async () => {
-    setLoading(true);
-    const categorysList = await FetchAllLimit("Categories");
-    categorysList.map(async (item) => {
-      const data = await FetchSingleDocumentByKey(
-        "Videos",
-        "category_id",
-        item.category_id,
-        true
-      );
-      const dataWithCategory = { ...data, category_name: item.category_id };
-      setCategoryData((prev) => {
-        if (
-          !prev.some(
-            (existingItem) => existingItem.category_name === item.category_id
-          )
-        ) {
-          return [...prev, dataWithCategory];
-        }
-        return prev;
-      });
-      setLoading(false);
-    });
-  };
-
-  useEffect(() => {
-    handleCategoriesList();
-  }, []);
 
   return (
     <div className="main-banner">

@@ -23,6 +23,7 @@ body {
   --white-8: hsla(0, 0%, 100%, 0.08);
   --white-12: hsla(0, 0%, 100%, 0.12);
   --white-24: hsla(0, 0%, 100%, 0.24);
+  --black-20:rgba(0,0,0,.2)
   --radius: 6px;
   --radius-2: 8px;
   --radius-3: 12px;
@@ -409,7 +410,7 @@ button.btn-default:hover::after {
 .container {
   margin: 0 auto;
   position: relative;
-  padding: 0 24px;
+  /* padding: 0 24px; */
 }
 
 main.page-main {

@@ -11,12 +11,14 @@
 11. Category [DONE]
 12. Premium Payment
 13. Mobile
-14. Fix sao cho chỉ get 1 lần category ở banner
+14. Fix sao cho chỉ get 1 lần category ở banner [DONE]
 15. Lưu quá trình xem và phát lại
 16. Search
-17. Infinity Scroll
+17. Infinity Scroll [DONE]
 18. Lưu myList ở detail và episode
 19. Category theo detail và episode
+20. CSS Scroll bar
+21. BreachCrum
 
 Update
 

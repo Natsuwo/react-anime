@@ -27,6 +27,7 @@ import {
   orderBy,
   limit,
   serverTimestamp,
+  startAfter,
 } from "firebase/firestore";
 
 export const CreateDocument = async (document, userId, params) => {
@@ -108,6 +109,43 @@ export const GetDocumentsByQuery = async (
     return { success: true, doc: documents };
   } catch (err) {
     return { success: false, error: err.message };
+  }
+};
+
+export const FetchDocInfinity = async (
+  document,
+  sort_field,
+  sort_by,
+  lastDoc,
+  limitPerPage
+) => {
+  try {
+    let q;
+    if (lastDoc) {
+      q = query(
+        collection(db, document),
+        orderBy(sort_field, sort_by),
+        startAfter(lastDoc),
+        limit(limitPerPage)
+      );
+    } else {
+      q = query(
+        collection(db, document),
+        orderBy(sort_field, sort_by),
+        limit(limitPerPage)
+      );
+    }
+
+    const querySnapshot = await getDocs(q);
+    const docs = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    return { success: true, lastDoc: lastVisible, docs };
+  } catch (error) {
+    return { success: false, error: error.message };
   }
 };
 
