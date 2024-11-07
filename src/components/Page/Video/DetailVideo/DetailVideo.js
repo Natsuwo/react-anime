@@ -13,8 +13,10 @@ import {
   GetDocumentsByQuery,
   GetDocument,
   GetAllSort,
+  fetchRandomWatchedEpisode,
 } from "../../../../features/useFetch";
 import CategoryData from "../../Category/CategoryData";
+import { UseUserMetaContext } from "../../../../context/UserMeta";
 
 const DetailVideo = () => {
   const { videoId } = useParams();
@@ -22,12 +24,15 @@ const DetailVideo = () => {
   const [isShow, setIsShow] = useState(false);
   const [oriHeight, setOriHeight] = useState(0);
   const { size } = UseResponsiveContext();
+  const { user } = UseUserMetaContext();
 
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
   const [mostViewData, setMostViewData] = useState([]);
   const [isLoadingMostView, setLoadingMostView] = useState(false);
+
+  const [initialWatchTime, setInitialWatchTime] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -57,6 +62,15 @@ const DetailVideo = () => {
   useEffect(() => {
     handleData();
   }, [videoId]);
+
+  useEffect(() => {
+    if (user?.uid && videoId) {
+      (async () => {
+        const data = await fetchRandomWatchedEpisode(user.uid, videoId);
+        setInitialWatchTime(data);
+      })();
+    }
+  }, [user, videoId]);
 
   const [episodeListArr, setEpisodeList] = useState([]);
   const [episodeListLoading, setElistLoading] = useState(true);
@@ -132,7 +146,12 @@ const DetailVideo = () => {
                   <div className="detail-actions mb-md">
                     <ActionButton items={data} />
                   </div>
-                  <SuggestedBar />
+                  {initialWatchTime && (
+                    <SuggestedBar
+                      episodeListArr={episodeListArr}
+                      initialWatchTime={initialWatchTime}
+                    />
+                  )}
                 </div>
               </div>
             </div>

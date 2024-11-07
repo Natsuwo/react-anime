@@ -24,7 +24,7 @@
 
 .main-tooltip .tooltip-text {
   background-color: var(--secondary-color-2);
-  border: 1px solid var(--sub-title-color-2);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2);
   color: #fff;

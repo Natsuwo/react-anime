@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Subscription.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CreditCard from "../../Global/PaymentGate/CreditCard";
+import Vnpay from "../../Global/PaymentGate/Vnpay";
+import { GetDocument } from "../../../features/useFetch";
 
 const Subscription = () => {
   const paymentList = [
     { id: "credit_card", title: "Credit Card" },
     { id: "paypal", title: "Paypal" },
     { id: "google_pay", title: "Google Pay" },
-    { id: "momo", title: "Momo" },
+    { id: "vnpay", title: "VNPay" },
   ];
   const [isActive, setIsActive] = useState("credit_card");
+
+  const [data, setData] = useState(null);
+  const { params } = useParams();
+  useEffect(() => {
+    (async () => {
+      const data = await GetDocument("Plan", params);
+      if (data.success) {
+        setData(data.docs);
+      }
+    })();
+  }, [params]);
+
   return (
     <main className="page-main">
       <div className="page-container">
@@ -34,7 +48,8 @@ const Subscription = () => {
           </ul>
           <div className="payment-container">
             <div className="payment-details">
-              {isActive === "credit_card" && <CreditCard />}
+              {isActive === "credit_card" && <CreditCard data={data} />}
+              {isActive === "vnpay" && <Vnpay data={data} />}
             </div>
             <div className="payment-policy">
               <p className="guideline-title">

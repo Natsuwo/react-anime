@@ -8,7 +8,7 @@ import PiPButon from "./PiPButon";
 import VideoPlayerControls from "./VideoPlayerControls";
 import { isMobile } from "react-device-detect";
 
-const Player = ({ url }) => {
+const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
   const videoRef = useRef(null);
   const playerRef = useRef(null);
   const volumeRef = useRef(null);
@@ -273,17 +273,18 @@ const Player = ({ url }) => {
   };
 
   // Auto Play
-  // const handleAutoPlay = () => {
-  //   const video = videoRef.current;
-  //   video
-  //     .play()
-  //     .then(() => {
-  //       setIsPlaying(true);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error attempting to play video:", error);
-  //     });
-  // };
+
+  const handleAutoPlay = () => {
+    const video = videoRef.current;
+    video
+      .play()
+      .then(() => {
+        setIsPlaying(true);
+      })
+      .catch((error) => {
+        console.error("Error attempting to play video:", error);
+      });
+  };
 
   const handlePiP = (opt) => {
     setIsPip(opt);
@@ -372,7 +373,7 @@ const Player = ({ url }) => {
 
     const handleLoadedData = () => {
       // Khi video đã loaded, tự động phát
-      // handleAutoPlay();
+      handleAutoPlay();
       setIsLoading(false);
     };
 
@@ -480,6 +481,25 @@ const Player = ({ url }) => {
     isDragging,
   ]);
 
+  const handleLoadedMetadata = () => {
+    if (
+      videoRef.current &&
+      initialWatchTime !== null &&
+      initialWatchTime !== undefined &&
+      !isNaN(initialWatchTime)
+    ) {
+      videoRef.current.currentTime = initialWatchTime;
+    }
+  };
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (!videoRef.current?.paused && !readyToPlay) {
+        setReadyToPlay(true);
+      }
+    }
+  }, [videoRef.current?.paused]);
+
   return (
     <div
       className={`yurei-player-wrapper${
@@ -509,6 +529,10 @@ const Player = ({ url }) => {
           togglePlayPause={togglePlayPause}
           skipState={skipState}
           handleDoubleClickTime={handleDoubleClickTime}
+          userId={userId}
+          videoId={videoId}
+          episodeId={episodeId}
+          handleLoadedMetadata={handleLoadedMetadata}
         />
         <ButtonHandle
           isLoading={isLoading}

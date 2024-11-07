@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Promote.css";
 import Banner from "../../../../assets/images/png/banner-yurei.png";
-import UseIconList from "../../../Global/SvgList/UseIconList";
 import PricingPlan from "../../../Global/Promote/PricingPlan";
 import PlanOption from "../../../Global/Promote/PlanOption";
 import ToggleButton from "../../../Global/Promote/ToggleButton";
 import PromoteThumb from "../../../../assets/images/png/promote-thumb.png";
+import { GetAllSort } from "../../../../features/useFetch";
 
 const Promote = () => {
   const fullAccessList = [
@@ -19,10 +19,19 @@ const Promote = () => {
   const premiumList = [
     { option: "Full Access", check: true },
     { option: "Unlimited contents", check: false },
-    { option: "No Ads", check: false },
+    { option: "No Ads", check: true },
     { option: "Play from start livestream stuffs", check: false },
     { option: "Downloadble Videos", check: false },
   ];
+  const [plans, setPlans] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const data = await GetAllSort("Plan", "amount", "asc", 2);
+      if (data.success) {
+        setPlans(data.doc);
+      }
+    })();
+  }, []);
   return (
     <>
       <div className="promote-container">
@@ -35,13 +44,18 @@ const Promote = () => {
             <div className="promote-plan-left">
               <PlanOption title={"Unlimited"} lists={fullAccessList} />
               <div className="mt-2">
-                <PricingPlan price={"9.99"} month={"1"} />
+                <PricingPlan url={plans[1]?.id} price={"9.99"} month={"1"} />
               </div>
             </div>
             <div className="promote-plan-right mb-2">
-              <PlanOption title={"Unlimited"} lists={premiumList} />
+              <PlanOption title={"Premium"} lists={premiumList} />
               <div className="mt-2">
-                <PricingPlan recommend={true} price={"4.99"} month={"1"} />
+                <PricingPlan
+                  url={plans[0]?.id}
+                  recommend={true}
+                  price={"4.99"}
+                  month={"1"}
+                />
               </div>
             </div>
           </div>
@@ -74,13 +88,18 @@ const Promote = () => {
             <div className="promote-plan-left">
               <PlanOption title={"Unlimited"} lists={fullAccessList} />
               <div className="mt-2">
-                <PricingPlan price={"9.99"} month={"1"} />
+                <PricingPlan url={plans[1]?.id} price={"9.99"} month={"1"} />
               </div>
             </div>
             <div className="promote-plan-right mb-2">
-              <PlanOption title={"Unlimited"} lists={premiumList} />
+              <PlanOption title={"Premium"} lists={premiumList} />
               <div className="mt-2">
-                <PricingPlan recommend={true} price={"4.99"} month={"1"} />
+                <PricingPlan
+                  url={plans[0]?.id}
+                  recommend={true}
+                  price={"4.99"}
+                  month={"1"}
+                />
               </div>
             </div>
           </div>

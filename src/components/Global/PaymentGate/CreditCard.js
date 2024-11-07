@@ -7,7 +7,7 @@ import InputForm from "../FormInput/FormInput";
 import Select from "../Select/Select";
 import { Link } from "react-router-dom";
 
-const CreditCard = () => {
+const CreditCard = ({ data }) => {
   const arrCard = [VisaPng, MasterCard, AmericaExpress];
   const monthSelect = Array.from({ length: 12 }, (_, i) => ({
     id: i,
@@ -82,7 +82,7 @@ const CreditCard = () => {
           </tr>
           <tr className="payment-detail-table-row">
             <th className="payment-detail-header">Price</th>
-            <td className="payment-detail-data">$4.99</td>
+            <td className="payment-detail-data">${data?.amount}</td>
           </tr>
         </tbody>
       </table>

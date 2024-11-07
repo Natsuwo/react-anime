@@ -27,7 +27,7 @@ const CategoryFree = ({ category, slug }) => {
 
   return (
     <section className="feature-section">
-      {category?.name && (
+      {category?.name && categoryFree?.length > 0 && (
         <VideoList
           categoryTitle={category?.name + " Free"}
           ChildComponent={CardVideo}

@@ -29,7 +29,10 @@ const HeaderPromote = () => {
             YureiTV
           </Link>
         </div>
-        <div className="icon-search">
+        <div
+          className="icon-search"
+          style={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
+        >
           <Link to="/subscription/signup">
             <button className="btn">Sign Up</button>
           </Link>

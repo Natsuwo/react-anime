@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Action",
+    "category_id": [1, 2, 4],
+    "description": "Action movies involve intense fight scenes, high-speed chases, and thrilling situations."
+  },
+  {
+    "name": "Comedy",
+    "category_id": [1, 3, 4, 5],
+    "description": "Comedy films feature humorous situations that make the audience laugh. They can be combined with other genres such as romance or drama."
+  },
+  {
+    "name": "Slice of Life",
+    "category_id": [1, 3],
+    "description": "Slice of Life films depict everyday life, focusing on characters' relationships and emotions in daily situations."
+  },
+  {
+    "name": "Horror",
+    "category_id": [1, 4],
+    "description": "Horror movies include elements of fear, the supernatural, and chilling scenes that scare the audience."
+  },
+  {
+    "name": "Fantasy",
+    "category_id": [1, 2, 4],
+    "description": "Fantasy films are set in magical or imaginary worlds, often featuring mythical creatures and magical powers."
+  },
+  {
+    "name": "Drama",
+    "category_id": [5],
+    "description": "Drama films focus on intense emotional stories, conflicts, and character development in realistic or serious situations."
+  },
+  {
+    "name": "Romance",
+    "category_id": [1, 3, 5],
+    "description": "Romantic films center around love stories, emotional connections, and relationships between characters."
+  },
+  {
+    "name": "Thriller",
+    "category_id": [1, 4],
+    "description": "Thriller films are intense and suspenseful, keeping the audience on the edge of their seat with dramatic, high-stakes situations."
+  },
+  {
+    "name": "Isekai",
+    "category_id": [2],
+    "description": "Isekai films feature characters who are transported to another world, usually with fantasy, adventure, or magical elements."
+  },
+  {
+    "name": "Anime",
+    "category_id": [1],
+    "description": "Anime films are Japanese animated films, which span a variety of genres including action, adventure, psychological, and romance."
+  },
+  {
+    "name": "Anime Isekai",
+    "category_id": [2],
+    "description": "Anime Isekai films feature protagonists who are transported to alternate worlds, often involving fantasy, magic, and adventure."
+  },
+  {
+    "name": "Anime Slice of Life",
+    "category_id": [3],
+    "description": "Anime Slice of Life films focus on everyday experiences, relationships, and character growth in daily life."
+  },
+  {
+    "name": "Movie",
+    "category_id": [4],
+    "description": "Movies encompass a wide range of genres, from action and comedy to drama and thriller."
+  },
+  {
+    "name": "News",
+    "category_id": [6],
+    "description": "News films provide updates and information on current events, politics, social issues, and cultural happenings."
+  },
+  {
+    "name": "Music",
+    "category_id": [7],
+    "description": "Music films focus on music performances, music videos, or stories revolving around musicians and the music industry."
+  }
+]

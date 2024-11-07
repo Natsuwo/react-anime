@@ -1,33 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./SuggestedBar.css";
 import { Link } from "react-router-dom";
 
-const SuggestedBar = () => {
+const SuggestedBar = ({ episodeListArr, initialWatchTime }) => {
+  const [initialEpisode, setInitialEpisode] = useState();
+  const [percentage, setPercentage] = useState(0);
+  useEffect(() => {
+    if (episodeListArr && episodeListArr?.length > 0) {
+      const filtered = episodeListArr?.filter(
+        (item) => item.id === initialWatchTime.episodeId
+      )[0];
+      const progressPercentage = initialWatchTime.watchTime / filtered.duration;
+
+      setPercentage(progressPercentage);
+      setInitialEpisode(filtered);
+    }
+  }, [episodeListArr, initialWatchTime]);
   return (
     <div className="detail-suggested-wrapper">
       <div className="detail-suggested-inner">
-        <Link className="link-block" to="#">
+        <Link
+          to={`/video/episode/${initialEpisode?.id}`}
+          className="link-block"
+        >
           <div className="detail-suggested-container">
             <div className="suggested-left">
               <div className="suggested-thumbnail">
-                <img
-                  src="https://image.p-c2-x.abema-tv.com/image/programs/149-14_s1_p1/thumb002.png?background=000000&fit=fill&height=216&quality=75&version=1702539828&width=384"
-                  alt=""
-                />
+                <img src={initialEpisode?.thumbnail_url} alt="" />
               </div>
             </div>
             <div className="suggested-right">
               <p className="suggested-meta-text">Continue watching</p>
               <p className="suggested-title">
-                <span className="clamp-text">
-                  第1話 『退治人（ハンター）来たりて空を跳ぶ 前編』ほか２本
-                </span>
+                <span className="clamp-text">{initialEpisode?.title}</span>
               </p>
               <div className="suggested-progressbar">
                 <div className="progressbar-loading">
                   <div
                     className="progressbar-loaded"
-                    style={{ transform: "scale(0.0787623, 1)" }}
+                    style={{ transform: `scale(${percentage}, 1)` }}
                   ></div>
                 </div>
               </div>

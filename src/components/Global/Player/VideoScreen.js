@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { isMobile } from "react-device-detect";
 import UseIconList from "../SvgList/UseIconList";
+import { saveWatchTime } from "../../../features/useFetch";
 
 const VideoScreen = ({
   videoRef,
@@ -12,6 +13,10 @@ const VideoScreen = ({
   handleDoubleClick,
   handleDoubleClickTime,
   skipState,
+  userId,
+  episodeId,
+  videoId,
+  handleLoadedMetadata,
 }) => {
   const handleVideoError = () => {
     const videoElement = videoRef.current;
@@ -39,6 +44,19 @@ const VideoScreen = ({
       }
     }
   };
+  const [lastUpdateTime, setLastUpdateTime] = useState(0);
+
+  // Sự kiện onTimeUpdate để cập nhật thời gian
+  const handleTimeUpdate = () => {
+    const currentWatchTime = videoRef.current.currentTime;
+    setCurrentTime(currentWatchTime);
+
+    if (Math.floor(currentWatchTime) - lastUpdateTime >= 5) {
+      saveWatchTime(userId, videoId, episodeId, currentWatchTime);
+      setLastUpdateTime(Math.floor(currentWatchTime)); // Cập nhật lastUpdateTime
+    }
+  };
+
   return (
     <div
       className="player-container"
@@ -52,8 +70,11 @@ const VideoScreen = ({
           src={Video}
           ref={videoRef}
           id="main-video"
-          onTimeUpdate={() => setCurrentTime(videoRef.current.currentTime)}
-          onLoadedData={() => setTotalTime(videoRef.current.duration)}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedData={() => {
+            setTotalTime(videoRef.current?.duration);
+            handleLoadedMetadata();
+          }}
           playsInline
           onError={handleVideoError}
         ></video>

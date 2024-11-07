@@ -8,8 +8,6 @@ import {
   CardRank,
   CardSquare,
   CardSkeleton,
-  CardRankSkeleton,
-  CardSquareSkeleton,
 } from "../../Global/Card/Card";
 import VideoList from "../../Global/VideoList/VideoList";
 import { UseResponsiveContext } from "../../../context/ResponsiveContext";
@@ -19,19 +17,6 @@ import {
   GetDocumentsByQuery,
 } from "../../../features/useFetch";
 import { UseMyListContext } from "../../../context/MyListContext";
-
-import db from "../../../firebase";
-import {
-  collection,
-  doc,
-  getDocs,
-  addDoc,
-  query,
-  orderBy,
-  limit,
-} from "firebase/firestore";
-import Database from "../../../database";
-import EpisodeData from "../../../DataEpisode";
 import { UseCategoryContext } from "../../../context/CategoryContext";
 
 const AppBaner = () => {
@@ -145,21 +130,6 @@ const Home = () => {
 
   const { myList, dataMyList, isLoading: myListLoading } = UseMyListContext();
 
-  // let testRun = false;
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     testRun = true;
-  //     // const docRef = await addDoc(collection(db, "Episode"), EpisodeData[0]);
-  //     Database.map(async (item) => {
-  //       const docRef = await addDoc(collection(db, "Videos"), item);
-  //       console.log("Document written with ID: ", docRef.id);
-  //     });
-  //   };
-
-  //   if (!testRun) {
-  //     getData();
-  //   }
-  // }, []);
   return (
     <>
       <AppBaner />

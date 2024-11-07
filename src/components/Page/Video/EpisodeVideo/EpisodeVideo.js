@@ -13,19 +13,23 @@ import {
   GetDocument,
   GetDocumentsByQuery,
   GetAllSort,
+  fetchWatchTime,
 } from "../../../../features/useFetch";
-import { getTime, formatViews } from "../../../../features/helper";
+import Skeleton from "../../../Global/Skeleton/Skeleton";
 import CategoryData from "../../Category/CategoryData";
+import { getTime, formatViews } from "../../../../features/helper";
 import { UseCategoryContext } from "../../../../context/CategoryContext";
+import { UseUserMetaContext } from "../../../../context/UserMeta";
 
 const EpisodeVideo = () => {
   const descRef = useRef(null);
-  const { episodeId } = useParams();
   const [isShow, setIsShow] = useState(false);
   const [oriHeight, setOriHeight] = useState(0);
-  const { wideMode } = UsePlayerWide();
   const [breadcrumb, setBreadCrumb] = useState([]);
+  const { episodeId } = useParams();
+  const { wideMode } = UsePlayerWide();
   const { categoryList } = UseCategoryContext();
+  const { user } = UseUserMetaContext();
 
   const [mostViewData, setMostViewData] = useState([]);
   const [isLoadingMostView, setLoadingMostView] = useState(false);
@@ -39,6 +43,9 @@ const EpisodeVideo = () => {
 
   const [episodeListArr, setEpisodeList] = useState([]);
   const [episodeListLoading, setEpisodeListLoading] = useState(false);
+
+  // time saved
+  const [initialWatchTime, setInitialWatchTime] = useState(null);
 
   const handleData = async () => {
     setLoading(true);
@@ -149,7 +156,18 @@ const EpisodeVideo = () => {
 
   const preLoadData = Array.from({ length: 12 }, (_, i) => ({ id: i + 1 }));
 
-  useEffect(() => {}, [episodeId, dataEpisode]);
+  useEffect(() => {
+    if (episodeId && user?.uid && dataEpisode?.video_id) {
+      (async () => {
+        const time = await fetchWatchTime(
+          user.uid,
+          dataEpisode?.video_id,
+          episodeId
+        );
+        setInitialWatchTime(time || 0);
+      })();
+    }
+  }, [user?.uid, episodeId, dataEpisode?.video_id]);
 
   return (
     <main className="page-main">
@@ -160,7 +178,16 @@ const EpisodeVideo = () => {
             <div className="episode-wrapper">
               <div className="episode-inner">
                 <div className="player-wrapper">
-                  <Player url={dataEpisode?.video_url} />
+                  {isLoading && <Skeleton></Skeleton>}
+                  {!isLoading && initialWatchTime !== null && (
+                    <Player
+                      userId={user?.uid}
+                      videoId={dataEpisode?.video_id}
+                      episodeId={episodeId}
+                      url={dataEpisode?.video_url}
+                      initialWatchTime={initialWatchTime}
+                    />
+                  )}
                 </div>
 
                 <h1 className="episode-main-title">

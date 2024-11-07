@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import "./Header.css";
 import { UseToggleContext } from "../../../context/ToggleContext";
 import UseIconList from "../SvgList/UseIconList";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = ({ hideMenu = false }) => {
   const { toggleNav } = UseToggleContext();
   const [isActive, setIsActive] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
+  const navigate = useNavigate();
+
   const handleScroll = () => {
     if (window.scrollY > 0) {
       setIsActive(true);
@@ -22,6 +26,14 @@ const Header = ({ hideMenu = false }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Ngăn form redirect
+    if (searchValue.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchValue)}`); // Chuyển hướng đến trang search với query
+    }
+  };
+
   return (
     <header className="main-header">
       <div className={`top-bar${isActive ? "" : " transparent-header"}`}>
@@ -41,16 +53,20 @@ const Header = ({ hideMenu = false }) => {
             YureiTV
           </Link>
         </div>
-        <div className="search-bar">
+        <form onSubmit={handleSubmit} className="search-bar">
           <input
-            name="main-search"
+            onChange={(e) => setSearchValue(e.target.value)}
+            value={searchValue}
+            name="q"
             type="text"
             placeholder="Search something..."
           />
-          <div className="icon-search">
-            <UseIconList icon="search" />
-          </div>
-        </div>
+          <button type="sumbit">
+            <div className="icon-search">
+              <UseIconList icon="search" />
+            </div>
+          </button>
+        </form>
       </div>
     </header>
   );

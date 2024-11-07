@@ -1,6 +1,7 @@
 import React from "react";
 import Breadcumb from "../../../Global/Breadcrumb/Breadcumb";
 import "./Status.css";
+import { Link } from "react-router-dom";
 
 const Subscription = () => {
   const breadcrumb = [{ title: "Subscription" }];
@@ -50,7 +51,9 @@ const Subscription = () => {
                     </div>
                   </div>
                   <div className="plan-box-right">
-                    <button className="btn btn-active">More Details</button>
+                    <Link to="/subscription/promote">
+                      <button className="btn btn-active">More Details</button>
+                    </Link>
                   </div>
                 </div>
               </div>

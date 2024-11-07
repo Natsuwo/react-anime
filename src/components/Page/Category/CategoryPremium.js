@@ -26,7 +26,7 @@ const CategoryPremium = ({ category, slug }) => {
   }, [category, slug]);
   return (
     <section className="feature-section">
-      {category?.name && (
+      {category?.name && categoryPremium?.length > 0 && (
         <VideoList
           categoryTitle={category?.name + " Premium"}
           ChildComponent={CardVideo}

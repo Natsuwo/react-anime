@@ -27,6 +27,7 @@ import {
   limit,
   serverTimestamp,
   startAfter,
+  getCountFromServer,
 } from "firebase/firestore";
 
 export const CreateDocument = async (document, userId, params) => {
@@ -464,4 +465,237 @@ export const FetchMyList = async (myList) => {
   } catch (error) {
     return { success: false, error: error.message, errorCode: error.code };
   }
+};
+
+// Hàm lấy số lượng tài liệu
+export const getTotalResultsCount = async (keyword) => {
+  const videoRef = collection(db, "Videos");
+  const qTitle = query(
+    videoRef,
+    where("lower_title", ">=", keyword.toLowerCase()),
+    where("lower_title", "<=", keyword.toLowerCase() + "\uf8ff")
+  );
+  const qDescription = query(
+    videoRef,
+    where("lower_description", ">=", keyword.toLowerCase()),
+    where("lower_description", "<=", keyword.toLowerCase() + "\uf8ff")
+  );
+
+  const titleCountSnapshot = await getCountFromServer(qTitle);
+  const titleCount = titleCountSnapshot.data().count;
+  const descriptionCountSnapshot = await getCountFromServer(qDescription);
+  const descriptionCount = descriptionCountSnapshot.data().count;
+
+  return titleCount + descriptionCount;
+};
+
+const searchVideos = async (keyword) => {
+  const videoRef = collection(db, "Videos");
+
+  const qTitle = query(
+    videoRef,
+    where("lower_title", ">=", keyword),
+    where("lower_title", "<=", keyword + "\uf8ff"),
+    limit(8)
+  );
+  const videoSnapshotTitle = await getDocs(qTitle);
+  const videosFromTitle = videoSnapshotTitle.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const qDescription = query(
+    videoRef,
+    where("lower_description", ">=", keyword),
+    where("lower_description", "<=", keyword + "\uf8ff"),
+    limit(8)
+  );
+  const videoSnapshotDescription = await getDocs(qDescription);
+  const videosFromDescription = videoSnapshotDescription.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const videoMap = new Map();
+
+  videosFromTitle.forEach((video) => {
+    videoMap.set(video.id, video);
+  });
+
+  videosFromDescription.forEach((video) => {
+    videoMap.set(video.id, video);
+  });
+
+  const uniqueVideos = Array.from(videoMap.values());
+
+  return uniqueVideos;
+};
+
+export const getTotalEpisodesCount = async (videoList) => {
+  const episodeRef = collection(db, "Episode");
+  const videoIds = videoList.map((video) => video.id);
+
+  // Tạo truy vấn đếm số tập
+  const episodeQuery = query(episodeRef, where("video_id", "in", videoIds));
+
+  const snapshot = await getCountFromServer(episodeQuery);
+  return snapshot.data().count;
+};
+
+export const getLimitedEpisodes = async (videoList, episodeLimit = 8) => {
+  const episodeRef = collection(db, "Episode");
+  const episodeList = [];
+  let totalFetched = 0;
+
+  for (let video of videoList) {
+    if (totalFetched >= episodeLimit) break;
+
+    const remainingLimit = episodeLimit - totalFetched;
+    const episodeQuery = query(
+      episodeRef,
+      where("video_id", "==", video.id),
+      limit(remainingLimit)
+    );
+
+    const episodeSnapshot = await getDocs(episodeQuery);
+    const episodes = episodeSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    episodeList.push(...episodes);
+    totalFetched += episodes.length;
+  }
+
+  return episodeList;
+};
+
+export const fetchSearchResults = async (keyword) => {
+  const [totalResults, videos] = await Promise.all([
+    getTotalResultsCount(keyword),
+    searchVideos(keyword),
+  ]);
+  return { totalResults, videos };
+};
+
+export const fetchEpisodesForVideos = async (videoList) => {
+  const [totalEpisodesCount, episodes] = await Promise.all([
+    getTotalEpisodesCount(videoList),
+    getLimitedEpisodes(videoList, 8),
+  ]);
+  return { totalEpisodesCount, episodes };
+};
+
+export const fetchRecommendedVideos = async () => {
+  const recommendRef = collection(db, "Videos");
+  const recommendQuery = query(recommendRef, limit(20));
+  const recommendSnapshot = await getDocs(recommendQuery);
+  const docs = recommendSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return docs;
+};
+
+export const searchHandler = async (keyword) => {
+  try {
+    let { totalResults, videos } = await fetchSearchResults(keyword);
+    let episodes = [];
+    let totalEpisodesCount = 0;
+    let existingVideoIds = new Set(videos.map((video) => video.id));
+
+    if (videos.length > 0) {
+      const { totalEpisodesCount: totalEp, episodes: EpiData } =
+        await fetchEpisodesForVideos(videos);
+      episodes = EpiData;
+      totalEpisodesCount = totalEp;
+      if (videos.length < 4) {
+        const { doc: additionalVideos } = await GetDocumentsByQuery(
+          "Videos",
+          "category_id",
+          videos[0].category_id,
+          true,
+          4
+        );
+        const filteredAdditionalVideos = additionalVideos.filter(
+          (video) => !existingVideoIds.has(video.id)
+        );
+        videos = [...videos, ...filteredAdditionalVideos].slice(0, 4);
+      }
+    } else {
+      videos = await fetchRecommendedVideos();
+      return { success: true, videos, episodes: [], isRecommend: true };
+    }
+
+    return {
+      success: true,
+      videos,
+      episodes,
+      isRecommend: false,
+      totalResults,
+      totalEpisodesCount,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+};
+
+export const saveWatchTime = async (
+  userId,
+  videoId,
+  episodeId,
+  watchTime,
+  totalTime
+) => {
+  try {
+    const userRef = doc(db, "UserMetaData", userId);
+    const userDoc = await getDoc(userRef);
+    const data = userDoc.exists() ? userDoc.data() : {};
+    const updatedHistory = {
+      ...data.history,
+      [videoId]: {
+        ...(data.history?.[videoId] || {}),
+        [episodeId]: watchTime,
+      },
+    };
+
+    await setDoc(userRef, { history: updatedHistory }, { merge: true });
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+export const fetchWatchTime = async (userId, videoId, episodeId) => {
+  const userRef = doc(db, "UserMetaData", userId);
+  const userDoc = await getDoc(userRef);
+
+  if (userDoc.exists()) {
+    const history = userDoc.data().history || {};
+    return history[videoId]?.[episodeId] || 0;
+  }
+  return 0;
+};
+
+export const fetchRandomWatchedEpisode = async (userId, videoId) => {
+  const userRef = doc(db, "UserMetaData", userId);
+  const userDoc = await getDoc(userRef);
+
+  if (userDoc.exists()) {
+    const history = userDoc.data().history?.[videoId] || {};
+    const episodeIds = Object.keys(history);
+
+    if (episodeIds.length > 0) {
+      const randomEpisodeId =
+        episodeIds[Math.floor(Math.random() * episodeIds.length)];
+      const watchTime = history[randomEpisodeId];
+
+      return { episodeId: randomEpisodeId, watchTime };
+    }
+  }
+  return null;
 };

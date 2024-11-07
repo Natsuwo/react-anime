@@ -32,7 +32,7 @@ body {
   --color-danger: #f0163a;
   --color-sub-danger: #f34461;
   --sub-title-color: #999;
-  --sub-title-color-2: #333;
+  --border-color: #333;
   --bg-color: #000;
   --h5: 16px;
   --h6: 13px;
@@ -286,6 +286,10 @@ svg:not(:root) {
 
 .my-auto {
   margin: 12px 0;
+}
+
+a.link-block {
+  position: relative;
 }
 
 a.link-block::after {
@@ -630,6 +634,16 @@ input.dark-theme:focus {
   padding: 0 12px !important;
 }
 
+.card-flex-container {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.card-flex-item {
+  width: calc(100% / 4 - 16px);
+}
+
 @media (max-width: 991px) {
   .page-container {
     padding: 0 0;
@@ -642,7 +656,19 @@ input.dark-theme:focus {
     min-height: 100vh;
     min-width: auto;
   }
+  .card-flex-item {
+    width: calc(100% / 3 - 16px);
+  }
 }
 
 @media (max-width: 767px) {
+  .card-flex-item {
+    width: calc(100% / 2 - 16px);
+  }
+}
+
+@media (max-width: 576px) {
+  .card-flex-item {
+    width: 100%;
+  }
 }

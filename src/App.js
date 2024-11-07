@@ -23,6 +23,7 @@ import HeaderPromote from "./components/Global/Header/HeaderPromote";
 import Promote from "./components/Page/Subscription/Promote/Promote";
 import useUniqueShortUserId from "./features/useUniqueShortUserId";
 import Category from "./components/Page/Category/Category";
+import Search from "./components/Page/Search/Search";
 
 function App() {
   useUniqueShortUserId();
@@ -59,6 +60,7 @@ function App() {
           <Routes>
             <Route path="*" element={"404 not found"}></Route>
             <Route path="/" element={<Home />}></Route>
+            <Route path="/search" element={<Search />}></Route>
             <Route
               path="/video/detail/:videoId"
               element={<DetailVideo />}
