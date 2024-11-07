@@ -19,8 +19,9 @@
     18.5 Modal cho mylist ở detail [DONE]
 19. Category theo detail và episode [DONE]
 20. CSS Scroll bar [DONE]
-21. BreachCrumb
-22. Fix episode
+21. BreachCrumb [DONE]
+22. Fix episode [FIXED]
+23. Cho phép add episode to my list [DONE]
 
 Update
 

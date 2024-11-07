@@ -44,7 +44,8 @@ export const GetDocument = async (document, id) => {
   try {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      return { success: true, docs: docSnap.data() };
+      const data = { id, ...docSnap.data() };
+      return { success: true, docs: data };
     } else {
       console.error("No such document!");
       return { success: true, docs: [] };
@@ -421,21 +422,45 @@ export const FetchChangePassword = async (newPassword) => {
 };
 
 export const FetchMyList = async (myList) => {
-  if (!myList || myList.length === 0) {
-    return [];
+  if (
+    !myList ||
+    Object.keys(myList).length === 0 ||
+    (myList?.episodes?.length === 0 && myList?.videos?.length === 0)
+  ) {
+    return { success: false, error: "Not found My list" };
   }
 
   try {
-    const videosRef = collection(db, "Videos");
-    const videosQuery = query(videosRef, where("__name__", "in", myList));
-    const videosSnapshot = await getDocs(videosQuery);
-
     const videos = [];
-    videosSnapshot.forEach((doc) => {
-      videos.push({ id: doc.id, ...doc.data() });
-    });
+    const episodes = [];
 
-    return { success: true, videos };
+    if (myList?.videos?.length) {
+      const videosRef = collection(db, "Videos");
+      const videosQuery = query(
+        videosRef,
+        where("__name__", "in", myList?.videos)
+      );
+      const videosSnapshot = await getDocs(videosQuery);
+
+      videosSnapshot.forEach((doc) => {
+        videos.push({ id: doc.id, ...doc.data() });
+      });
+    }
+
+    if (myList?.episodes?.length) {
+      const EpisodeRef = collection(db, "Episode");
+      const EpisodeQuery = query(
+        EpisodeRef,
+        where("__name__", "in", myList?.episodes)
+      );
+      const EpisodeSnapshot = await getDocs(EpisodeQuery);
+
+      EpisodeSnapshot.forEach((doc) => {
+        episodes.push({ id: doc.id, ...doc.data() });
+      });
+    }
+
+    return { success: true, videos, episodes };
   } catch (error) {
     return { success: false, error: error.message, errorCode: error.code };
   }

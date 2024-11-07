@@ -206,6 +206,10 @@
   color: var(--text-color);
 }
 
+.add-to-list-btn-mylist-inner.added .add-to-list-icon {
+  color: var(--link-active);
+}
+
 .add-to-list-btn-mylist-inner:hover {
   transform: scale(1.3);
 }

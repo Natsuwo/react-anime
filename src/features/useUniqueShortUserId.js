@@ -21,7 +21,7 @@ const useUniqueShortUserId = () => {
           JSON.stringify({
             userId: base64Id,
             subscription_level: 1,
-            my_list: [],
+            my_list: { episodes: [], videos: [] },
           })
         );
         console.log("New unique user ID generated and saved:", base64Id);

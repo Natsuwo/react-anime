@@ -30,38 +30,15 @@ const EpisodeVideo = () => {
   const [mostViewData, setMostViewData] = useState([]);
   const [isLoadingMostView, setLoadingMostView] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      setLoadingMostView(true);
-      const data = await GetAllSort("Videos", "views_count", "desc", 12);
-      if (data.success) {
-        setMostViewData(data.doc);
-      } else {
-        console.error(data.error);
-      }
-      setLoadingMostView(false);
-    })();
-  }, [episodeId]);
-
   const [mostViewSidebar, setMostViewSidebar] = useState([]);
   const [loadingSidebar, setLoadingSidebar] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      setLoadingSidebar(true);
-      const data = await GetAllSort("Episode", "views_count", "desc", 12);
-
-      if (data.success) {
-        setMostViewSidebar(data.doc);
-      } else {
-        console.error(data.error);
-      }
-      setLoadingSidebar(false);
-    })();
-  }, [episodeId]);
-
-  const [dataEpisode, setDataEpisode] = useState([]);
+  const [dataEpisode, setDataEpisode] = useState({});
+  const [dataVideo, setDataVideo] = useState({});
   const [isLoading, setLoading] = useState(false);
+
+  const [episodeListArr, setEpisodeList] = useState([]);
+  const [episodeListLoading, setEpisodeListLoading] = useState(false);
 
   const handleData = async () => {
     setLoading(true);
@@ -79,13 +56,72 @@ const EpisodeVideo = () => {
     handleData();
   }, [episodeId]);
 
-  const [episodeListArr, setEpisodeList] = useState([]);
-  const episodeListLoading = useRef(false);
+  const handleDataVideo = async () => {
+    if (Object.keys(dataEpisode).length && dataEpisode.video_id) {
+      const resVideo = await GetDocument("Videos", dataEpisode.video_id);
+      if (resVideo.success) {
+        setDataVideo(resVideo.docs);
+      } else {
+        console.error(resVideo.error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleDataVideo();
+  }, [dataEpisode]);
+
+  useEffect(() => {
+    (async () => {
+      setLoadingMostView(true);
+      const data = await GetAllSort("Videos", "views_count", "desc", 12);
+      if (data.success) {
+        setMostViewData(data.doc);
+      } else {
+        console.error(data.error);
+      }
+      setLoadingMostView(false);
+    })();
+  }, [episodeId]);
+
+  useEffect(() => {
+    (async () => {
+      setLoadingSidebar(true);
+      const data = await GetAllSort("Episode", "views_count", "desc", 12);
+
+      if (data.success) {
+        setMostViewSidebar(data.doc);
+      } else {
+        console.error(data.error);
+      }
+      setLoadingSidebar(false);
+    })();
+  }, [episodeId]);
+
+  useEffect(() => {
+    if (Object.keys(dataEpisode).length && Object.keys(dataVideo).length) {
+      const filteredItems = categoryList.filter((item) =>
+        dataEpisode.category_id.includes(item.category_id)
+      );
+
+      const breadcrumbItems = [
+        { title: dataVideo.title, url: "/video/detail/" + dataVideo.id },
+      ];
+
+      filteredItems.map((item) =>
+        breadcrumbItems.push({ title: item.name, url: "/genre/" + item.slug })
+      );
+
+      breadcrumbItems.push({ title: dataEpisode.title });
+
+      setBreadCrumb(breadcrumbItems);
+    }
+  }, [dataVideo]);
 
   useEffect(() => {
     const handleData = async () => {
-      if (dataEpisode && !episodeListLoading.current) {
-        episodeListLoading.current = true;
+      if (Object.keys(dataEpisode).length && !episodeListLoading) {
+        setEpisodeListLoading(true);
         const data = await GetDocumentsByQuery(
           "Episode",
           "video_id",
@@ -94,7 +130,7 @@ const EpisodeVideo = () => {
         if (data.success) {
           setEpisodeList(data.doc);
         }
-        episodeListLoading.current = false;
+        setEpisodeListLoading(false);
       }
     };
 
@@ -120,7 +156,7 @@ const EpisodeVideo = () => {
       <div className="episode-main-content">
         <div className="episode-main-container">
           <div className="episode-main-inner">
-            <Breadcumb />
+            <Breadcumb items={breadcrumb} />
             <div className="episode-wrapper">
               <div className="episode-inner">
                 <div className="player-wrapper">

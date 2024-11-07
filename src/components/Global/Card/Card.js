@@ -87,16 +87,7 @@ export const CardVideo = ({
 
   const handleClick = async (e) => {
     e.stopPropagation();
-    await handleAddToList(video_id, {
-      last_modified_date,
-      upload_date,
-      id: video_id,
-      video_id,
-      title,
-      highlighted_thumbnail: highlighted_thumbnail
-        ? highlighted_thumbnail
-        : thumbnail_url,
-    });
+    await handleAddToList(video_id, thumbnail_url ? "episodes" : "videos");
   };
 
   const handleCategory = () => {

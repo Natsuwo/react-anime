@@ -16,18 +16,29 @@ const MyListContextProvider = ({ children }) => {
     isLoading: userMetaLoading,
   } = UseUserMetaContext();
 
-  const [dataMyList, setDataMyList] = useState([]);
+  const [dataMyList, setDataMyList] = useState({ videos: [], episodes: [] });
   // My List Fetch
-  const [myList, setMyList] = useState([]);
+  const [myList, setMyList] = useState({ videos: [], episodes: [] });
 
-  const handleAddToList = async (video_id) => {
+  const handleAddToList = async (video_id, type) => {
+    if (!type) return;
     setDataMyList((prevList) => {
-      const exists = prevList.includes(video_id);
-      const updatedList = exists
-        ? prevList.filter((video) => video !== video_id)
-        : [...prevList, video_id];
+      const exists = prevList[type]?.includes(video_id);
 
-      setAddToList((prev) => ({ ...prev, [video_id]: !exists }));
+      const updatedList = {
+        ...prevList,
+        [type]: exists
+          ? prevList[type].filter((id) => id !== video_id)
+          : [...(prevList[type] || []), video_id],
+      };
+
+      setAddToList((prev) => ({
+        ...prev,
+        [type]: {
+          ...prev[type],
+          [video_id]: !exists,
+        },
+      }));
 
       return updatedList;
     });
@@ -38,9 +49,12 @@ const MyListContextProvider = ({ children }) => {
       const handleFetchMyList = await FetchMyList(dataMyList);
       setLoading(false);
       if (handleFetchMyList.success) {
-        setMyList(handleFetchMyList.videos);
+        setMyList({
+          videos: handleFetchMyList.videos,
+          episodes: handleFetchMyList.episodes,
+        });
       } else {
-        setMyList([]);
+        setMyList({ videos: [], episodes: [] });
       }
     }
 
@@ -50,9 +64,16 @@ const MyListContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user) {
-      const initialMyList = userMetaData?.my_list || [];
-      if (!dataMyList.length && userMetaData?.my_list) {
+    if (user || user === false) {
+      const initialMyList = userMetaData?.my_list || {
+        episodes: [],
+        videos: [],
+      };
+      if (
+        !dataMyList?.episodes?.length &&
+        !dataMyList?.videos?.length &&
+        userMetaData?.my_list
+      ) {
         setDataMyList(initialMyList);
       }
     }
@@ -61,17 +82,19 @@ const MyListContextProvider = ({ children }) => {
   useEffect(() => {
     const updateMyList = () => {
       const newAddToList = {};
-      dataMyList.forEach((item) => {
-        newAddToList[item] = true;
+      Object.keys(dataMyList).forEach((type) => {
+        dataMyList[type].forEach((item) => {
+          newAddToList[item] = true;
+        });
       });
       setAddToList(newAddToList);
-      // localStorage.setItem("USER_METADATA", JSON.stringify({myList: dataMyList}));
     };
 
-    if (dataMyList.length) {
+    if (dataMyList?.episodes.length || dataMyList?.videos.length) {
       updateMyList();
     }
-    if (user) {
+
+    if (user || user === false) {
       handleMyList();
     }
   }, [dataMyList, user]);

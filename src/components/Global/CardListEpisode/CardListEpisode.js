@@ -14,9 +14,16 @@ const CardListEpsiode = ({
   data,
   playingId,
   mylist,
-  onClick,
+  onClick = null,
 }) => {
-  const { handleAddToList } = UseMyListContext();
+  const { addToList, handleAddToList } = UseMyListContext();
+  const video_id = data?.id;
+  const handleList = () => {
+    handleAddToList(video_id, data?.video_id ? "episodes" : "videos");
+    if (typeof onClick === "function") {
+      onClick();
+    }
+  };
 
   return (
     <>
@@ -24,7 +31,9 @@ const CardListEpsiode = ({
         <Link
           className="link-block"
           to={
-            mylist ? `/video/detail/${data?.id}` : `/video/episode/${data?.id}`
+            !data?.video_id
+              ? `/video/detail/${data?.id}`
+              : `/video/episode/${data?.id}`
           }
         >
           <div className="episode-list-item-wrapper">
@@ -81,9 +90,17 @@ const CardListEpsiode = ({
               )}
 
               <div className="episode-list-item-tag">
-                <div className="video-label">
-                  <span className="label-text free">Free</span>
-                </div>
+                {data?.level && (
+                  <div className="video-label">
+                    <span
+                      className={`label-text ${
+                        data.level === 2 ? "premium" : "free"
+                      }`}
+                    >
+                      {data.level === 2 ? "Premium" : "Free"}{" "}
+                    </span>
+                  </div>
+                )}
               </div>
               {showDesc && (
                 <div className="episode-list-item-desc">
@@ -95,13 +112,7 @@ const CardListEpsiode = ({
           </div>
         </Link>
         {mylist && data ? (
-          <div
-            onClick={() => {
-              handleAddToList(data?.id, data);
-              onClick();
-            }}
-            className="add-to-list-btn-mylist"
-          >
+          <div onClick={handleList} className="add-to-list-btn-mylist">
             <button className="add-to-list-btn-mylist-inner btn-tooltip">
               <Tooltip
                 condition={true}
@@ -116,15 +127,22 @@ const CardListEpsiode = ({
           </div>
         ) : (
           <div className="add-to-list-btn-mylist">
-            <button className="add-to-list-btn-mylist-inner btn-tooltip">
+            <button
+              onClick={handleList}
+              className={`add-to-list-btn-mylist-inner btn-tooltip${
+                addToList && addToList[video_id] ? " added" : ""
+              }`}
+            >
               <Tooltip
-                condition={true}
+                condition={addToList && addToList[video_id]}
                 textTrue={"Add to My List"}
                 textFalse={"Add to My List"}
                 position="right"
               />
               <span className="add-to-list-icon">
-                <UseIconList icon="add" />
+                <UseIconList
+                  icon={addToList && addToList[video_id] ? "done" : "add"}
+                />
               </span>
             </button>
           </div>

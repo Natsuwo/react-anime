@@ -129,21 +129,20 @@ export const formatViews = (views) => {
   }
 };
 
-export const handleSortData = (dataTime, key, sortBy) => {
-  const sortedData = dataTime.sort((a, b) => {
+export const handleSortData = (myList, key, sortBy) => {
+  const combinedList = [...myList.episodes, ...myList.videos];
+
+  const sortedData = combinedList.sort((a, b) => {
     if (a[key].seconds !== b[key].seconds) {
-      if (sortBy === "desc") {
-        return b[key].seconds - a[key].seconds;
-      } else {
-        return a[key].seconds - b[key].seconds;
-      }
+      return sortBy === "desc"
+        ? b[key].seconds - a[key].seconds
+        : a[key].seconds - b[key].seconds;
     }
-    if (sortBy === "desc") {
-      return b[key].nanoseconds - a[key].nanoseconds;
-    } else {
-      return a[key].nanoseconds - b[key].nanoseconds;
-    }
+    return sortBy === "desc"
+      ? b[key].nanoseconds - a[key].nanoseconds
+      : a[key].nanoseconds - b[key].nanoseconds;
   });
+
   return sortedData;
 };
 
