@@ -1,8 +1,8 @@
 import { useContext, createContext, useState, useEffect, useRef } from "react";
 import {
-  GetDocumentsByQuery,
   FetchDocument,
   UpdateDocument,
+  FetchSingleDocumentByKey,
 } from "../features/useFetch";
 import useAuth from "../features/useAuth";
 
@@ -22,33 +22,34 @@ const UserMetaContextProvider = ({ children }) => {
     setUserMetaData((prev) => ({ ...prev, ...data }));
   };
 
-  const [userLevel, setUserLevel] = useState([]);
-  const [levelLoading, setLevelLoading] = useState(true);
+  const [userLevel, setUserLevel] = useState({});
+  const [levelLoading, setLevelLoading] = useState(false);
 
   useEffect(() => {
     const handleData = async () => {
-      if (Object.keys(userMetaData).length && levelLoading) {
-        const data = await GetDocumentsByQuery(
+      if (Object.keys(userMetaData).length && !levelLoading) {
+        setLevelLoading(true);
+        const data = await FetchSingleDocumentByKey(
           "Subscription_Level",
           "level_id",
           userMetaData?.subscription_level
         );
         if (data.success) {
-          setUserLevel(data.doc);
+          setUserLevel(data);
         }
         setLevelLoading(false);
       }
     };
 
     handleData();
-  }, [userMetaData]);
+  }, [userMetaData?.subscription_level]);
 
   useEffect(() => {
     if (user === false) {
       setLoadingUser(false);
     }
     const fetchUserMetaData = async () => {
-      if (user) {
+      if (user && !user?.logout) {
         const metaDataFromDB = await FetchDocument("UserMetaData", user.uid);
         setUserMetaData(metaDataFromDB);
         setPrevMetaData(metaDataFromDB);
@@ -83,11 +84,16 @@ const UserMetaContextProvider = ({ children }) => {
       ) {
         handeUpdateUserMeta();
       }
+
+      if (user?.logout) {
+        setUserMetaData({});
+      }
+
       if (user === false) {
         localStorage.setItem("USER_METADATA", JSON.stringify(userMetaData));
       }
     }
-  }, [userMetaData]);
+  }, [userMetaData, user?.logout]);
 
   return (
     <UserMetaContext.Provider
@@ -100,6 +106,7 @@ const UserMetaContextProvider = ({ children }) => {
         userLevel,
         levelLoading,
         loadingUser,
+        setUserMetaData,
       }}
     >
       {children}

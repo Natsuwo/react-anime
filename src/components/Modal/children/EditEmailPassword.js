@@ -4,14 +4,9 @@ import { Link } from "react-router-dom";
 import Alert from "../component/Alert";
 import HeadlineBack from "../component/HeadlineBack";
 import InputForm from "../../Global/FormInput/FormInput";
-import { isValidEmail, validatePassword } from "../../../features/helper";
 import {
-  CheckEmailVerification,
-  FetchChangeUserEmail,
   FetchReAuthenticateUser,
   FetchResetPassword,
-  FireBaseSignIn,
-  FireBaseSignUp,
 } from "../../../features/useFetch";
 import VerifyEmailModal from "./VerifyEmailModal";
 import { UseUserMetaContext } from "../../../context/UserMeta";

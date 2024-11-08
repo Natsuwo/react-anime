@@ -26,6 +26,7 @@ body {
   --black-12: rgba(0, 0, 0, 0.12);
   --black-20: rgba(0, 0, 0, 0.2);
   --black-24: rgba(0, 0, 0, 0.24);
+  --black-50: rgba(0, 0, 0, 0.7);
   --radius: 6px;
   --radius-2: 8px;
   --radius-3: 12px;
@@ -227,8 +228,8 @@ svg:not(:root) {
 }
 
 .btn-active {
-  background-color: var(--link-active);
-  color: var(--secondary-color-2);
+  background-color: var(--link-active) !important;
+  color: var(--secondary-color-2) !important;
 }
 
 .btn-danger {
@@ -246,8 +247,8 @@ svg:not(:root) {
 }
 
 .btn-active:hover {
-  background-color: var(--link-active-hover);
-  color: var(--secondary-color-2);
+  background-color: var(--link-active-hover) !important;
+  color: var(--secondary-color-2) !important;
 }
 
 .btn .btn-icon {

@@ -5,9 +5,12 @@ import PricingPlan from "../../../Global/Promote/PricingPlan";
 import PlanOption from "../../../Global/Promote/PlanOption";
 import ToggleButton from "../../../Global/Promote/ToggleButton";
 import PromoteThumb from "../../../../assets/images/png/promote-thumb.png";
-import { GetAllSort } from "../../../../features/useFetch";
+import { CreatePayment, GetAllSort } from "../../../../features/useFetch";
+import { UseUserMetaContext } from "../../../../context/UserMeta";
+import { useNavigate } from "react-router-dom";
 
 const Promote = () => {
+  const { user } = UseUserMetaContext();
   const fullAccessList = [
     { option: "Full Access", check: true },
     { option: "Unlimited contents", check: true },
@@ -23,15 +26,31 @@ const Promote = () => {
     { option: "Play from start livestream stuffs", check: false },
     { option: "Downloadble Videos", check: false },
   ];
-  const [plans, setPlans] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const data = await GetAllSort("Plan", "amount", "asc", 2);
-      if (data.success) {
-        setPlans(data.doc);
-      }
-    })();
-  }, []);
+
+  const [isClicked, setClick] = useState(false);
+  const navigate = useNavigate();
+  const handleCreatePayment = async (amount, vnd_amount, period, level) => {
+    if (user === false) {
+      localStorage.setItem(
+        "PAYMENT",
+        JSON.stringify({ amount, vnd_amount, period, level })
+      );
+      navigate("/subscription/signup");
+    }
+    if (!user?.uid || isClicked) return;
+    setClick(true);
+    const payment = await CreatePayment(
+      user?.uid,
+      amount,
+      vnd_amount,
+      period,
+      level
+    );
+    if (payment.success) {
+      navigate(`/subscription/` + payment.uid);
+    }
+    setClick(false);
+  };
   return (
     <>
       <div className="promote-container">
@@ -44,17 +63,27 @@ const Promote = () => {
             <div className="promote-plan-left">
               <PlanOption title={"Unlimited"} lists={fullAccessList} />
               <div className="mt-2">
-                <PricingPlan url={plans[1]?.id} price={"9.99"} month={"1"} />
+                <PricingPlan
+                  level={3}
+                  isClicked={isClicked}
+                  onClick={handleCreatePayment}
+                  amount={"9.99"}
+                  vnd_amount={"219000"}
+                  period={1}
+                />
               </div>
             </div>
             <div className="promote-plan-right mb-2">
               <PlanOption title={"Premium"} lists={premiumList} />
               <div className="mt-2">
                 <PricingPlan
-                  url={plans[0]?.id}
+                  level={2}
+                  isClicked={isClicked}
+                  onClick={handleCreatePayment}
                   recommend={true}
-                  price={"4.99"}
-                  month={"1"}
+                  amount={"4.99"}
+                  vnd_amount={"99000"}
+                  period={1}
                 />
               </div>
             </div>
@@ -88,17 +117,27 @@ const Promote = () => {
             <div className="promote-plan-left">
               <PlanOption title={"Unlimited"} lists={fullAccessList} />
               <div className="mt-2">
-                <PricingPlan url={plans[1]?.id} price={"9.99"} month={"1"} />
+                <PricingPlan
+                  level={3}
+                  isClicked={isClicked}
+                  onClick={handleCreatePayment}
+                  amount={"9.99"}
+                  vnd_amount={"219000"}
+                  period={1}
+                />
               </div>
             </div>
             <div className="promote-plan-right mb-2">
               <PlanOption title={"Premium"} lists={premiumList} />
               <div className="mt-2">
                 <PricingPlan
-                  url={plans[0]?.id}
+                  level={2}
+                  isClicked={isClicked}
+                  onClick={handleCreatePayment}
                   recommend={true}
-                  price={"4.99"}
-                  month={"1"}
+                  amount={"4.99"}
+                  vnd_amount={"99000"}
+                  period={1}
                 />
               </div>
             </div>

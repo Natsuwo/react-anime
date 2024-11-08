@@ -68,11 +68,19 @@ const AccountManagement = () => {
               <span className="manager-item-icon">
                 <UseIconList icon="credit-card" />
               </span>
-              <div className="manager-item-text">
+              <div
+                className={`manager-item-text ${
+                  userLevel?.level_text
+                    ? userLevel?.level_text.toLowerCase()
+                    : ""
+                }`}
+              >
                 <div className="item-main-text">Plan</div>
                 <div className="item-sub-text">
-                  {!userLevel[0] && <Skeleton width="50px" height="6px" />}
-                  {userLevel ? userLevel[0]?.level_text : ""}
+                  {!Object.keys(userLevel).length && (
+                    <Skeleton width="50px" height="6px" />
+                  )}
+                  {userLevel ? userLevel?.level_text : ""}
                 </div>
               </div>
             </div>

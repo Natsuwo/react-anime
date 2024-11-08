@@ -19,6 +19,12 @@ export const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000);
 };
 
+export const calculateExpirationDate = (period) => {
+  const currentDate = new Date();
+  currentDate.setMonth(currentDate.getMonth() + period); // Cộng thêm 'period' tháng
+  return currentDate;
+};
+
 export const validateOTP = (otp, userId) => {
   // Kiểm tra độ dài
   if (otp.length < 6 || otp.length > 10) {
@@ -100,6 +106,17 @@ export const formatLevelText = (level) => {
   }
 
   return levelText;
+};
+
+export const convertToExpirationDate = (timestamp, monthsToAdd = 1) => {
+  const date = new Date(
+    timestamp?.seconds ? timestamp?.seconds * 1000 : timestamp
+  );
+  date.setMonth(date.getMonth() + monthsToAdd); // Thêm số tháng vào thời gian
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Đảm bảo luôn có 2 chữ số
+  const day = String(date.getDate()).padStart(2, "0"); // Đảm bảo luôn có 2 chữ số
+  return `${year}/${month}/${day}`;
 };
 
 export const getDays = (timestamp) => {

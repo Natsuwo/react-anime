@@ -69,7 +69,13 @@ const MyListContextProvider = ({ children }) => {
         episodes: [],
         videos: [],
       };
-      if (
+      if (user?.logout) {
+        setDataMyList({
+          episodes: [],
+          videos: [],
+        });
+        return;
+      } else if (
         !dataMyList?.episodes?.length &&
         !dataMyList?.videos?.length &&
         userMetaData?.my_list

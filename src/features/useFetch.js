@@ -4,8 +4,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendEmailVerification,
-  verifyBeforeUpdateEmail,
-  signOut,
   sendPasswordResetEmail,
   getAuth,
   EmailAuthProvider,
@@ -29,6 +27,7 @@ import {
   startAfter,
   getCountFromServer,
 } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
 
 export const CreateDocument = async (document, userId, params) => {
   try {
@@ -698,4 +697,33 @@ export const fetchRandomWatchedEpisode = async (userId, videoId) => {
     }
   }
   return null;
+};
+
+export const CreatePayment = async (
+  userId,
+  amount,
+  vnd_amount,
+  period,
+  level
+) => {
+  try {
+    const createAt = Date.now();
+    const uid = uuidv4();
+    const status = false;
+
+    const params = {
+      createAt,
+      uid,
+      status,
+      userId,
+      amount,
+      vnd_amount,
+      period,
+      level,
+    };
+    const docRef = await addDoc(collection(db, "Payment"), params);
+    return { success: true, uid, docId: docRef?.id };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
 };

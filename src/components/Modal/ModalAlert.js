@@ -15,7 +15,7 @@ const ModalAlert = ({ visible, setVisible, children }) => {
     }
   }, [visible]);
   return createPortal(
-    <div className={`modal-alert${visible ? " active" : " exit"}`}>
+    <div className={`toast-alert${visible ? " active" : " exit"}`}>
       <div className="modal-toast">
         <div className="modal-toast__message">{children}</div>
         <button

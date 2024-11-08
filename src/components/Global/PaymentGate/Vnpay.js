@@ -8,7 +8,7 @@ const Vnpay = ({ data }) => {
   useEffect(() => {
     (async () => {
       const res = await fetch(
-        `https://vnpaytest.onrender.com/order/create_payment_url?amount=${data?.vnd_amount}&returnUrl=http://localhost:3000${localtion.pathname}`
+        `https://vnpayapi.vercel.app/api/payment/create-payment-url?amount=${data?.vnd_amount}&returnUrl=http://localhost:3000${localtion.pathname}`
       );
       const dataUrl = await res.json();
 

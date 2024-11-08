@@ -87,6 +87,17 @@
   color: var(--sub-title-color);
 }
 
+.manager-item-text.premium .item-sub-text {
+  color: var(--link-active);
+}
+
+.manager-item-text.unlimited .item-sub-text {
+  background: linear-gradient(135deg, rgb(34, 193, 195), rgb(253, 187, 45));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
 .switch-account-wrapper {
   display: flex;
   flex-direction: column;

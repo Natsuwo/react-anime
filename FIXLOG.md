@@ -8,20 +8,22 @@
 8. My list Database [DONE]
 9. Tách component Modal [DONE]
 10. Category [DONE]
-11. Premium Payment
-12. Mobile
-13. Fix sao cho chỉ get 1 lần category ở banner [DONE]
-14. Lưu quá trình xem và phát lại [DONE]
-15. Search [DONE]
-16. Infinity Scroll [DONE]
-17. Lưu myList ở detail và episode [DONE]
-    18.5 Modal cho mylist ở detail [DONE]
-18. Category theo detail và episode [DONE]
-19. CSS Scroll bar [DONE]
-20. BreachCrumb [DONE]
-21. Fix episode [FIXED]
-22. Cho phép add episode to my list [DONE]
-23. Tag
+11. Premium Payment [DONE]
+12. Fix sao cho chỉ get 1 lần category ở banner [DONE]
+13. Lưu quá trình xem và phát lại [DONE]
+14. Search [DONE]
+15. Infinity Scroll [DONE]
+16. Lưu myList ở detail và episode [DONE]
+17. Category theo detail và episode [DONE]
+18. CSS Scroll bar [DONE]
+19. BreachCrumb [DONE]
+20. Fix episode [FIXED]
+21. Cho phép add episode to my list [DONE]
+22. Modal cho mylist ở detail [DONE]
+23. Mobile
+24. Tag
+25. Paypal
+26. OTP, Backend vercel
 
 Update
 

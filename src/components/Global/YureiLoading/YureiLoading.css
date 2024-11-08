@@ -1,19 +1,42 @@
 .yurei-logo-loading .yurei-right-eye,
 .yurei-logo-loading .yurei-left-eye {
-  animation: blink 1.5s infinite;
+  animation: yurei-blink 1.5s infinite;
 }
 
-.yurei-logo-loading svg {
-  animation: sway 1.5s ease-in-out infinite;
+.yurei-logo-loading-wrapper.sway .yurei-logo-loading {
+  animation: yurei-sway 1.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.yurei-logo-loading-wrapper.spin .yurei-logo-loading {
+  animation: yurei-spin 3s ease-in-out infinite;
   transform-origin: center;
 }
 
 .yurei-logo-loading .yurei-tsue {
-  animation: spin 3s linear infinite;
+  animation: tsue-spin 3s linear infinite;
   transform-origin: 50% 50%;
 }
 
-@keyframes spin {
+@keyframes yurei-spin {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(-5px, -5px) rotate(10deg);
+  }
+  50% {
+    transform: translate(0, -10px) rotate(0deg);
+  }
+  75% {
+    transform: translate(5px, -5px) rotate(-10deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes tsue-spin {
   0% {
     transform: rotate(0deg);
   }
@@ -31,7 +54,7 @@
   }
 }
 
-@keyframes sway {
+@keyframes yurei-sway {
   0% {
     transform: translateY(0);
   }
@@ -43,7 +66,7 @@
   }
 }
 
-@keyframes blink {
+@keyframes yurei-blink {
   0%,
   20% {
     ry: 2.81386; /* Kích thước bình thường */

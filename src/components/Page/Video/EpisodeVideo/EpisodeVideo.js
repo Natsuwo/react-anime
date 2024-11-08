@@ -8,7 +8,7 @@ import EpisodeList from "../DetailVideo/EpisodeList";
 import Recommend from "../../../Global/Recommend/Recommend";
 import Player from "../../../Global/Player/Player";
 import { UsePlayerWide } from "../../../../context/PlayerWideContext";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   GetDocument,
   GetDocumentsByQuery,
@@ -29,7 +29,7 @@ const EpisodeVideo = () => {
   const { episodeId } = useParams();
   const { wideMode } = UsePlayerWide();
   const { categoryList } = UseCategoryContext();
-  const { user } = UseUserMetaContext();
+  const { user, userMetaData } = UseUserMetaContext();
 
   const [mostViewData, setMostViewData] = useState([]);
   const [isLoadingMostView, setLoadingMostView] = useState(false);
@@ -167,6 +167,9 @@ const EpisodeVideo = () => {
         setInitialWatchTime(time || 0);
       })();
     }
+    if (user === false) {
+      setInitialWatchTime(0);
+    }
   }, [user?.uid, episodeId, dataEpisode?.video_id]);
 
   return (
@@ -180,13 +183,47 @@ const EpisodeVideo = () => {
                 <div className="player-wrapper">
                   {isLoading && <Skeleton></Skeleton>}
                   {!isLoading && initialWatchTime !== null && (
-                    <Player
-                      userId={user?.uid}
-                      videoId={dataEpisode?.video_id}
-                      episodeId={episodeId}
-                      url={dataEpisode?.video_url}
-                      initialWatchTime={initialWatchTime}
-                    />
+                    <>
+                      {dataEpisode.level >= 2 ? (
+                        <>
+                          {(!user ||
+                            dataEpisode.level >
+                              userMetaData?.subscription_level) && (
+                            <div className="yurei-player-wrapper">
+                              <img
+                                style={{
+                                  position: "absolute",
+                                  top: "0",
+                                  left: "0",
+                                  zIndex: 1,
+                                }}
+                                src={dataEpisode.thumbnail_url}
+                                alt="thumbnail episode"
+                              />
+                              <div className="yurei-premium-overlay"></div>
+                              <div className="yurei-premium-content">
+                                <div className="yurei-premium-text">
+                                  Upgrade your account to access this video!
+                                </div>
+                                <Link to="/subscription/promote">
+                                  <button className="btn btn-active">
+                                    Upgrade to Premium
+                                  </button>
+                                </Link>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <Player
+                          userId={user?.uid}
+                          videoId={dataEpisode?.video_id}
+                          episodeId={episodeId}
+                          url={dataEpisode?.video_url}
+                          initialWatchTime={initialWatchTime}
+                        />
+                      )}
+                    </>
                   )}
                 </div>
 

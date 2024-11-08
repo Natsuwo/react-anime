@@ -64,6 +64,18 @@
   background-color: var(--sc-color);
 }
 
+.account-nav-item .account-nav-text.premium {
+  background-color: var(--link-active);
+  color: var(--secondary-color);
+}
+
+.account-nav-item .account-nav-text.unlimited {
+  background: linear-gradient(135deg, rgb(34, 193, 195), rgb(253, 187, 45));
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: rgb(255, 255, 255);
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
 .main-navbar.active .account-nav-item {
   display: none;
 }

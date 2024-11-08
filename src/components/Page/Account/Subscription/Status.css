@@ -41,7 +41,7 @@
   font-weight: 700;
 }
 
-.plan-box-left .plan-description {
+.plan-description {
   font-size: var(--h6);
   color: var(--sub-title-color);
 }
