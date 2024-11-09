@@ -55,6 +55,7 @@ const VideoList = ({
   height,
   items = [],
   isLoading = true,
+  horizontal,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -128,7 +129,7 @@ const VideoList = ({
           <div className="flex-container-less-wrapper">
             {defaultArr.map((_, index) => (
               <div className="flex-container-less-item" key={index}>
-                <Skeleton></Skeleton>
+                <Skeleton horizontal={horizontal}></Skeleton>
               </div>
             ))}
           </div>

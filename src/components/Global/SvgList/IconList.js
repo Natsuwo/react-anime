@@ -12,6 +12,7 @@ import addIcon from "../../../assets/images/icons/action/add.svg";
 import doneIcon from "../../../assets/images/icons/action/done.svg";
 import externalLink from "../../../assets/images/icons/action/external_link.svg";
 import sortIcon from "../../../assets/images/icons/action/sort.svg";
+import checkIcon from "../../../assets/images/icons/action/check_mobile.svg";
 
 // Navigation
 import leftIcon from "../../../assets/images/icons/navigation/chevron-left.svg";
@@ -70,6 +71,7 @@ const objIcon = {
   // Action
   add: addIcon,
   done: doneIcon,
+  check: checkIcon,
   delete: deleteIcon,
   "external-link": externalLink,
   sort: sortIcon,

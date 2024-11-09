@@ -38,10 +38,25 @@
   .flex-container-less-item {
     width: calc(100% / 3 - 12px);
   }
+  .flex-container-less-item:last-child {
+    display: none;
+  }
 }
 
 @media (max-width: 576px) {
   .flex-container-less-item {
     width: calc(100% / 2 - 12px);
+  }
+  .flex-container-less-item:nth-child(3) {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .flex-container-less-item {
+    width: calc(100%);
+  }
+  .flex-container-less-item:nth-child(2) {
+    display: none;
   }
 }

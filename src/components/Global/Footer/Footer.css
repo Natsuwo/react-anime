@@ -58,3 +58,20 @@ footer .copyright {
   justify-content: center; /* Đưa nhân vật vào giữa */
   width: 240px;
 }
+
+@media (max-width: 991px) {
+  .footer-inner {
+    flex-direction: column;
+  }
+  .footer-right {
+    justify-content: flex-end;
+    width: 100%;
+  }
+  .footer-left .footer-nav-list {
+    flex-direction: column;
+  }
+
+  .footer-nav-text {
+    font-size: 12px;
+  }
+}

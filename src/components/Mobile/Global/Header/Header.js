@@ -3,6 +3,7 @@ import "./Header.css";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import Navbar from "./Navbar";
 import NavbarFloat from "./NavbarFloat";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isActive, setIsActive] = useState(false);
@@ -43,7 +44,9 @@ const Header = () => {
                 />
               </button>
               <div className="mobile-logo">
-                <span>YureiTV</span>
+                <Link to="/">
+                  <span>YureiTV</span>
+                </Link>
               </div>
             </div>
             <button onClick={() => setIsActive(true)} className="mobile-button">

@@ -89,8 +89,9 @@ const MyListContextProvider = ({ children }) => {
     const updateMyList = () => {
       const newAddToList = {};
       Object.keys(dataMyList).forEach((type) => {
+        newAddToList[type] = {};
         dataMyList[type].forEach((item) => {
-          newAddToList[item] = true;
+          newAddToList[type][item] = true;
         });
       });
       setAddToList(newAddToList);

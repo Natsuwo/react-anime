@@ -1,59 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { UseCategoryContext } from "../../../../context/CategoryContext";
 
 const Navbar = () => {
+  const { categoryList } = UseCategoryContext();
   return (
     <ul className="mobile-nav-bar">
-      <li className="active">
-        <Link className="mobile-nav-item-link" to="#">
+      <li>
+        <NavLink className="mobile-nav-item-link" to="/">
           Home
-        </Link>
+        </NavLink>
       </li>
-      <li>
-        <Link className="mobile-nav-item-link" to="#">
-          Category
-        </Link>
-      </li>
-      <li>
-        <Link className="mobile-nav-item-link" to="#">
-          List
-        </Link>
-      </li>
-      <li>
-        <Link className="mobile-nav-item-link" to="#">
-          Lorem, ipsum dolor
-        </Link>
-      </li>
-      <li>
-        <Link className="mobile-nav-item-link" to="#">
-          Lorem, ipsum dolor
-        </Link>
-      </li>
-      <li>
-        <Link className="mobile-nav-item-link" to="#">
-          Lorem, ipsum dolor
-        </Link>
-      </li>
-      <li>
-        <Link className="mobile-nav-item-link" to="#">
-          Lorem, ipsum dolor
-        </Link>
-      </li>
-      <li>
-        <Link className="mobile-nav-item-link" to="#">
-          Lorem, ipsum dolor
-        </Link>
-      </li>
-      <li>
-        <Link className="mobile-nav-item-link" to="#">
-          Lorem, ipsum dolor
-        </Link>
-      </li>
-      <li>
-        <Link className="mobile-nav-item-link" to="#">
-          Lorem, ipsum dolor
-        </Link>
-      </li>
+      {categoryList &&
+        categoryList.map((item, index) => (
+          <li key={index}>
+            <NavLink
+              to={`/genre/${item.slug}`}
+              className="mobile-nav-item-link"
+            >
+              {item.name}
+            </NavLink>
+          </li>
+        ))}
     </ul>
   );
 };

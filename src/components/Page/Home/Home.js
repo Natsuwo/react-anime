@@ -198,6 +198,7 @@ const Home = () => {
             items={mostViewData}
             totalSlides={mostViewData?.length}
             isLoading={isLoadingMostView}
+            horizontal={false}
           ></VideoList>
         )}
         {/* Card Square */}

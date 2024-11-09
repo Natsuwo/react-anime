@@ -140,7 +140,7 @@ ul.mobile-nav-bar li .mobile-nav-item-link::after {
   opacity: 0;
 }
 
-ul.mobile-nav-bar li.active .mobile-nav-item-link::after {
+ul.mobile-nav-bar li .mobile-nav-item-link.active::after {
   opacity: 1;
 }
 
@@ -241,4 +241,11 @@ ul.mobile-nav-bar li.active .mobile-nav-item-link::after {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+@media (max-width: 767px) {
+  .mobile-navbar-float {
+    width: 100%;
+    left: 100%;
+  }
 }

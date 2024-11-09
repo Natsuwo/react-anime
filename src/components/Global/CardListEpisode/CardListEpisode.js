@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import { getTime, formatViews } from "../../../features/helper";
@@ -18,12 +18,19 @@ const CardListEpsiode = ({
 }) => {
   const { addToList, handleAddToList } = UseMyListContext();
   const video_id = data?.id;
+  const type = video_id ? "episodes" : "videos";
+  const isPlaying = playingId === data?.id;
   const handleList = () => {
-    handleAddToList(video_id, data?.video_id ? "episodes" : "videos");
+    handleAddToList(video_id, video_id ? "episodes" : "videos");
     if (typeof onClick === "function") {
       onClick();
     }
   };
+
+  const isAddedToList = useMemo(
+    () => addToList?.[type]?.[video_id],
+    [addToList, type, video_id]
+  );
 
   return (
     <>
@@ -39,7 +46,7 @@ const CardListEpsiode = ({
           <div className="episode-list-item-wrapper">
             <div
               className={`episode-list-current-play${
-                playingId && playingId === data?.id ? " active" : ""
+                isPlaying ? " active" : ""
               }`}
             >
               <span className="current-play-icon">
@@ -130,19 +137,17 @@ const CardListEpsiode = ({
             <button
               onClick={handleList}
               className={`add-to-list-btn-mylist-inner btn-tooltip${
-                addToList && addToList[video_id] ? " added" : ""
+                isAddedToList ? " added" : ""
               }`}
             >
               <Tooltip
-                condition={addToList && addToList[video_id]}
+                condition={isAddedToList}
                 textTrue={"Add to My List"}
                 textFalse={"Add to My List"}
                 position="right"
               />
               <span className="add-to-list-icon">
-                <UseIconList
-                  icon={addToList && addToList[video_id] ? "done" : "add"}
-                />
+                <UseIconList icon={isAddedToList ? "done" : "add"} />
               </span>
             </button>
           </div>

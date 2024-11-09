@@ -224,7 +224,7 @@ svg:not(:root) {
 }
 
 .btn-white:hover {
-  background-color: var(--white-12);
+  background-color: var(--text-color);
 }
 
 .btn-active {
@@ -617,6 +617,38 @@ input.dark-theme::placeholder {
 input.dark-theme:focus {
   background-color: white;
   border: 1px solid #fafafa;
+}
+
+#check-group {
+  animation: 0.32s ease-in-out 0.63s check-group;
+  transform-origin: center;
+}
+
+#check-group #check {
+  animation: 0.34s cubic-bezier(0.65, 0, 1, 1) forwards check-icon;
+  stroke-dasharray: 0, 75px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes check-icon {
+  from {
+    stroke-dasharray: 0, 75px;
+  }
+  to {
+    stroke-dasharray: 75px, 75px;
+  }
+}
+@keyframes check-group {
+  from {
+    transform: scale(1.4);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  to {
+    transform: scale(1.4);
+  }
 }
 
 .slash {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./Card.css";
 import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
@@ -67,7 +67,7 @@ export const CardList = ({ props }) => {
 
 export const CardVideo = ({
   title,
-  video_id = "1",
+  video_id,
   thumbnail_url,
   highlighted_thumbnail,
   onClick,
@@ -84,6 +84,7 @@ export const CardVideo = ({
   const [categoryName, setCategoryName] = useState("");
   const [isLive, setLive] = useState(false);
   const [isNew, setNew] = useState(false);
+  const type = thumbnail_url ? "episodes" : "videos";
 
   const handleClick = async (e) => {
     e.stopPropagation();
@@ -102,6 +103,11 @@ export const CardVideo = ({
   useEffect(() => {
     handleCategory();
   }, []);
+
+  const isAddedToList = useMemo(
+    () => addToList?.[type]?.[video_id],
+    [addToList, type, video_id]
+  );
 
   return (
     <div className="video-card-wrapper">
@@ -196,11 +202,11 @@ export const CardVideo = ({
         <button
           onClick={(e) => (addToList ? handleClick(e) : null)}
           className={`btn-tooltip main-add-to-list-inner${
-            addToList && addToList[video_id] ? " added" : ""
+            isAddedToList ? " added" : ""
           }`}
         >
           <Tooltip
-            condition={addToList && addToList[video_id]}
+            condition={isAddedToList}
             textTrue={"Remove to My List"}
             textFalse={"Add to My List"}
             position={"right"}
@@ -209,7 +215,7 @@ export const CardVideo = ({
             <UseIconList
               width="24"
               height="24"
-              icon={addToList && addToList[video_id] ? "done" : "add"}
+              icon={isAddedToList ? "done" : "add"}
             ></UseIconList>
           </span>
         </button>

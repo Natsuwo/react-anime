@@ -138,3 +138,11 @@
   position: absolute;
   top: 0;
 }
+
+@media (max-width: 767px) {
+  .carousel-arrow-warpper.__right,
+  .carousel-arrow-warpper.__left {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+}

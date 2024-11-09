@@ -17,6 +17,8 @@ import {
 } from "../../../../features/useFetch";
 import CategoryData from "../../Category/CategoryData";
 import { UseUserMetaContext } from "../../../../context/UserMeta";
+import { UseMyListContext } from "../../../../context/MyListContext";
+import { ReactComponent as CheckIcon } from "../../../../assets/images/icons/action/check_mobile.svg";
 
 const DetailVideo = () => {
   const { videoId } = useParams();
@@ -33,6 +35,8 @@ const DetailVideo = () => {
   const [isLoadingMostView, setLoadingMostView] = useState(false);
 
   const [initialWatchTime, setInitialWatchTime] = useState(null);
+
+  const { addToList, handleAddToList } = UseMyListContext();
 
   useEffect(() => {
     (async () => {
@@ -98,6 +102,11 @@ const DetailVideo = () => {
   }, [videoId]);
 
   const breadcrumb = [{ title: data.title }];
+
+  const handleAddToListClick = async (e) => {
+    e.stopPropagation();
+    await handleAddToList(data?.id, "videos", "detail");
+  };
   return (
     <main className="page-main">
       <div className="page-container">
@@ -194,9 +203,26 @@ const DetailVideo = () => {
                     <span className="btn-text">Watch now</span>
                   </button>
                   <div className="add-to-list-wrapper__mobile">
-                    <span className="add-to-list-icon__mobile">
-                      <UseIconList icon={"add"} />
-                    </span>
+                    <button
+                      onClick={(e) =>
+                        addToList ? handleAddToListClick(e) : null
+                      }
+                      className={`add-to-list-icon__mobile add-to-list${
+                        addToList &&
+                        addToList.videos &&
+                        addToList.videos[data?.id]
+                          ? " added"
+                          : ""
+                      }`}
+                    >
+                      {addToList &&
+                      addToList.videos &&
+                      addToList.videos[data?.id] ? (
+                        <CheckIcon />
+                      ) : (
+                        <UseIconList icon="add" />
+                      )}
+                    </button>
                     <span className="add-to-list-text__mobile">MyList</span>
                   </div>
                 </div>

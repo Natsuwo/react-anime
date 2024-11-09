@@ -9,7 +9,12 @@ const Breadcumb = ({ items = [] }) => {
       <ul className="breadcrumbs">
         <li>
           <Link to={"/"}>
-            <span className="breadcumb-text">Home</span>
+            <span
+              style={{ WebkitLineClamp: 1 }}
+              className="breadcumb-text clamp-text"
+            >
+              Home
+            </span>
           </Link>
         </li>
         {items.map((item, index) => {
@@ -20,7 +25,12 @@ const Breadcumb = ({ items = [] }) => {
                 <UseIconList icon="chevron-right" />
               </div>
               <Link to={item.url}>
-                <span className="breadcumb-text">{item.title}</span>
+                <span
+                  style={{ WebkitLineClamp: 1 }}
+                  className="breadcumb-text clamp-text"
+                >
+                  {item.title}
+                </span>
               </Link>
             </li>
           ) : (
@@ -28,7 +38,12 @@ const Breadcumb = ({ items = [] }) => {
               <div className="breadcrumb-icon">
                 <UseIconList icon="chevron-right" />
               </div>
-              <span className="breadcumb-text">{item.title}</span>
+              <span
+                style={{ WebkitLineClamp: 1 }}
+                className="breadcumb-text clamp-text"
+              >
+                {item.title}
+              </span>
             </li>
           );
         })}

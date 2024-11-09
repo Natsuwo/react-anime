@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import "./ActionButton.css";
 import UseIconList from "../SvgList/UseIconList";
 import Tooltip from "../../Global/Tooltip/Tooltip";
@@ -19,6 +19,8 @@ const ActionButton = ({ items }) => {
     setIsVisible(true);
     await handleAddToList(id, "videos");
   };
+
+  const isAddedToList = useMemo(() => addToList?.videos?.[id], [addToList, id]);
   return (
     <>
       <ul className="detail-action-list">
@@ -27,11 +29,11 @@ const ActionButton = ({ items }) => {
             <button
               onClick={(e) => (addToList ? handleClick(e) : null)}
               className={`btn-tooltip detail-button add-to-list${
-                addToList && addToList[id] ? " added" : ""
+                isAddedToList ? " added" : ""
               }`}
             >
               <Tooltip
-                condition={addToList && addToList[id]}
+                condition={isAddedToList}
                 textTrue={"Remove to My List"}
                 textFalse={"Add to My List"}
                 position={"center"}
@@ -39,7 +41,7 @@ const ActionButton = ({ items }) => {
               <UseIconList
                 width="24px"
                 height="24px"
-                icon={addToList && addToList[id] ? "done" : "add"}
+                icon={isAddedToList ? "done" : "add"}
               ></UseIconList>
             </button>
             <span className="title">My List</span>
@@ -69,7 +71,7 @@ const ActionButton = ({ items }) => {
             alignItems: "center",
           }}
         >
-          {addToList[id] ? (
+          {isAddedToList ? (
             <>
               <p> This video has been added into My List </p>
               <Link to="/mylist">
