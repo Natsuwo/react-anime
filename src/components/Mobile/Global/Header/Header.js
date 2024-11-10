@@ -15,7 +15,7 @@ const Header = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (floatRef.current && !floatRef.current.contains(event.target)) {
+      if (floatRef.current && floatRef.current.contains(event.target)) {
         setFloatActive(false);
       }
     };

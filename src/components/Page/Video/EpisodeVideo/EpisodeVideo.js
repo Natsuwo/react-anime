@@ -177,7 +177,9 @@ const EpisodeVideo = () => {
       <div className="episode-main-content">
         <div className="episode-main-container">
           <div className="episode-main-inner">
-            <Breadcumb items={breadcrumb} />
+            <div className="container__mobile">
+              <Breadcumb items={breadcrumb} />
+            </div>
             <div className="episode-wrapper">
               <div className="episode-inner">
                 <div className="player-wrapper">
@@ -226,37 +228,38 @@ const EpisodeVideo = () => {
                     </>
                   )}
                 </div>
-
-                <h1 className="episode-main-title">
-                  {dataEpisode?.season_title && (
+                <div className="container__mobile">
+                  <h1 className="episode-main-title">
+                    {dataEpisode?.season_title && (
+                      <span
+                        className="season-title clamp-text"
+                        style={{ WebkitLineClamp: 1 }}
+                      >
+                        吸血鬼すぐ死ぬ
+                      </span>
+                    )}
                     <span
-                      className="season-title clamp-text"
+                      className="episode-title clamp-text"
                       style={{ WebkitLineClamp: 1 }}
                     >
-                      吸血鬼すぐ死ぬ
+                      {dataEpisode.title}
                     </span>
-                  )}
-                  <span
-                    className="episode-title clamp-text"
-                    style={{ WebkitLineClamp: 1 }}
-                  >
-                    {dataEpisode.title}
-                  </span>
-                </h1>
-                <div className="episode-supplement">
-                  <div className="supplement-item">
-                    {dataEpisode?.duration / 60} minutes
+                  </h1>
+                  <div className="episode-supplement">
+                    <div className="supplement-item">
+                      {dataEpisode?.duration / 60} minutes
+                    </div>
+                    <div className="supplement-item">
+                      {getTime(dataEpisode?.last_modified_date)}
+                    </div>
+                    <div className="supplement-item">
+                      {formatViews(dataEpisode?.views_count)} views
+                    </div>
                   </div>
-                  <div className="supplement-item">
-                    {getTime(dataEpisode?.last_modified_date)}
-                  </div>
-                  <div className="supplement-item">
-                    {formatViews(dataEpisode?.views_count)} views
-                  </div>
-                </div>
-                <div className="episode-tag">
-                  <div className="video-label">
-                    <span className="label-text free">Free</span>
+                  <div className="episode-tag">
+                    <div className="video-label">
+                      <span className="label-text free">Free</span>
+                    </div>
                   </div>
                 </div>
                 <div className="episode-desc-wrapper">
@@ -321,17 +324,19 @@ const EpisodeVideo = () => {
               )}
             </div>
             <div className="mt">
-              <CategoryData
-                title={"Recent Category"}
-                isGrid={true}
-                category={dataEpisode}
-                slug={episodeId}
-              />
-              <Recommend
-                value={mostViewData}
-                loading={isLoadingMostView}
-                title={"Most Popular"}
-              />
+              <div className="container__mobile">
+                <CategoryData
+                  title={"Recent Category"}
+                  isGrid={true}
+                  category={dataEpisode}
+                  slug={episodeId}
+                />
+                <Recommend
+                  value={mostViewData}
+                  loading={isLoadingMostView}
+                  title={"Most Popular"}
+                />
+              </div>
             </div>
           </div>
         </div>

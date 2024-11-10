@@ -104,7 +104,7 @@ const SignUp = () => {
   }, [user?.emailVerified]);
   return (
     <main className="page-main">
-      <div className="page-container">
+      <div className="page-container container__mobile">
         <h1 className="main-title mb-2">Sign up</h1>
         <div className="subscription-step my-auto">Step 1/2</div>
         <h2 className="sub-title my-auto">Account Settings</h2>

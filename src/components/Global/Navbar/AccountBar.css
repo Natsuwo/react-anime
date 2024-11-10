@@ -60,16 +60,19 @@
   border-radius: 4px;
 }
 
-.account-nav-item .account-nav-text.free {
+.account-nav-item .account-nav-text.free,
+.mobile-item-wrapper .label-text.free {
   background-color: var(--sc-color);
 }
 
-.account-nav-item .account-nav-text.premium {
+.account-nav-item .account-nav-text.premium,
+.mobile-item-wrapper .label-text.premium {
   background-color: var(--link-active);
   color: var(--secondary-color);
 }
 
-.account-nav-item .account-nav-text.unlimited {
+.account-nav-item .account-nav-text.unlimited,
+.mobile-item-wrapper .label-text.unlimited {
   background: linear-gradient(135deg, rgb(34, 193, 195), rgb(253, 187, 45));
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   color: rgb(255, 255, 255);

@@ -117,3 +117,33 @@
   display: flex;
   gap: 16px;
 }
+
+@media (max-width: 991px) {
+  .account-manager-wrapper {
+    gap: 0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .account-manager-item {
+    border-radius: 0;
+  }
+
+  .manager-item-left .manager-item-icon.plan {
+    width: 44px;
+    height: 44px;
+  }
+
+  .manager-item-right {
+    display: none;
+  }
+
+  .manager-item-wrapper {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .manager-item-left {
+    flex-grow: 1;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./DetailVideo.css";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import EpisodeList from "./EpisodeList";
@@ -7,7 +7,7 @@ import Recommend from "../../../Global/Recommend/Recommend";
 import ActionButton from "../../../Global/ActionButton/ActionButton";
 import SuggestedBar from "../../../Global/SuggestedBar/SuggestedBar";
 import { UseResponsiveContext } from "../../../../context/ResponsiveContext";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Skeleton from "../../../Global/Skeleton/Skeleton";
 import {
   GetDocumentsByQuery,
@@ -19,6 +19,7 @@ import CategoryData from "../../Category/CategoryData";
 import { UseUserMetaContext } from "../../../../context/UserMeta";
 import { UseMyListContext } from "../../../../context/MyListContext";
 import { ReactComponent as CheckIcon } from "../../../../assets/images/icons/action/check_mobile.svg";
+import { UseToastMyListContext } from "../../../../context/ToastMyListContext";
 
 const DetailVideo = () => {
   const { videoId } = useParams();
@@ -37,6 +38,17 @@ const DetailVideo = () => {
   const [initialWatchTime, setInitialWatchTime] = useState(null);
 
   const { addToList, handleAddToList } = UseMyListContext();
+
+  const [episodeListArr, setEpisodeList] = useState([]);
+  const [episodeListLoading, setElistLoading] = useState(true);
+
+  const linkTo = initialWatchTime
+    ? initialWatchTime?.episodeId
+    : episodeListArr.length
+    ? episodeListArr[0].id
+    : "";
+
+  const { handleToast, handleToastCondition } = UseToastMyListContext();
 
   useEffect(() => {
     (async () => {
@@ -76,9 +88,6 @@ const DetailVideo = () => {
     }
   }, [user, videoId]);
 
-  const [episodeListArr, setEpisodeList] = useState([]);
-  const [episodeListLoading, setElistLoading] = useState(true);
-
   useEffect(() => {
     const handleDataQuery = async () => {
       const data = await GetDocumentsByQuery("Episode", "video_id", videoId);
@@ -106,7 +115,22 @@ const DetailVideo = () => {
   const handleAddToListClick = async (e) => {
     e.stopPropagation();
     await handleAddToList(data?.id, "videos", "detail");
+    handleToast(true);
   };
+
+  const isAddedToList = useMemo(
+    () => !!addToList?.videos?.[data?.id],
+    [addToList, data?.id]
+  );
+
+  useEffect(() => {
+    if (isAddedToList) {
+      handleToastCondition(true);
+    } else {
+      handleToastCondition(false);
+    }
+  }, [isAddedToList]);
+
   return (
     <main className="page-main">
       <div className="page-container">
@@ -177,7 +201,12 @@ const DetailVideo = () => {
 
               <div className="detail-content__mobile">
                 <div className="detail-thumbnail__mobile">
-                  <img src={data?.thumbnail_vertical_url} alt="Thumbnail" />
+                  <Skeleton horizontal={false}>
+                    <img
+                      src={data?.thumbnail_vertical_url}
+                      alt={data?.title ? data?.title + " thumbnail" : ""}
+                    />
+                  </Skeleton>
                 </div>
                 <div className="detail-information__mobile">
                   <h1 className="detail-main-title__mobile">{data?.title}</h1>
@@ -196,28 +225,34 @@ const DetailVideo = () => {
                       {isShow ? "View less" : "View more"}
                     </div>
                   </div>
-                  <button className="btn btn-white __rarius-3 btn-icon-left my-auto">
-                    <span className="btn-icon">
-                      <UseIconList icon="play" />
-                    </span>
-                    <span className="btn-text">Watch now</span>
-                  </button>
+                  {episodeListArr.length && (
+                    <Link
+                      style={{ display: "flex" }}
+                      to={`/video/episode/${linkTo}`}
+                    >
+                      <button
+                        style={{ width: "100%" }}
+                        className="btn btn-white __rarius-3 btn-icon-left my-auto"
+                      >
+                        <span className="btn-icon">
+                          <UseIconList icon="play" />
+                        </span>
+
+                        <span className="btn-text">Watch now</span>
+                      </button>
+                    </Link>
+                  )}
+
                   <div className="add-to-list-wrapper__mobile">
                     <button
                       onClick={(e) =>
                         addToList ? handleAddToListClick(e) : null
                       }
                       className={`add-to-list-icon__mobile add-to-list${
-                        addToList &&
-                        addToList.videos &&
-                        addToList.videos[data?.id]
-                          ? " added"
-                          : ""
+                        isAddedToList ? " added" : ""
                       }`}
                     >
-                      {addToList &&
-                      addToList.videos &&
-                      addToList.videos[data?.id] ? (
+                      {isAddedToList ? (
                         <CheckIcon />
                       ) : (
                         <UseIconList icon="add" />

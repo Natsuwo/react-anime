@@ -290,3 +290,58 @@
   justify-content: center;
   z-index: 3;
 }
+
+@media (max-width: 991px) {
+  .promote-banner {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+  .promote-banner::before {
+    padding-top: 56.25%;
+    display: block;
+    content: "";
+  }
+
+  .promote-banner img {
+    position: absolute;
+    width: 100vw;
+    height: 200px;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .promote-plan-wrapper {
+    width: auto;
+    margin: 0;
+    padding: 24px;
+  }
+
+  .promote-plan-main-title {
+    text-align: left;
+  }
+
+  .promote-plan-container {
+    gap: 12px;
+    grid-template-columns: 1fr;
+    margin: 0;
+  }
+
+  .toggle-panel {
+    margin: 0 24px;
+  }
+
+  .promote-content {
+    padding: 0;
+  }
+
+  .promote-wrapper {
+    padding: 0 24px;
+  }
+
+  .promote-title {
+    margin-bottom: 24px;
+  }
+}

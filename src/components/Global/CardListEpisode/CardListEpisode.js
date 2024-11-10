@@ -71,7 +71,7 @@ const CardListEpsiode = ({
               <div className="episode-list-item-title">
                 <span
                   className="clamp-text"
-                  style={{ WebkitLineClamp: sidebar ? 3 : 2 }}
+                  style={{ WebkitLineClamp: sidebar ? 3 : 1 }}
                 >
                   {loading ? (
                     <>
@@ -90,9 +90,13 @@ const CardListEpsiode = ({
               </div>
               {showSupplements && (
                 <ul className="episode-list-item-info">
-                  <li>{data?.duration / 60} minutes</li>
-                  <li>{getTime(data?.last_modified_date)}</li>
-                  <li>{formatViews(data?.views_count)} views</li>
+                  <li className="clamp-text">{data?.duration / 60} minutes</li>
+                  <li className="clamp-text">
+                    {getTime(data?.last_modified_date)}
+                  </li>
+                  <li className="clamp-text">
+                    {formatViews(data?.views_count)} views
+                  </li>
                 </ul>
               )}
 

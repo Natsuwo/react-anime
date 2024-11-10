@@ -31,12 +31,6 @@ const Navbar = () => {
     { id: 2, title: "MyList", icon: "done", href: "/mylist" },
     { id: 3, title: "History", icon: "history", href: "/history" },
   ];
-
-  const arrMenuBottom = [
-    // { id: 1, title: "Home", icon: "home", href: "/" },
-    // { id: 2, title: "MyList", icon: "done", href: "/mylist" },
-    // { id: 3, title: "History", icon: "history", href: "/history" },
-  ];
   return (
     <aside
       onMouseEnter={() => handleHover(true)}

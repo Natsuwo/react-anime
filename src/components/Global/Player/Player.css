@@ -745,3 +745,21 @@
   justify-content: center;
   align-items: center;
 }
+
+/* PIP Mode Mobile */
+
+.yurei-player-wrapper.__mobile .yurei-player.pip-mode {
+  width: 100%;
+  height: auto;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  border-radius: 0;
+  z-index: 99;
+}
+
+.yurei-player-wrapper.__mobile .yurei-pip-mode {
+  width: 100%;
+  top: 0;
+  right: 0;
+}

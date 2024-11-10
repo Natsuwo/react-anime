@@ -12,6 +12,7 @@ import { PlayerWideContextProvider } from "./context/PlayerWideContext";
 import { MyListContextProvider } from "./context/MyListContext";
 import { UserMetaContextProvider } from "./context/UserMeta";
 import { CategoryContextProvider } from "./context/CategoryContext";
+import { ToastMyListContextProvider } from "./context/ToastMyListContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -24,7 +25,9 @@ root.render(
             <ResponsiveContextPrivider>
               <ToggleContextProvider>
                 <BrowserRouter>
-                  <App />
+                  <ToastMyListContextProvider>
+                    <App />
+                  </ToastMyListContextProvider>
                 </BrowserRouter>
               </ToggleContextProvider>
             </ResponsiveContextPrivider>

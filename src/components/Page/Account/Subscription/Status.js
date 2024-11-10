@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import Breadcumb from "../../../Global/Breadcrumb/Breadcumb";
 import "./Status.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UseUserMetaContext } from "../../../../context/UserMeta";
 import {
   calculateExpirationDate,
   convertToExpirationDate,
 } from "../../../../features/helper";
+import { isMobile } from "react-device-detect";
 
 const Subscription = () => {
   const breadcrumb = [{ title: "Subscription" }];
@@ -28,6 +29,12 @@ const Subscription = () => {
       level: 3,
     },
   ];
+
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    if (!isMobile) return;
+    navigate("/subscription/promote");
+  };
   return (
     <main className="page-main">
       <div className="page-container">
@@ -53,7 +60,7 @@ const Subscription = () => {
               <div key={index}>
                 {item.level > userLevel?.level_id && (
                   <li className="plan-item">
-                    <div className="plan-box">
+                    <div onClick={handleNavigate} className="plan-box">
                       <div className="plan-box-content">
                         <div className="plan-box-left">
                           <div className="plan-title">

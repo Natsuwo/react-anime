@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import Recommend from "../../Global/Recommend/Recommend";
 import { FetchDocInfinity } from "../../../features/useFetch";
 import InfiniteScroll from "../../Global/InfiniteScroll/InfiniteScroll";
-import Skeleton from "../../Global/Skeleton/Skeleton";
 import { CardSkeleton } from "../../Global/Card/Card";
 
 const CategoryAll = ({ category, slug }) => {
@@ -12,33 +11,37 @@ const CategoryAll = ({ category, slug }) => {
   const [hasMore, setHasMore] = useState(true);
   const limitPerPage = 8;
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
+  const fetchData = useCallback(
+    async (reset = false) => {
+      setLoading(true);
+      // Reset lastDoc if we're fetching new category data
+      const startingDoc = reset ? null : lastDoc;
+      const fetchedData = await FetchDocInfinity(
+        "Videos",
+        "upload_date",
+        "desc",
+        startingDoc,
+        limitPerPage,
+        "category_id",
+        category?.category_id,
+        true
+      );
 
-    const data = await FetchDocInfinity(
-      "Videos",
-      "upload_date",
-      "desc",
-      lastDoc,
-      limitPerPage,
-      "category_id",
-      category?.category_id,
-      true
-    );
-
-    if (data.success) {
-      setLastDoc(data.lastDoc);
-      setData((prevData) => [...prevData, ...data.docs]);
-
-      if (data.docs.length < limitPerPage) {
-        setHasMore(false);
+      if (fetchedData.success) {
+        setLastDoc(fetchedData.lastDoc);
+        setData((prevData) =>
+          reset ? fetchedData.docs : [...prevData, ...fetchedData.docs]
+        );
+        if (fetchedData.docs.length < limitPerPage) {
+          setHasMore(false);
+        }
+      } else {
+        console.error(fetchedData.error);
       }
-    } else {
-      console.error(data.error);
-    }
-
-    setLoading(false);
-  }, [lastDoc, category?.category_id, limitPerPage, slug]);
+      setLoading(false);
+    },
+    [lastDoc, category?.category_id, limitPerPage]
+  );
 
   useEffect(() => {
     setLastDoc(lastDoc);
@@ -49,7 +52,8 @@ const CategoryAll = ({ category, slug }) => {
     setLoading(false);
     setHasMore(true);
     setData([]);
-  }, [slug]);
+    fetchData(true);
+  }, [category, slug]);
 
   return (
     <section className="feature-section">

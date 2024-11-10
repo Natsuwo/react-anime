@@ -5,6 +5,8 @@ import cameraIcon from "../../../assets/images/icons/camera.svg";
 import arrowUp from "../../../assets/images/icons/arrow_up.svg";
 import arrowDown from "../../../assets/images/icons/arrow_down.svg";
 import yureiLogo from "../../../assets/images/icons/yurei.svg";
+import yureiGreen from "../../../assets/images/icons/yurei-green.svg";
+import couponIcon from "../../../assets/images/icons/coupon.svg";
 
 // Action
 import deleteIcon from "../../../assets/images/icons/action/delete.svg";
@@ -68,6 +70,8 @@ const objIcon = {
   "arrow-up": arrowUp,
   "arrow-down": arrowDown,
   yurei: yureiLogo,
+  "yurei-green": yureiGreen,
+  coupon: couponIcon,
   // Action
   add: addIcon,
   done: doneIcon,

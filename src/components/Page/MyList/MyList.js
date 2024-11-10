@@ -78,8 +78,10 @@ const MyList = () => {
   return (
     <main className="page-main">
       <div className="page-container">
-        <Breadcumb items={[{ title: "My List" }]} />
-        <h1 className="main-title">My List</h1>
+        <div className="container__mobile">
+          <Breadcumb items={[{ title: "My List" }]} />
+          <h1 className="main-title">My List</h1>
+        </div>
         <div className="episode-list-sort-wrapper mt-2">
           <button
             ref={sortRef}

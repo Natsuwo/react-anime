@@ -400,3 +400,34 @@
   height: 24px;
   width: 24px;
 }
+
+@media (max-width: 991px) {
+  .toast-alert {
+    left: 50%;
+    right: 0;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+  .toast-alert.active {
+    transform: translate(-50%, 116px);
+  }
+  .modal-toast__message,
+  .modal-toast__message button.btn {
+    font-size: 13px;
+  }
+  .modal-toast-button {
+    display: none;
+  }
+
+  .main-modal-container {
+    width: 100%;
+    height: 100vh;
+  }
+
+  .main-modal-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

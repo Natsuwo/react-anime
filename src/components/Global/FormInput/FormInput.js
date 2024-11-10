@@ -33,13 +33,13 @@ const PasswordForm = ({
         </span>
       )}
 
-      <span className="form-input-password" style={{ width: widthForm }}>
+      <span className="form-input-password" style={{ maxWidth: widthForm }}>
         <input
           name={name}
           onChange={onChange}
           value={value}
           className={className}
-          style={{ width: widthForm, height: heightForm }}
+          style={{ maxWidth: widthForm, height: heightForm }}
           id={idFor}
           type={showPassword ? "text" : "password"}
           placeholder={placeholder}

@@ -13,6 +13,7 @@ import { UseMyListContext } from "../../../context/MyListContext";
 import Tooltip from "../Tooltip/Tooltip";
 import CategoryTag from "../CategoryTag/CategoryTag";
 import { UseCategoryContext } from "../../../context/CategoryContext";
+import { isMobile } from "react-device-detect";
 
 export const CardSlide = ({ index, isActive, onCardClick, props }) => {
   return (
@@ -163,7 +164,8 @@ export const CardVideo = ({
               style={{
                 lineHeight: 1.5,
                 maxHeight: "3em",
-                WebkitLineClamp: 2,
+                WebkitLineClamp: isMobile ? 1 : 2,
+                whitePpace: "break-spaces",
               }}
             >
               {title}

@@ -209,9 +209,6 @@
   .episode-wrapper {
     grid-template-columns: 100%;
   }
-  .episode-main-content {
-    padding: 0 8px;
-  }
 }
 
 .yurei-premium-overlay {
@@ -247,4 +244,11 @@
 .yurei-premium-content button {
   display: block;
   width: auto !important;
+}
+
+@media (max-width: 991px) {
+  .episode-main-content {
+    margin-top: 0;
+    padding: 0;
+  }
 }

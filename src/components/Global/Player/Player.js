@@ -432,12 +432,10 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
       window.removeEventListener("touchend", handleMouseUp);
     }
 
-    // document.addEventListener("mousemove", handleMouseMoveControl);
     document.addEventListener("mouseleave", handleMouseLeaveControl);
 
     return () => {
       // Control
-      // document.removeEventListener("mousemove", handleMouseMoveControl);
       document.removeEventListener("mouseleave", handleMouseLeaveControl);
       clearTimeout(controlTimerRef.current);
       //

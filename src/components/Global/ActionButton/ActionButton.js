@@ -1,14 +1,15 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./ActionButton.css";
 import UseIconList from "../SvgList/UseIconList";
 import Tooltip from "../../Global/Tooltip/Tooltip";
 import { UseMyListContext } from "../../../context/MyListContext";
 import ModalAlert from "../../Modal/ModalAlert";
 import { Link } from "react-router-dom";
+import { UseToastMyListContext } from "../../../context/ToastMyListContext";
 
 const ActionButton = ({ items }) => {
   const { id } = items;
-  const [isVisible, setIsVisible] = useState(false);
+  const { handleToast, handleToastCondition } = UseToastMyListContext();
   const arrAction = [
     { title: "X", icon: "social-x" },
     { title: "Facebook", icon: "facebook" },
@@ -16,11 +17,19 @@ const ActionButton = ({ items }) => {
   const { addToList, handleAddToList } = UseMyListContext();
   const handleClick = async (e) => {
     e.stopPropagation();
-    setIsVisible(true);
+    handleToast(true);
     await handleAddToList(id, "videos");
   };
 
   const isAddedToList = useMemo(() => addToList?.videos?.[id], [addToList, id]);
+
+  useEffect(() => {
+    if (isAddedToList) {
+      handleToastCondition(true);
+    } else {
+      handleToastCondition(false);
+    }
+  }, [isAddedToList]);
   return (
     <>
       <ul className="detail-action-list">
@@ -62,27 +71,6 @@ const ActionButton = ({ items }) => {
           </li>
         ))}
       </ul>
-      <ModalAlert visible={isVisible} setVisible={setIsVisible}>
-        <div
-          style={{
-            display: "flex",
-            gap: "16px",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {isAddedToList ? (
-            <>
-              <p> This video has been added into My List </p>
-              <Link to="/mylist">
-                <button className="btn btn-black">Check it</button>
-              </Link>
-            </>
-          ) : (
-            <p>This video has been delete from My List</p>
-          )}
-        </div>
-      </ModalAlert>
     </>
   );
 };

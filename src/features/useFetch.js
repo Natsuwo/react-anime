@@ -689,10 +689,12 @@ export const fetchRandomWatchedEpisode = async (userId, videoId) => {
     const episodeIds = Object.keys(history);
 
     if (episodeIds.length > 0) {
-      const randomEpisodeId =
-        episodeIds[Math.floor(Math.random() * episodeIds.length)];
-      const watchTime = history[randomEpisodeId];
+      // const randomEpisodeId =
+      //   episodeIds[Math.floor(Math.random() * episodeIds.length)];
+      // const watchTime = history[randomEpisodeId];
 
+      const randomEpisodeId = episodeIds[episodeIds.length - 1];
+      const watchTime = history[randomEpisodeId];
       return { episodeId: randomEpisodeId, watchTime };
     }
   }

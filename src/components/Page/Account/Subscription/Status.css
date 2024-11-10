@@ -8,6 +8,7 @@
   background-color: var(--secondary-color-2);
   border-radius: 4px;
   padding: 16px;
+  overflow: hidden;
 }
 
 .plan-box-content {
@@ -48,4 +49,29 @@
 
 .plan-box-right {
   flex-shrink: 0;
+}
+
+@media (max-width: 991px) {
+  .plan-box-right {
+    display: none;
+  }
+  .plan-box:active {
+    background-color: var(--white-24);
+  }
+}
+
+@media (max-width: 576px) {
+  .plan-box-left .plan-title {
+    gap: 4px;
+  }
+  .plan-box-left .plan-text {
+    font-size: 14px;
+  }
+  .plan-box-left .plan-text span {
+    font-size: 16px;
+  }
+
+  .plan-box-left .plan-price {
+    font-size: 18px;
+  }
 }

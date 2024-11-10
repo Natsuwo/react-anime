@@ -3,10 +3,13 @@
 }
 
 .main-recommend-wrapper .recommend-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  gap: 16px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.recommend-item {
+  width: calc(100% / 4 - 12px);
 }
 
 .main-recommend-wrapper h3 {
@@ -14,19 +17,19 @@
 }
 
 @media (max-width: 767px) {
-  .main-recommend-wrapper .recommend-inner {
-    grid-template-columns: 1fr 1fr 1fr;
+  .recommend-item {
+    width: calc(100% / 3 - 12px);
   }
 }
 
 @media (max-width: 578px) {
-  .main-recommend-wrapper .recommend-inner {
-    grid-template-columns: 1fr 1fr;
+  .recommend-item {
+    width: calc(100% / 2 - 12px);
   }
 }
 
 @media (max-width: 340px) {
-  .main-recommend-wrapper .recommend-inner {
-    grid-template-columns: 1fr;
+  .recommend-item {
+    width: calc(100%);
   }
 }

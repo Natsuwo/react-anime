@@ -72,7 +72,7 @@ const MainCarousel = ({
   };
 
   useEffect(() => {
-    if (data?.length) {
+    if (data?.length && scrollRef.current) {
       if (!children) {
         const elWidth = scrollRef.current.querySelectorAll(".main-card")[0];
         setElementWidth(elWidth.clientWidth + 14);
@@ -116,12 +116,7 @@ const MainCarousel = ({
             {isLoading && (
               <>
                 {defaultArr.map((item, index) => (
-                  <Skeleton
-                    className={"__slide-zone"}
-                    key={index}
-                    width={208}
-                    height={117}
-                  />
+                  <Skeleton className={"__slide-zone"} key={index} />
                 ))}
               </>
             )}
@@ -142,6 +137,7 @@ const MainCarousel = ({
           </div>
         )}
       </div>
+
       {!hiddenPage && (
         <ul className="pagination">
           {Array.from({ length: totalPages }, (_, index) => (

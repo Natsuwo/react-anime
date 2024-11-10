@@ -6,12 +6,13 @@ import EditAccountModal from "../../../Modal/children/EditAccountModal";
 import EditEmailPassword from "../../../Modal/children/EditEmailPassword";
 import CreateOTPModal from "../../../Modal/children/CreateOTPModal";
 import Avatar from "react-avatar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UseUserMetaContext } from "../../../../context/UserMeta";
 import Skeleton from "../../../Global/Skeleton/Skeleton";
 import VerifyEmailModal from "../../../Modal/children/VerifyEmailModal";
 import { SendMailAgain } from "../../../../features/useFetch";
 import useAuth from "../../../../features/useAuth";
+import { isMobile } from "react-device-detect";
 
 const AccountManagement = () => {
   const { signOut } = useAuth();
@@ -20,11 +21,26 @@ const AccountManagement = () => {
   const { user, userId, userLevel, userMetaData, loadingUser } =
     UseUserMetaContext();
 
+  const navigate = useNavigate();
+  const handleNavigateMobile = (goto) => {
+    if (!isMobile) return;
+    navigate(goto);
+  };
+
+  const handleModalMobile = (goto) => {
+    if (!isMobile) return;
+    setIsVisible(true);
+    setModalName(goto);
+  };
+
   return (
     <>
       <h2 className="manager-title">Account Manager</h2>
       <div className="account-manager-wrapper">
-        <div className="account-manager-item">
+        <div
+          onClick={() => handleModalMobile("profile")}
+          className="account-manager-item"
+        >
           <div className="manager-item-wrapper">
             <div className="manager-item-left">
               <span className="manager-item-icon">
@@ -62,10 +78,13 @@ const AccountManagement = () => {
             </div>
           </div>
         </div>
-        <div className="account-manager-item">
+        <div
+          onClick={() => handleNavigateMobile("/subscription/status")}
+          className="account-manager-item"
+        >
           <div className="manager-item-wrapper">
             <div className="manager-item-left">
-              <span className="manager-item-icon">
+              <span className="manager-item-icon plan">
                 <UseIconList icon="credit-card" />
               </span>
               <div
@@ -91,7 +110,18 @@ const AccountManagement = () => {
             </div>
           </div>
         </div>
-        <div className="account-manager-item">
+        <div
+          onClick={() => {
+            if (user && !user?.emailVerified) {
+              handleModalMobile("verify-email");
+            } else if (user && user?.email) {
+              handleModalMobile("change-email-password");
+            } else {
+              handleModalMobile("edit-email");
+            }
+          }}
+          className="account-manager-item"
+        >
           <div className="manager-item-wrapper">
             <div className="manager-item-left">
               <span className="manager-item-icon small">
@@ -141,7 +171,10 @@ const AccountManagement = () => {
             </div>
           </div>
         </div>
-        <div className="account-manager-item">
+        <div
+          onClick={() => handleModalMobile("switch-account")}
+          className="account-manager-item"
+        >
           <div className="manager-item-wrapper">
             <div className="manager-item-left">
               <span className="manager-item-icon small">

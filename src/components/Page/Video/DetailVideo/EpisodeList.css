@@ -30,7 +30,8 @@
 
 .control-group-tab-list li button {
   border: none;
-  padding: 14px 16px;
+  min-width: 88px;
+  padding: 12px 16px;
   border-radius: 50px;
   font-weight: 600;
   cursor: pointer;
@@ -140,7 +141,7 @@
 }
 
 .episode-list-item-details .episode-list-item-title {
-  font-weight: 700;
+  font-weight: 400;
   font-size: 18px;
   line-height: 1;
 }
@@ -150,6 +151,11 @@
   gap: 8px;
   font-size: 13px;
   color: var(--sub-title-color);
+}
+
+.episode-list-item-info li {
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
 }
 
 .episode-list-item-details .episode-list-item-desc {
@@ -231,6 +237,17 @@
 }
 
 @media (max-width: 991px) {
+  .episode-list-item {
+    padding: 8px;
+  }
+
+  .episode-list-item-wrapper {
+    gap: 8px;
+  }
+
+  .episode-list-wrapper {
+    padding: 0 16px;
+  }
 }
 
 @media (max-width: 767px) {
