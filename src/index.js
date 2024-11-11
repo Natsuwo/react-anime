@@ -13,28 +13,31 @@ import { MyListContextProvider } from "./context/MyListContext";
 import { UserMetaContextProvider } from "./context/UserMeta";
 import { CategoryContextProvider } from "./context/CategoryContext";
 import { ToastMyListContextProvider } from "./context/ToastMyListContext";
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
-    <CategoryContextProvider>
-      <UserMetaContextProvider>
-        <MyListContextProvider>
-          <PlayerWideContextProvider>
-            <ResponsiveContextPrivider>
-              <ToggleContextProvider>
-                <BrowserRouter>
-                  <ToastMyListContextProvider>
-                    <App />
-                  </ToastMyListContextProvider>
-                </BrowserRouter>
-              </ToggleContextProvider>
-            </ResponsiveContextPrivider>
-          </PlayerWideContextProvider>
-        </MyListContextProvider>
-      </UserMetaContextProvider>
-    </CategoryContextProvider>
+    <DarkModeProvider>
+      <CategoryContextProvider>
+        <UserMetaContextProvider>
+          <MyListContextProvider>
+            <PlayerWideContextProvider>
+              <ResponsiveContextPrivider>
+                <ToggleContextProvider>
+                  <BrowserRouter>
+                    <ToastMyListContextProvider>
+                      <App />
+                    </ToastMyListContextProvider>
+                  </BrowserRouter>
+                </ToggleContextProvider>
+              </ResponsiveContextPrivider>
+            </PlayerWideContextProvider>
+          </MyListContextProvider>
+        </UserMetaContextProvider>
+      </CategoryContextProvider>
+    </DarkModeProvider>
   </React.StrictMode>
 );
 

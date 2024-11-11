@@ -62,7 +62,7 @@
 
 .account-nav-item .account-nav-text.free,
 .mobile-item-wrapper .label-text.free {
-  background-color: var(--sc-color);
+  background-color: var(--white-8);
 }
 
 .account-nav-item .account-nav-text.premium,

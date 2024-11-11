@@ -3,7 +3,7 @@ import "./YureiLoading.css";
 import { ReactComponent as YureiLogo } from "../../../assets/images/yurei/yurei.svg";
 import { ReactComponent as YureiLogoCompleted } from "../../../assets/images/yurei/yurei_oowarai.svg";
 
-const YureiLoading = ({ width, height, type = "spin" }) => {
+const YureiLoading = ({ style, width, height, type = "spin" }) => {
   return (
     <div
       className={`yurei-logo-loading-wrapper ${type}`}
@@ -11,6 +11,7 @@ const YureiLoading = ({ width, height, type = "spin" }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        ...style,
       }}
     >
       <YureiLogo width={width} height={height} className="yurei-logo-loading" />

@@ -240,7 +240,16 @@ export const GetAllSort = async (document, field, order_by, maxDoc) => {
 
 export const FetchAllLimit = async (document, maxDoc) => {
   // Tạo truy vấn tới collection Category và áp dụng limit
-  const q = query(collection(db, document), limit(maxDoc));
+  let q;
+  if (document === "Categories") {
+    q = query(
+      collection(db, document),
+      limit(maxDoc),
+      orderBy("category_id", "asc")
+    );
+  } else {
+    q = query(collection(db, document), limit(maxDoc));
+  }
 
   const querySnapshot = await getDocs(q);
   const categories = [];
@@ -373,7 +382,7 @@ export const FetchSingleDocumentByKey = async (
     const doc = querySnapshot.docs[0];
     return { success: true, id: doc.id, ...doc.data() };
   } else {
-    return { success: false, error: "User not found" };
+    return { success: false, error: "Document not found" };
   }
 };
 
@@ -725,6 +734,30 @@ export const CreatePayment = async (
     };
     const docRef = await addDoc(collection(db, "Payment"), params);
     return { success: true, uid, docId: docRef?.id };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+export const getDocumentsByArray = async (document, keys) => {
+  try {
+    if (keys.length > 10) {
+      console.error(
+        "Firebase chỉ hỗ trợ tối đa 10 giá trị khi dùng toán tử 'in'"
+      );
+      return { success: false, error: "Limited 10 Posts" };
+    }
+
+    const q = query(collection(db, document), where("__name__", "in", keys));
+
+    // Lấy dữ liệu từ Firestore
+    const querySnapshot = await getDocs(q);
+    const episodes = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return { success: true, docs: episodes };
   } catch (error) {
     return { success: false, error: error.message };
   }

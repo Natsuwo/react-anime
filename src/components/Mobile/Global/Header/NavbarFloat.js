@@ -60,7 +60,12 @@ const NavbarFloat = ({ handleFloat }) => {
               {user?.email && (
                 <div className="mobile-item-wrapper user-email">
                   <div className="mobile-item item-email">
-                    <span className="label">Email Address</span>
+                    <span
+                      className="label clamp-text"
+                      style={{ WebkitLineClamp: 1 }}
+                    >
+                      Email Address
+                    </span>
                     <span className="label-text clamp-text">{user?.email}</span>
                   </div>
                 </div>
@@ -97,7 +102,7 @@ const NavbarFloat = ({ handleFloat }) => {
           </Link>
         </li>
         <li>
-          <Link className="mobile-nav-float-item-link" to="#">
+          <Link className="mobile-nav-float-item-link" to="/mailnotify">
             <div className="item-icon">
               <UseIconList width="24" height="24" icon="mail" />
             </div>
@@ -105,7 +110,7 @@ const NavbarFloat = ({ handleFloat }) => {
           </Link>
         </li>
         <li>
-          <Link className="mobile-nav-float-item-link" to="#">
+          <Link className="mobile-nav-float-item-link" to="/badges">
             <div className="item-icon">
               <UseIconList width="24" height="24" icon="yurei-green" />
             </div>
@@ -113,7 +118,7 @@ const NavbarFloat = ({ handleFloat }) => {
           </Link>
         </li>
         <li>
-          <Link className="mobile-nav-float-item-link" to="#">
+          <Link className="mobile-nav-float-item-link" to="/coupon">
             <div className="item-icon">
               <UseIconList width="24" height="24" icon="coupon" />
             </div>

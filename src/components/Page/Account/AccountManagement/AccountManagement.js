@@ -208,7 +208,7 @@ const AccountManagement = () => {
               style={{
                 color: "var(--link-active)",
                 height: "44px",
-                width: "260px",
+                maxWidth: "260px",
               }}
               onClick={() => {
                 setModalName("switch-account");

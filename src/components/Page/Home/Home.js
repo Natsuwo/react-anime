@@ -11,11 +11,7 @@ import {
 } from "../../Global/Card/Card";
 import VideoList from "../../Global/VideoList/VideoList";
 import { UseResponsiveContext } from "../../../context/ResponsiveContext";
-import {
-  FetchSingleDocumentByKey,
-  GetAllSort,
-  GetDocumentsByQuery,
-} from "../../../features/useFetch";
+import { GetAllSort, GetDocumentsByQuery } from "../../../features/useFetch";
 import { UseMyListContext } from "../../../context/MyListContext";
 import { UseCategoryContext } from "../../../context/CategoryContext";
 
@@ -28,55 +24,42 @@ const AppBaner = () => {
   };
 
   // Category Data
-  const [categoryData, setCategoryData] = useState([]);
-  const [cateLoading, setCateLoading] = useState(false);
-  const { categoryList } = UseCategoryContext();
+  const [scheduleData, setScheduleData] = useState([]);
+  const [scheLoading, setScheLoading] = useState(false);
 
   const handleCategoriesList = async () => {
-    setCateLoading(true);
-    categoryList?.map(async (item) => {
-      const data = await FetchSingleDocumentByKey(
-        "Videos",
-        "category_id",
-        item.category_id,
-        true
-      );
-      const dataWithCategory = { ...data, category_name: item.category_id };
-      setCategoryData((prev) => {
-        if (
-          !prev.some(
-            (existingItem) => existingItem.category_name === item.category_id
-          )
-        ) {
-          return [...prev, dataWithCategory];
-        }
-        return prev;
-      });
-      setCateLoading(false);
-    });
+    setScheLoading(true);
+    const scheData = await GetDocumentsByQuery(
+      "Videos",
+      "privacy_status",
+      "scheduled"
+    );
+    if (scheData.success) {
+      setScheduleData(scheData.doc);
+    }
+    setScheLoading(false);
   };
 
   useEffect(() => {
-    if (categoryList?.length > 0) {
-      handleCategoriesList();
-    }
-  }, [categoryList]);
+    handleCategoriesList();
+  }, []);
+
   return size.width < 992 ? (
     ""
   ) : (
     <div className="banner-wrapper">
       {isSwitcher === 0 ? (
         <Banner
-          categoryData={categoryData}
-          isLoading={cateLoading}
+          data={scheduleData}
+          isLoading={scheLoading}
           isHovered={isHovered}
           handleHovered={handleHovered}
         />
       ) : (
         <>
           <Sponsored
-            categoryData={categoryData}
-            isLoading={cateLoading}
+            data={scheduleData}
+            isLoading={scheLoading}
             isHovered={isHovered}
             handleHovered={handleHovered}
           />

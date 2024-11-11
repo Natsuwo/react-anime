@@ -264,7 +264,7 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
   // Cập nhật vị trí của video dựa trên vị trí thanh seekbar
   const updateSeek = (e) => {
     const seekBar = seekbarRef.current;
-    const rect = seekBar.getBoundingClientRect();
+    const rect = seekBar?.getBoundingClientRect();
     const offsetX = (e.clientX || e.pageX) - rect.left;
     const newTime = (offsetX / rect.width) * videoRef.current.duration;
 
@@ -384,7 +384,7 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
       // Vị trí hiện tại của scroll
       const player = playerRef.current;
       const scrollPosition = window.scrollY;
-      const rect = player.getBoundingClientRect();
+      const rect = player?.getBoundingClientRect();
       // Kích hoạt PiP nếu vị trí cuộn gần cuối trang (dưới 100px)
 
       if (scrollPosition - rect.height > -50) {
@@ -532,6 +532,7 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
           episodeId={episodeId}
           handleLoadedMetadata={handleLoadedMetadata}
         />
+
         <ButtonHandle
           isLoading={isLoading}
           showPlayPauseIcon={showPlayPauseIcon}
@@ -539,7 +540,6 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
           isPip={isPip}
           handlePlay={handlePlay}
         />
-
         <PiPButon
           isLoading={isLoading}
           readyToPlay={readyToPlay}

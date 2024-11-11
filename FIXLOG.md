@@ -20,16 +20,19 @@
 20. Fix episode [FIXED]
 21. Cho phép add episode to my list [DONE]
 22. Modal cho mylist ở detail [DONE]
-23. Ads for player
-24. Mobile
-25. Paypal
+23. History [DONE]
+24. Ads for player [DONE]
+25. Mobile [DONE]
 26. OTP, Backend vercel
-27. Tag
+27. Paypal
+28. Tag
+29. MAIL
+30. Toast My List All
 
 Update
 
-1. Skeleton
-2. Mobile UI
-3. Loading on top
+1. Skeleton [DONE]
+2. Mobile UI [DONE]
+3. Loading on top [DONE]
 4. API (Backend)
 5. Light Theme

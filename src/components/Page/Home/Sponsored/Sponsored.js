@@ -7,7 +7,7 @@ import { UseToggleContext } from "../../../../context/ToggleContext";
 import { CardList } from "../../../Global/Card/Card";
 import Skeleton from "../../../Global/Skeleton/Skeleton";
 
-const Sponsored = ({ categoryData, isLoading }) => {
+const Sponsored = ({ data, isLoading }) => {
   const { isSwitcher, handleSwitch } = UseToggleContext();
 
   const defaultArr = Array.from({ length: 12 }, (_, i) => ({
@@ -55,7 +55,7 @@ const Sponsored = ({ categoryData, isLoading }) => {
           </>
         )}
 
-        {categoryData?.map((item, index) => (
+        {data?.map((item, index) => (
           <div key={index + item.id} className="row">
             <CardList props={item}></CardList>
           </div>

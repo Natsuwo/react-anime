@@ -248,3 +248,44 @@ export const isValidEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 };
+
+export const formatTimestamp = (timestamp, formatType) => {
+  if (!timestamp || !formatType) return;
+  const date = timestamp.toDate();
+
+  // Định dạng ngày (Oct 11 (Fri))
+  const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    weekday: "short",
+  });
+
+  // Định dạng giờ (20:57)
+  const timeFormatter = new Intl.DateTimeFormat("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  if (formatType === "date") {
+    return dateFormatter.format(date);
+  } else if (formatType === "time") {
+    return timeFormatter.format(date);
+  } else {
+    throw new Error("Invalid format type. Use 'date' or 'time'.");
+  }
+};
+
+export const formatTimePlayer = (seconds) => {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
+  if (hrs > 0) {
+    return `${hrs.toString().padStart(1, "0")}:${mins
+      .toString()
+      .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  }
+  return `${mins.toString().padStart(1, "0")}:${secs
+    .toString()
+    .padStart(2, "0")}`;
+};

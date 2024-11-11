@@ -53,8 +53,8 @@
 
 .mobile-banner-details-wrapper {
   align-items: flex-end;
-  background: linear-gradient(-90deg, transparent, rgba(0, 0, 0, 0.5)),
-    linear-gradient(-180deg, transparent, #000);
+  background: linear-gradient(-90deg, transparent, var(--black-50)),
+    linear-gradient(-180deg, transparent, var(--bg-color));
   display: flex;
   height: 100%;
   justify-content: flex-start;

@@ -1,18 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const InfiniteScroll = ({
-  children,
-  loader,
   fetchMore,
   hasMore,
+  children,
+  loader,
   endMessage,
   className,
   lastDoc,
   slug,
+  isLoading,
 }) => {
   const pageEndRef = useRef(null);
   const [currentSlug, setSlug] = useState(slug);
   useEffect(() => {
+    if (!hasMore || isLoading) return;
     if (currentSlug !== slug) {
       setTimeout(() => {
         setSlug(slug);

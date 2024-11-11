@@ -55,6 +55,11 @@ const VideoScreen = ({
       saveWatchTime(userId, videoId, episodeId, currentWatchTime);
       setLastUpdateTime(Math.floor(currentWatchTime)); // Cập nhật lastUpdateTime
     }
+
+    if (videoRef.current.duration - lastUpdateTime < 0.3) {
+      saveWatchTime(userId, videoId, episodeId, currentWatchTime);
+      setLastUpdateTime(Math.floor(currentWatchTime)); // Cập nhật lastUpdateTime
+    }
   };
 
   return (

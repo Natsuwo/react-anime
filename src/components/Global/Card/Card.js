@@ -13,7 +13,6 @@ import { UseMyListContext } from "../../../context/MyListContext";
 import Tooltip from "../Tooltip/Tooltip";
 import CategoryTag from "../CategoryTag/CategoryTag";
 import { UseCategoryContext } from "../../../context/CategoryContext";
-import { isMobile } from "react-device-detect";
 
 export const CardSlide = ({ index, isActive, onCardClick, props }) => {
   return (
@@ -33,7 +32,7 @@ export const CardSlide = ({ index, isActive, onCardClick, props }) => {
       </div>
       <div className="card-overlay"></div>
       <div className="main-tag">
-        <CategoryTag type={props?.category_name && props?.category_name} />
+        <CategoryTag type={props?.category_id && props?.category_id[0]} />
       </div>
     </div>
   );
@@ -41,28 +40,30 @@ export const CardSlide = ({ index, isActive, onCardClick, props }) => {
 
 export const CardList = ({ props }) => {
   return (
-    <div className="card-list-wrapper">
-      <div className="card-content">
-        <div className="thumbnail">
-          <Skeleton>
-            <img
-              width="208"
-              height="117"
-              src={props.highlighted_thumbnail}
-              alt=""
-            />
-          </Skeleton>
+    <Link to={`/video/detail/${props?.id}`}>
+      <div className="card-list-wrapper">
+        <div className="card-content">
+          <div className="thumbnail">
+            <Skeleton>
+              <img
+                width="208"
+                height="117"
+                src={props.highlighted_thumbnail}
+                alt=""
+              />
+            </Skeleton>
+          </div>
+          <div className="card-overlay"></div>
+          <div className="main-tag">
+            <CategoryTag type={props?.category_id && props?.category_id[0]} />
+          </div>
         </div>
-        <div className="card-overlay"></div>
-        <div className="main-tag">
-          <CategoryTag type={props?.category_name && props?.category_name} />
+        <div className="watch-now-text">
+          <UseIconList icon={"play"} />
+          Watch now
         </div>
       </div>
-      <div className="watch-now-text">
-        <UseIconList icon={"play"} />
-        Watch now
-      </div>
-    </div>
+    </Link>
   );
 };
 
@@ -164,7 +165,7 @@ export const CardVideo = ({
               style={{
                 lineHeight: 1.5,
                 maxHeight: "3em",
-                WebkitLineClamp: isMobile ? 1 : 2,
+                WebkitLineClamp: 2,
                 whitePpace: "break-spaces",
               }}
             >

@@ -20,6 +20,7 @@ const useUniqueShortUserId = () => {
           "USER_METADATA",
           JSON.stringify({
             userId: base64Id,
+            history_list: [],
             subscription_level: 1,
             my_list: { episodes: [], videos: [] },
           })

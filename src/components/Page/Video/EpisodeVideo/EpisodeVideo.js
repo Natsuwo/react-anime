@@ -20,6 +20,7 @@ import CategoryData from "../../Category/CategoryData";
 import { getTime, formatViews } from "../../../../features/helper";
 import { UseCategoryContext } from "../../../../context/CategoryContext";
 import { UseUserMetaContext } from "../../../../context/UserMeta";
+import PlayerVast from "../../../Global/Player/PlayerVast";
 
 const EpisodeVideo = () => {
   const descRef = useRef(null);
@@ -29,7 +30,7 @@ const EpisodeVideo = () => {
   const { episodeId } = useParams();
   const { wideMode } = UsePlayerWide();
   const { categoryList } = UseCategoryContext();
-  const { user, userMetaData } = UseUserMetaContext();
+  const { user, userMetaData, handleUserMetaData } = UseUserMetaContext();
 
   const [mostViewData, setMostViewData] = useState([]);
   const [isLoadingMostView, setLoadingMostView] = useState(false);
@@ -46,6 +47,18 @@ const EpisodeVideo = () => {
 
   // time saved
   const [initialWatchTime, setInitialWatchTime] = useState(null);
+
+  // Ads
+  const [adsRunning, setAdsRunning] = useState(false);
+  const [adsLoaded, setAdsLoaded] = useState(false);
+
+  const handleVastRun = (option) => {
+    setAdsRunning(option);
+  };
+
+  const handleVastLoaded = (option) => {
+    setAdsLoaded(option);
+  };
 
   const handleData = async () => {
     setLoading(true);
@@ -150,10 +163,6 @@ const EpisodeVideo = () => {
     }
   }, [dataEpisode]);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, [episodeId]);
-
   const preLoadData = Array.from({ length: 12 }, (_, i) => ({ id: i + 1 }));
 
   useEffect(() => {
@@ -172,6 +181,20 @@ const EpisodeVideo = () => {
     }
   }, [user?.uid, episodeId, dataEpisode?.video_id]);
 
+  useEffect(() => {
+    if (userMetaData && userMetaData.history_list && dataEpisode?.video_id) {
+      const videoId = dataEpisode?.video_id;
+      // Kiểm tra xem video_id đã có trong history chưa
+      if (!userMetaData.history_list.includes(videoId)) {
+        // Nếu chưa có thì thêm vào history
+        const updatedHistory = [...userMetaData.history_list, videoId];
+
+        // Cập nhật lại UserMetaData trong Firebase và Context
+        handleUserMetaData({ history_list: updatedHistory });
+      }
+    }
+  }, [userMetaData?.history_list, dataEpisode?.video_id]);
+
   return (
     <main className="page-main">
       <div className="episode-main-content">
@@ -182,7 +205,7 @@ const EpisodeVideo = () => {
             </div>
             <div className="episode-wrapper">
               <div className="episode-inner">
-                <div className="player-wrapper">
+                <div className="player-wrapper mb-2">
                   {isLoading && <Skeleton></Skeleton>}
                   {!isLoading && initialWatchTime !== null && (
                     <>
@@ -217,13 +240,23 @@ const EpisodeVideo = () => {
                           )}
                         </>
                       ) : (
-                        <Player
-                          userId={user?.uid}
-                          videoId={dataEpisode?.video_id}
-                          episodeId={episodeId}
-                          url={dataEpisode?.video_url}
-                          initialWatchTime={initialWatchTime}
-                        />
+                        <>
+                          {!adsLoaded && (
+                            <PlayerVast
+                              handleVastLoaded={handleVastLoaded}
+                              handleVastRun={handleVastRun}
+                            />
+                          )}
+                          {adsLoaded && (
+                            <Player
+                              userId={user?.uid}
+                              videoId={dataEpisode?.video_id}
+                              episodeId={episodeId}
+                              url={dataEpisode?.video_url}
+                              initialWatchTime={initialWatchTime}
+                            />
+                          )}
+                        </>
                       )}
                     </>
                   )}

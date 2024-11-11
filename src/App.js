@@ -24,6 +24,8 @@ import Promote from "./components/Page/Subscription/Promote/Promote";
 import useUniqueShortUserId from "./features/useUniqueShortUserId";
 import Category from "./components/Page/Category/Category";
 import Search from "./components/Page/Search/Search";
+import { useEffect, useRef, useState } from "react";
+import LoadingBar from "react-top-loading-bar";
 
 function App() {
   useUniqueShortUserId();
@@ -40,8 +42,35 @@ function App() {
   // const isSubscriptionPage =
   // /^\/subscription\/(?!status\b)(?!signup\b)\w+/i.test(location.pathname);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    startLoading();
+    setTimeout(() => {
+      finishLoading();
+    }, 300);
+  }, [location.pathname]);
+
+  const [progress, setProgress] = useState(0);
+  const loadingBarRef = useRef(null);
+
+  const startLoading = () => {
+    setProgress(30); // Bắt đầu thanh loading
+    loadingBarRef.current?.continuousStart(); // Đưa thanh tải vào trạng thái liên tục
+  };
+
+  // Khi loading hoàn tất
+  const finishLoading = () => {
+    setProgress(100);
+    loadingBarRef.current?.complete(); // Hoàn tất thanh tải
+  };
+
   return (
     <>
+      <LoadingBar
+        color="var(--link-active)"
+        ref={loadingBarRef}
+        progress={progress}
+      />
       {size.width < 992 ? (
         <HeaderMenu />
       ) : !isSubscriptionPage ? (

@@ -5,15 +5,15 @@ header .top-bar {
   padding: 0 24px 0 0;
   height: 68px;
   width: 100%;
-  background-color: #000;
-  color: white;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   z-index: 25;
   position: fixed;
   transition: 0.5s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 header .transparent-header {
-  background: linear-gradient(180deg, hsla(0, 0%, 9%, 0.6), hsla(0, 0%, 9%, 0));
+  background: linear-gradient(180deg, var(--white-t-60), var(--white-t-0));
   box-shadow: none;
 }
 
@@ -41,7 +41,7 @@ header .bars-icon {
   cursor: pointer;
   width: 24px;
   height: 24px;
-  fill: white;
+  fill: var(--text-color);
 }
 
 header .logo-text {
@@ -50,7 +50,7 @@ header .logo-text {
   padding: 12px 8px;
   border-radius: 8px;
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
 }
 
 header .logo-text:hover {
@@ -89,7 +89,7 @@ header .search-bar input:focus {
 
 header .search-bar input:focus,
 header .search-bar input:not(:placeholder-shown) {
-  background-color: white;
+  background-color: var(--text-color);
   border: 1px solid #fafafa;
 }
 

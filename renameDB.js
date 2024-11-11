@@ -29,6 +29,12 @@ const {
   limit,
 } = require("firebase/firestore");
 
+function scheduledDate(period = 1) {
+  const currentDate = new Date();
+  currentDate.setMonth(currentDate.getMonth() + period); // Cộng thêm 'period' tháng
+  return currentDate;
+}
+
 // Hàm để chuyển đổi title và description thành chữ thường
 const renameDocuments = async () => {
   try {
@@ -70,12 +76,17 @@ const renameDocuments = async () => {
 // Gọi hàm renameDocuments để bắt đầu quá trình
 // renameDocuments();
 
-const data = require("./db/tags.json");
+const data = require("./db/videoScheduled.json");
+const firebase = require("firebase/compat/app");
+require("firebase/compat/firestore");
 const addData = async () => {
-  data.map(async (item) => {
-    const docRef = await addDoc(collection(db, "TagMeta"), item);
+  for (const item of data) {
+    item.upload_date = firebase.firestore.Timestamp.fromDate(
+      new Date("2024-11-30T10:00:00")
+    );
+    const docRef = await addDoc(collection(db, "Videos"), item);
     console.log("Document written with ID: ", docRef.id);
-  });
+  }
 };
 
 addData();

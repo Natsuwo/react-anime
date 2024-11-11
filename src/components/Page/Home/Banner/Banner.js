@@ -1,16 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Banner.css";
 import UseIconList from "../../../Global/SvgList/UseIconList";
-import trailerVideo from "../../../../assets/videos/trailer-1.mp4";
 import Carousel from "./Carousel";
 import LayoutSwitcher from "../../../Global/Banner/LayoutSwitcher/LayoutSwitcher";
 import { UseToggleContext } from "../../../../context/ToggleContext";
+import { formatTimestamp, formatViews } from "../../../../features/helper";
+import { FetchSingleDocumentByKey } from "../../../../features/useFetch";
+import { Link } from "react-router-dom";
 
-const Banner = ({ isHovered, handleHovered, categoryData, isLoading }) => {
+const Banner = ({ isHovered, handleHovered, data, isLoading }) => {
   const [isMute, setIsMute] = useState(true);
+  const [selected, setSelected] = useState({});
+  const videoRef = useRef(null);
 
   // active sort
   const { isSwitcher, handleSwitch } = UseToggleContext();
+
+  const handleSelect = (index) => {
+    const select = data[index];
+    setSelected(select);
+  };
+
+  const handleMute = () => {
+    videoRef.current.muted = !videoRef.current.muted;
+    setIsMute(!isMute);
+  };
+
+  useEffect(() => {
+    if (data.length) {
+      handleSelect(0);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      setIsMute(videoRef.current.muted);
+    }
+  }, []);
 
   return (
     <div className="main-banner">
@@ -20,12 +46,17 @@ const Banner = ({ isHovered, handleHovered, categoryData, isLoading }) => {
         onMouseLeave={() => handleHovered(false)}
       >
         <div className="banner-player">
-          <video src={trailerVideo}></video>
+          <video
+            ref={videoRef}
+            src={selected?.trailer_video}
+            muted
+            autoPlay
+          ></video>
           <button
             className="sound-icon"
             onMouseEnter={() => handleHovered(false)}
             onMouseLeave={() => handleHovered(true)}
-            onClick={() => setIsMute(!isMute)}
+            onClick={handleMute}
           >
             <UseIconList
               icon={isMute ? "volume-off" : "volume"}
@@ -36,24 +67,30 @@ const Banner = ({ isHovered, handleHovered, categoryData, isLoading }) => {
         </div>
         <div className="banner-video-detail">
           <div className="live">
-            <div className="live-text">On Live</div>
+            <div className="live-text">On Going</div>
             <div className="live-icon-container">
               <div className="icon-live"></div>
             </div>
           </div>
           <div className="title">
-            <span className="main-title">Shinyanakapanchi</span>
+            <span className="main-title">{selected?.title}</span>
             <span className="episode">#1~12</span>
           </div>
           <div className="info">
-            <div className="date">Oct 11 (Fri)</div>
-            <div className="time">15:10 ~ 20:57</div>
-            <div className="views">53k views</div>
+            <div className="date">
+              {formatTimestamp(selected?.upload_date, "date")}
+            </div>
+            <div className="time">
+              {formatTimestamp(selected?.upload_date, "time")}
+            </div>
+            <div className="views">{formatViews(selected?.views_count)}</div>
           </div>
-          <button className="view-more">
-            <UseIconList icon="play" />
-            Watch now
-          </button>
+          <Link to={`/video/detail/${selected?.id}`}>
+            <button className="view-more">
+              <UseIconList icon="play" />
+              Watch now
+            </button>
+          </Link>
         </div>
         <div className="main-carousel">
           <div
@@ -70,7 +107,11 @@ const Banner = ({ isHovered, handleHovered, categoryData, isLoading }) => {
             onMouseEnter={() => handleHovered(false)}
             onMouseLeave={() => handleHovered(true)}
           >
-            <Carousel data={categoryData} isLoading={isLoading} />
+            <Carousel
+              data={data}
+              isLoading={isLoading}
+              handleSelect={handleSelect}
+            />
           </div>
         </div>
         <div className="overlay-left-side-wrapper">

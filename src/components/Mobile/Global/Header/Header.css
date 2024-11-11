@@ -1,5 +1,5 @@
 .mobile-header {
-  background-color: #000;
+  background-color: var(--bg-color);
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -91,7 +91,7 @@
 
 .mobile-navbar {
   width: 100%;
-  background-color: #000;
+  background-color: var(--bg-color);
   display: flex;
 }
 
@@ -151,7 +151,7 @@ ul.mobile-nav-bar li .mobile-nav-item-link.active::after {
   top: 0;
   left: -70%;
   width: 70%;
-  background-color: #171717;
+  background-color: var(--primary-color);
   height: 100vh;
   transition: 300ms;
   z-index: 19;
@@ -221,6 +221,7 @@ ul.mobile-nav-bar li .mobile-nav-item-link.active::after {
   grid-template-columns: 48px 1fr;
   gap: 8px;
   grid-template-rows: repeat(3, auto);
+  overflow: hidden;
 }
 
 .mobile-item-account-icon {
@@ -273,7 +274,7 @@ ul.mobile-nav-bar li .mobile-nav-item-link.active::after {
   padding: 4px 8px;
   border-radius: 16px;
   color: #999;
-  background-color: hsla(0, 0%, 100%, 0.12);
+  background-color: var(--white-12);
   width: fit-content;
 }
 
@@ -284,6 +285,7 @@ ul.mobile-nav-bar li .mobile-nav-item-link.active::after {
   border-radius: 4px;
   -webkit-line-clamp: 1;
   line-clamp: 1;
+  flex-shrink: 0;
 }
 
 .mobile-nav-bar-float li:hover {

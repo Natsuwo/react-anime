@@ -91,7 +91,7 @@
 }
 
 .episode-desc-wrapper .detail-description::before {
-  background: linear-gradient(180deg, transparent, #000);
+  background: linear-gradient(180deg, transparent, var(--bg-color));
   bottom: 0;
   content: "";
   display: block;
@@ -113,8 +113,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  background-color: #000;
+  color: var(--text-color);
+  background-color: var(--bg-color);
   border: none;
   padding: 4px 4px;
   border-radius: 4px;
@@ -250,5 +250,15 @@
   .episode-main-content {
     margin-top: 0;
     padding: 0;
+  }
+
+  .yurei-premium-content .yurei-premium-text {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .yurei-premium-content .yurei-premium-text {
+    font-size: 18px;
   }
 }

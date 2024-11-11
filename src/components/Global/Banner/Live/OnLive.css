@@ -7,7 +7,7 @@
 .on-live-wrapper .live .live-text {
   font-size: 36px;
   font-weight: 600;
-  color: white;
+  color: var(--text-color);
 }
 
 .on-live-wrapper .live .live-icon-container {

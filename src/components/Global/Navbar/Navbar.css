@@ -38,7 +38,7 @@ ul.navbar-menu {
 
 ul.navbar-menu li a,
 ul.navbar-menu li .disalbed-link {
-  color: white;
+  color: var(--text-color);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -52,14 +52,14 @@ ul.navbar-menu li .disalbed-link {
 }
 
 ul.navbar-menu li .menu-disable-link {
-  color: white;
+  color: var(--text-color);
   display: block;
   font-size: 14px;
   padding: 16px 20px;
 }
 
 ul.navbar-menu li.menu-overline::before {
-  background-color: hsla(0, 0%, 100%, 0.08);
+  background-color: var(--white-8);
   content: "";
   display: block;
   height: 2px;

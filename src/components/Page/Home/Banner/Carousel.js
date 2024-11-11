@@ -10,6 +10,7 @@ const Carousel = ({
   itemsPerPage = 5,
   children,
   hiddenPage = false,
+  handleSelect,
 }) => {
   const scrollRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -83,6 +84,10 @@ const Carousel = ({
       }
     }
   }, [data]);
+
+  useEffect(() => {
+    handleSelect(activeCard);
+  }, [activeCard]);
 
   const defaultArr = Array.from({ length: 12 });
 

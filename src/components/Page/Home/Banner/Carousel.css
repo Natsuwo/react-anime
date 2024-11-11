@@ -46,7 +46,7 @@
   transition: opacity 0.2s linear;
   filter: drop-shadow(0 0 24px rgba(0, 0, 0, 0.8));
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -85,7 +85,7 @@
 .carousel-wrapper .pagination {
   display: flex;
   gap: 20px;
-  color: white;
+  color: var(--text-color);
   align-items: center;
   justify-content: center;
 }

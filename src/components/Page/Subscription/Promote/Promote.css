@@ -255,8 +255,8 @@
   mask-image: linear-gradient(
     90deg,
     transparent 0,
-    #000 300px,
-    #000 1200px,
+    var(--bg-color) 300px,
+    var(--bg-color) 1200px,
     transparent
   );
 }

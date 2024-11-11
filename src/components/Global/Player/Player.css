@@ -1,11 +1,13 @@
-.yurei-player-wrapper {
+.yurei-player-wrapper,
+.video-vast-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
   user-select: none;
 }
 
-.yurei-player-wrapper::before {
+.yurei-player-wrapper::before,
+.video-vast-wrapper {
   background-color: #212121;
   content: "";
   display: block;
@@ -41,27 +43,30 @@
   user-select: none;
 }
 
-.yurei-player-wrapper .controls .seekbar {
+.yurei-player-wrapper .controls .seekbar,
+.video-vast-wrapper .seekbar {
   grid-column: 1 / -1;
   margin: 0 0 -6px;
 }
 
-.yurei-player-wrapper .controls .seekbar-inner {
+.yurei-player-wrapper .controls .seekbar-inner,
+.video-vast-wrapper .seekbar-inner {
   position: relative;
   cursor: pointer;
   /* padding: 14px 0; */
 }
 
-.controls .seekbar-inner .seekbar-loading {
+.controls .seekbar-inner .seekbar-loading,
+.video-vast-wrapper .seekbar-inner .seekbar-loading {
   position: relative;
   width: 100%;
-  background-color: hsla(0, 0%, 100%, 0.5);
+  background-color: var(--white-50);
   height: 4px;
   transform: scaleY(0.5);
 }
 
 .seekbar-loading .seekbar-buffer {
-  background-color: hsla(0, 0%, 100%, 0.5);
+  background-color: var(--white-50);
   height: 100%;
   left: 0;
   max-width: 100%;
@@ -70,7 +75,7 @@
 }
 
 .seekbar-loading .seekbar-highlighter {
-  background-color: #da0;
+  background-color: var(--link-active);
   height: 100%;
   left: 0;
   max-width: 100%;
@@ -78,11 +83,17 @@
   top: 0;
 }
 
-.controls .seekbar-inner:hover .seekbar-loading {
+.video-vast-wrapper .seekbar-loading .seekbar-highlighter {
+  background-color: var(--color-danger);
+}
+
+.controls .seekbar-inner:hover .seekbar-loading,
+.video-vast-wrapper .seekbar-inner .seekbar-loading {
   transform: scaleY(1);
 }
 
-.controls .seekbar-inner .seekbar-handle {
+.controls .seekbar-inner .seekbar-handle,
+.video-vast-wrapper .seekbar-inner .seekbar-handle {
   height: 4px;
   max-width: 100%;
   position: absolute;
@@ -101,6 +112,10 @@
   top: 50%;
   transform: translateY(-50%);
   width: 16px;
+}
+
+.video-vast-wrapper .seekbar-handle .seekbar-handle-maker {
+  display: none;
 }
 
 .yurei-player-wrapper .controls .control-left {
@@ -293,7 +308,7 @@
 }
 
 .speed-select-items:hover {
-  background-color: hsla(0, 0%, 100%, 0.1);
+  background-color: var(--white-12);
 }
 
 .speed-select-items:hover .icon-check svg {
@@ -503,7 +518,7 @@
 .play-button-onload-inner {
   width: 90px;
   height: 90px;
-  color: white;
+  color: var(--text-color);
 }
 
 .play-button-onload-inner .play-button-onload {
@@ -762,4 +777,32 @@
   width: 100%;
   top: 0;
   right: 0;
+}
+
+/* Vast */
+
+.vast-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 15;
+}
+
+.vast-timer-wrapper {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  color: #fff;
+  z-index: 16;
+  background-color: var(--black-24);
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.vast-timer-wrapper .vast-timer {
+  display: flex;
+  flex-direction: column;
 }

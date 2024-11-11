@@ -31,7 +31,7 @@
   gap: 24px;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-color);
   /* margin: 0 auto; */
   flex: 1.5;
 }
@@ -106,7 +106,7 @@
 }
 
 .sponsored-overlay-bg .gradition {
-  background: linear-gradient(90deg, transparent, #000);
+  background: linear-gradient(90deg, transparent, var(--bg-color));
   bottom: 0;
   height: 100%;
   position: absolute;
@@ -115,8 +115,8 @@
 }
 
 .sponsored-bottom-gradition {
-  background: linear-gradient(transparent, #000);
-  border-bottom: 64px solid #000;
+  background: linear-gradient(transparent, var(--bg-color));
+  border-bottom: 64px solid var(--bg-color);
   bottom: 0;
   box-sizing: content-box;
   height: 160px;

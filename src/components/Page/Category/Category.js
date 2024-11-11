@@ -23,7 +23,6 @@ const Category = () => {
 
   useEffect(() => {
     handleCategory();
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, [slug]);
 
   const breadcrumb = [{ title: category?.name }];

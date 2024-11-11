@@ -28,7 +28,7 @@
   transition: opacity 0.2s linear;
   filter: drop-shadow(0 0 24px rgba(0, 0, 0, 0.8));
   cursor: pointer;
-  color: white;
+  color: var(--text-color);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -62,7 +62,7 @@
 .main-carousel-wrapper .pagination {
   display: flex;
   gap: 20px;
-  color: white;
+  color: var(--text-color);
   align-items: center;
   justify-content: center;
 }
@@ -115,15 +115,15 @@
 
 .carousel-arrow-warpper.__left::before,
 .carousel-arrow-warpper.__right::after {
-  background: #000;
+  background: var(--bg-color);
 }
 
 .carousel-arrow-warpper.__left::after {
-  background: linear-gradient(90deg, #000, transparent);
+  background: linear-gradient(90deg, var(--bg-color), transparent);
 }
 
 .carousel-arrow-warpper.__right::before {
-  background: linear-gradient(-90deg, #000, transparent);
+  background: linear-gradient(-90deg, var(--bg-color), transparent);
 }
 
 .carousel-arrow-warpper.__right .carousel-arrow {
