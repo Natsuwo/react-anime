@@ -8,7 +8,7 @@
 
 .yurei-player-wrapper::before,
 .video-vast-wrapper {
-  background-color: #212121;
+  background-color: var(--secondary-color-2);
   content: "";
   display: block;
   padding-top: 56.25%;
@@ -66,7 +66,7 @@
 }
 
 .seekbar-loading .seekbar-buffer {
-  background-color: var(--white-50);
+  background-color: var(--black-50);
   height: 100%;
   left: 0;
   max-width: 100%;
@@ -227,8 +227,8 @@
 }
 
 .speed-select-wrapper .speed-tooltip {
-  background-color: #212121;
-  border: 1px solid #333;
+  background-color: var(--secondary-color-2);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2);
   color: #fff;
@@ -242,7 +242,7 @@
 
 .speed-select-wrapper .speed-tooltip::after {
   border: 7px solid transparent;
-  border-top-color: #212121;
+  border-top-color: var(--secondary-color-2);
   bottom: 0;
   content: "";
   display: block;
@@ -390,8 +390,8 @@
 }
 
 .volume-tooltip-inner {
-  background-color: #212121;
-  border: 1px solid #333;
+  background-color: var(--secondary-color-2);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2);
   color: #fff;
@@ -407,7 +407,7 @@
   margin: 0 auto;
   right: 0;
   border: 7px solid transparent;
-  border-top-color: #333;
+  border-top-color: var(--border-color);
   bottom: 0;
   content: "";
   display: block;

@@ -89,8 +89,8 @@ header .search-bar input:focus {
 
 header .search-bar input:focus,
 header .search-bar input:not(:placeholder-shown) {
-  background-color: var(--text-color);
-  border: 1px solid #fafafa;
+  background-color: var(--white-color);
+  border: 1px solid var(--text-color);
 }
 
 header .search-bar input:focus + .icon-search {

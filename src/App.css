@@ -642,7 +642,7 @@ main.page-main {
 }
 
 input.dark-theme {
-  background-color: #212121;
+  background-color: var(--secondary-color-2);
   border: 1px solid !important;
   border-color: var(--white-12) !important;
 }
