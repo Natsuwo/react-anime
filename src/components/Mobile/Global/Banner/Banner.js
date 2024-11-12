@@ -5,20 +5,13 @@ import UseIconList from "../../../Global/SvgList/UseIconList";
 import { Link } from "react-router-dom";
 import ChannelList from "../ChannelList/ChannelList";
 
-const Banner = () => {
-  const arrBanner = [
-    "https://image.p-c2-x.abema-tv.com/image/programs/89-102_s0_p28674/thumb001.png?height=307&quality=75&version=1727325243&width=512",
-    "https://image.p-c2-x.abema-tv.com/image/programs/203-2_s1_p303/thumb001.png?height=307&quality=75&version=1684382153&width=512",
-    "https://image.p-c2-x.abema-tv.com/image/programs/213-49_s1_p23/thumb001.png?height=307&quality=75&version=1722394189&width=512",
-  ];
-
+const BannerMobile = ({ data, isLoading }) => {
   const currentIndexRef = useRef(0);
   const galleryImagesRef = useRef([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      currentIndexRef.current =
-        (currentIndexRef.current + 1) % arrBanner.length;
+      currentIndexRef.current = (currentIndexRef.current + 1) % data?.length;
       galleryImagesRef.current.forEach((img, index) => {
         if (index === currentIndexRef.current) {
           img.classList.add("active");
@@ -28,7 +21,7 @@ const Banner = () => {
       });
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [data]);
 
   return (
     <>
@@ -37,7 +30,7 @@ const Banner = () => {
           <div className="mobile-banner-outer">
             <div className="mobile-banner-image">
               <div className="mobile-banner-image-gallery">
-                {arrBanner.map((item, index) => (
+                {data?.map((item, index) => (
                   <div
                     ref={(el) => (galleryImagesRef.current[index] = el)}
                     key={index}
@@ -46,25 +39,21 @@ const Banner = () => {
                       index === currentIndexRef.current ? " active" : ""
                     }`}
                   >
-                    <img alt={`Image ${index + 1}`} src={item} />
+                    <img
+                      alt={`Image ${index + 1}`}
+                      src={item.highlighted_thumbnail}
+                    />
                   </div>
                 ))}
-
-                {/* <div className="banner-image-gallery-item">
-                <img
-                  src="https://image.p-c2-x.abema-tv.com/image/programs/203-2_s1_p303/thumb001.png?height=307&quality=75&version=1684382153&width=512"
-                  alt=""
-                />
-              </div> */}
               </div>
             </div>
-            <Link to="#" className="mobile-banner-details-wrapper">
+            <div className="mobile-banner-details-wrapper">
               <div className="mobile-banner-details">
                 <div className="mobile-onlive">
                   <OnLive />
                 </div>
                 <div className="mobile-banner-details-title">
-                  <span>Hello world</span>
+                  <span>Interesting stuffs waiting for you!</span>
                 </div>
                 <div className="mobile-button-watch-wrapper">
                   <div className="mobile-watch-icon">
@@ -74,16 +63,27 @@ const Banner = () => {
                       icon="play"
                     ></UseIconList>
                   </div>
-                  <button className="mobile-btn watch-now">Watch now</button>
+
+                  <button className="mobile-btn watch-now">
+                    <Link
+                      to={
+                        data &&
+                        data?.length > 0 &&
+                        `/video/detail/${data[currentIndexRef.current].id}`
+                      }
+                    >
+                      Watch now
+                    </Link>
+                  </button>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </div>
-      <ChannelList></ChannelList>
+      <ChannelList data={data} isLoading={isLoading}></ChannelList>
     </>
   );
 };
 
-export default Banner;
+export default BannerMobile;

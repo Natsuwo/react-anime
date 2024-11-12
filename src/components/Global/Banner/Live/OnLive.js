@@ -5,7 +5,7 @@ const OnLive = () => {
   return (
     <div className="on-live-wrapper">
       <div className="live">
-        <div className="live-text">On Live</div>
+        <div className="live-text">On Going</div>
         <div className="live-icon-container">
           <div className="icon-live"></div>
         </div>

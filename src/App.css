@@ -552,24 +552,6 @@ main.page-main {
   gap: 8px;
 }
 
-@media (max-width: 767px) {
-  .channel-list-outer .mobile-row .mobile-col {
-    width: calc(100% / 4 - 8px);
-  }
-}
-
-@media (max-width: 568px) {
-  .channel-list-outer .mobile-row .mobile-col {
-    width: calc(100% / 3 - 8px);
-  }
-}
-
-@media (max-width: 466px) {
-  .channel-list-outer .mobile-row .mobile-col {
-    width: calc(100% / 2 - 8px);
-  }
-}
-
 .video-label .label-text {
   color: var(--text-color);
   border-radius: 4px;

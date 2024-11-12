@@ -17,6 +17,7 @@ const PasswordForm = ({
   onChange,
   errorText,
   name,
+  autoComplete = "current-password",
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -35,6 +36,7 @@ const PasswordForm = ({
 
       <span className="form-input-password" style={{ maxWidth: widthForm }}>
         <input
+          autoComplete={autoComplete}
           name={name}
           onChange={onChange}
           value={value}

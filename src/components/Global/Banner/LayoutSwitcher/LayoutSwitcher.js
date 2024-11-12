@@ -12,7 +12,7 @@ const LayoutSwitcher = ({ isSwitcher, handleSwitch }) => {
         >
           <button className="switch">
             <UseIconList icon="content-preview" />
-            Preview
+            Slide
           </button>
         </div>
         <div

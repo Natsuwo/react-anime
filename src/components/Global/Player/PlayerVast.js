@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Seekbar from "./Seekbar";
 import { formatTimePlayer } from "../../../features/helper";
+import UseIconList from "../SvgList/UseIconList";
 
 const PlayerVast = ({
   vastUrl,
@@ -65,6 +66,10 @@ const PlayerVast = ({
     setCurrentTime(currentWatchTime);
   };
 
+  const handleVolume = () => {
+    vastRef.current.muted = !vastRef.current.muted;
+  };
+
   useEffect(() => {
     const video = vastRef.current;
     const updateBuffered = () => {
@@ -127,6 +132,13 @@ const PlayerVast = ({
               {formatTimePlayer(totalTime - currentTime)}
             </span>
           </div>
+        </div>
+        <div className="player-vast-volume-wrapper">
+          <span onClick={handleVolume} className="vast-volume-icon">
+            <UseIconList
+              icon={vastRef?.current?.muted ? "volume-off" : "volume"}
+            />
+          </span>
         </div>
       </div>
     </div>

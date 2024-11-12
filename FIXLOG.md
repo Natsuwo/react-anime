@@ -23,11 +23,12 @@
 23. History [DONE]
 24. Ads for player [DONE]
 25. Mobile [DONE]
-26. OTP, Backend vercel
-27. Paypal
-28. Tag
-29. MAIL
-30. Toast My List All
+26. Player Vast Button [DONE]
+27. OTP, Backend vercel
+28. Paypal
+29. Tag
+30. MAIL
+31. Toast My List All [DONE]
 
 Update
 

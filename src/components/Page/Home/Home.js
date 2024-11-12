@@ -13,7 +13,7 @@ import VideoList from "../../Global/VideoList/VideoList";
 import { UseResponsiveContext } from "../../../context/ResponsiveContext";
 import { GetAllSort, GetDocumentsByQuery } from "../../../features/useFetch";
 import { UseMyListContext } from "../../../context/MyListContext";
-import { UseCategoryContext } from "../../../context/CategoryContext";
+import BannerMobile from "../../Mobile/Global/Banner/Banner";
 
 const AppBaner = () => {
   const { size } = UseResponsiveContext();
@@ -45,7 +45,7 @@ const AppBaner = () => {
   }, []);
 
   return size.width < 992 ? (
-    ""
+    <BannerMobile data={scheduleData} isLoading={scheLoading} />
   ) : (
     <div className="banner-wrapper">
       {isSwitcher === 0 ? (

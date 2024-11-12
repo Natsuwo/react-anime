@@ -13,8 +13,8 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  justify-content: flex-start;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 100%;
   background: linear-gradient(-180deg, transparent, rgba(0, 0, 0, 0.4));
@@ -22,8 +22,8 @@
 
 .cardlist-logo-wrapper .cardlist-logo {
   width: 50%;
-  align-items: flex-end;
+  align-items: center;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   margin: 0 0 8px 8px;
 }

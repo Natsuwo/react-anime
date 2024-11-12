@@ -807,3 +807,18 @@
   display: flex;
   flex-direction: column;
 }
+
+.player-vast-volume-wrapper {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  z-index: 16;
+}
+
+.player-vast-volume-wrapper .vast-volume-icon {
+  color: var(--white-color);
+  width: 32px;
+  height: 32px;
+  display: block;
+  cursor: pointer;
+}
