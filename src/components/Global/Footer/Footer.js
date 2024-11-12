@@ -1,6 +1,6 @@
 import React from "react";
 import "./Footer.css";
-import UseIconList from "../../Global/SvgList/UseIconList";
+import UseIconList from "../SvgList/UseIconList";
 import { Link } from "react-router-dom";
 
 const Footer = () => {

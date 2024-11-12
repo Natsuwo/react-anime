@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./ActionButton.css";
 import UseIconList from "../SvgList/UseIconList";
-import Tooltip from "../../Global/Tooltip/Tooltip";
+import Tooltip from "../Tooltip/Tooltip";
 import { UseMyListContext } from "../../../context/MyListContext";
 import { UseToastMyListContext } from "../../../context/ToastMyListContext";
 
