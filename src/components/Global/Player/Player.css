@@ -36,7 +36,7 @@
 
 .yurei-player-wrapper .grid-controls {
   display: grid;
-  color: #fff;
+  color: var(--white-color);
   grid-template-columns: repeat(3, 1fr);
   height: 70px;
   padding: 0 12px 2px;
@@ -231,7 +231,7 @@
   border: 1px solid var(--border-color);
   border-radius: 4px;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2);
-  color: #fff;
+  color: var(--text-color);
   display: inline-block;
   font-size: 14px;
   line-height: 1.5;
@@ -304,7 +304,7 @@
   top: 0;
   transition: opacity 0.1s ease 0s;
   width: 12px;
-  fill: #fff;
+  fill: var(--text-color);
 }
 
 .speed-select-items:hover {
@@ -327,7 +327,7 @@
 
 .speed-select-items .radio-checkbox.checked .icon-check svg {
   opacity: 1;
-  fill: #fff;
+  fill: var(--text-color);
 }
 
 .speed-select-items .radio-checkbox.checked + label {
@@ -394,7 +394,7 @@
   border: 1px solid var(--border-color);
   border-radius: 4px;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2);
-  color: #fff;
+  color: var(--text-color);
   display: inline-block;
   font-size: 14px;
   line-height: 1.5;
@@ -482,7 +482,7 @@
   justify-content: center;
   background-color: var(--primary-color);
   border-radius: 50%;
-  color: #fff;
+  color: var(--text-color);
   height: 100px;
   width: 100px;
 }
@@ -523,7 +523,7 @@
 
 .play-button-onload-inner .play-button-onload {
   cursor: pointer;
-  filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(5px 5px 10px var(--black-24));
 }
 
 .yurei-pip-mode {
@@ -635,7 +635,7 @@
   top: 24px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: var(--black-80);
   color: var(--text-color);
   z-index: 2;
   padding: 2px 8px;
@@ -656,7 +656,8 @@
   border-radius: 50%;
   width: 125px;
   height: 125px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: var(--white-color);
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -795,7 +796,7 @@
   position: absolute;
   bottom: 25px;
   left: 25px;
-  color: #fff;
+  color: var(--text-color);
   z-index: 16;
   background-color: var(--black-24);
   padding: 4px;

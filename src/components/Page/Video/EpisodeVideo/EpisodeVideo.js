@@ -243,6 +243,7 @@ const EpisodeVideo = () => {
                         <>
                           {!adsLoaded && (
                             <PlayerVast
+                              className="mb-2"
                               handleVastLoaded={handleVastLoaded}
                               handleVastRun={handleVastRun}
                             />

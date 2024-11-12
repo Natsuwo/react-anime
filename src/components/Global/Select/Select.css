@@ -30,7 +30,7 @@
 
 .select-element select {
   border: 1px solid #ddd;
-  background-color: #fff;
+  background-color: var(--text-color);
   color: var(--secondary-color-2);
   border-radius: 4px;
   cursor: pointer;

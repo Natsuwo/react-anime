@@ -3,7 +3,7 @@ import Slider from "react-slick";
 
 const MainCarouselMobile = ({ isLoading = false, children }) => {
   const settings = {
-    // dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,

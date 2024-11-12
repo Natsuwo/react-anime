@@ -79,7 +79,7 @@ const VideoList = ({
   const lastSlide = totalSlides - slidesToShow;
   const settings = {
     beforeChange: handleBeforeChange,
-    dots: true,
+    dots: false,
     // centerMode: true,
     infinite: false,
     speed: 500,

@@ -6,6 +6,7 @@ import { ReactComponent as dramaMovie } from "../../../assets/images/category/dr
 import { ReactComponent as isekaiAnime } from "../../../assets/images/category/isekai_fantasy.svg";
 import { ReactComponent as Music } from "../../../assets/images/category/music.svg";
 import { ReactComponent as News } from "../../../assets/images/category/news.svg";
+import { ReactComponent as Sponsored } from "../../../assets/images/category/sponsored.svg";
 
 const cateTagList = {
   // Others
@@ -16,6 +17,7 @@ const cateTagList = {
   5: dramaMovie,
   6: News,
   7: Music,
+  99: Sponsored,
 };
 
 export default cateTagList;

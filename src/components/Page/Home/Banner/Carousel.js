@@ -3,8 +3,11 @@ import { CardSlide } from "../../../Global/Card/Card";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import "./Carousel.css";
 import Skeleton from "../../../Global/Skeleton/Skeleton";
+import CardSponsored from "../../../../assets/images/png/card_sponsored.png";
 
 const Carousel = ({
+  isSponsored,
+  sponsored,
   data = [],
   isLoading = false,
   itemsPerPage = 5,
@@ -89,6 +92,12 @@ const Carousel = ({
     handleSelect(activeCard);
   }, [activeCard]);
 
+  useEffect(() => {
+    if (!isSponsored & (activeCard === 99)) {
+      handleCardClick(0);
+    }
+  }, [isSponsored]);
+
   const defaultArr = Array.from({ length: 12 });
 
   return (
@@ -128,6 +137,17 @@ const Carousel = ({
             children
           ) : (
             <>
+              {sponsored && (
+                <CardSlide
+                  props={{
+                    highlighted_thumbnail: CardSponsored,
+                    category_id: [99],
+                  }}
+                  index={99}
+                  isActive={activeCard === 99}
+                  onCardClick={handleCardClick}
+                ></CardSlide>
+              )}
               {data?.map((item, index) => (
                 <CardSlide
                   props={item}

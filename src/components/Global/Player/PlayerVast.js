@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import Seekbar from "./Seekbar";
 import { formatTimePlayer } from "../../../features/helper";
 
-const PlayerVast = ({ vastUrl, handleVastRun, handleVastLoaded }) => {
+const PlayerVast = ({
+  vastUrl,
+  handleVastRun,
+  handleVastLoaded,
+  repeat = false,
+  className,
+}) => {
   const seekbarRef = useRef(null);
   const vastRef = useRef(null);
   const [buffered, setBuffered] = useState(0);
@@ -36,8 +42,14 @@ const PlayerVast = ({ vastUrl, handleVastRun, handleVastLoaded }) => {
         // Khi quảng cáo kết thúc, tiếp tục video chính
         adVideo.onended = () => {
           if (adVideo.currentTime === adVideo.duration) {
-            handleVastRun(false);
-            handleVastLoaded(true);
+            if (repeat) {
+              adVideo.play().catch((err) => {
+                console.error(err);
+              });
+            } else {
+              handleVastRun(false);
+              handleVastLoaded(true);
+            }
           }
         };
       })
@@ -92,7 +104,7 @@ const PlayerVast = ({ vastUrl, handleVastRun, handleVastLoaded }) => {
     }
   }, [vastRef.current]);
   return (
-    <div className="video-vast-wrapper mb-2">
+    <div className={`video-vast-wrapper${className ? " " + className : ""}`}>
       <div className="yurei-player">
         <video
           onLoadedData={() => {

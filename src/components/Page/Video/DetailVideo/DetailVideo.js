@@ -221,7 +221,7 @@ const DetailVideo = () => {
                       {isShow ? "View less" : "View more"}
                     </div>
                   </div>
-                  {episodeListArr.length && (
+                  {episodeListArr.length > 0 && (
                     <Link
                       style={{ display: "flex" }}
                       to={`/video/episode/${linkTo}`}

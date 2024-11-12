@@ -13,6 +13,7 @@ import { UseMyListContext } from "../../../context/MyListContext";
 import Tooltip from "../Tooltip/Tooltip";
 import CategoryTag from "../CategoryTag/CategoryTag";
 import { UseCategoryContext } from "../../../context/CategoryContext";
+import { UseToastMyListContext } from "../../../context/ToastMyListContext";
 
 export const CardSlide = ({ index, isActive, onCardClick, props }) => {
   return (
@@ -82,14 +83,15 @@ export const CardVideo = ({
   dominant_color,
 }) => {
   const { addToList, handleAddToList } = UseMyListContext();
+  const { handleToast, handleToastCondition } = UseToastMyListContext();
   const { categoryList } = UseCategoryContext();
   const [categoryName, setCategoryName] = useState("");
   const [isLive, setLive] = useState(false);
-  const [isNew, setNew] = useState(false);
   const type = thumbnail_url ? "episodes" : "videos";
 
   const handleClick = async (e) => {
     e.stopPropagation();
+    handleToast(true);
     await handleAddToList(video_id, thumbnail_url ? "episodes" : "videos");
   };
 
@@ -110,6 +112,14 @@ export const CardVideo = ({
     () => addToList?.[type]?.[video_id],
     [addToList, type, video_id]
   );
+
+  useEffect(() => {
+    if (isAddedToList) {
+      handleToastCondition(true);
+    } else {
+      handleToastCondition(false);
+    }
+  }, [isAddedToList]);
 
   return (
     <div className="video-card-wrapper">

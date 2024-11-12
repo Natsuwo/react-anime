@@ -33,6 +33,10 @@ const EmailSetting = () => {
     },
   ];
 
+  const handleClick = (id) => {
+    handleCheckboxChange(id);
+  };
+
   const handleCheckboxChange = (id) => {
     if (id === "all") {
       const newValue = !listCheck.all;
@@ -69,7 +73,11 @@ const EmailSetting = () => {
 
         <ul className="subscription-wrapper mt-2">
           {arrCheckList.map((item) => (
-            <li key={item.id} className="subscription-item">
+            <li
+              key={item.id}
+              className="subscription-item"
+              onClick={() => handleClick(item.id)}
+            >
               <div className="subscription-item-inner">
                 <InputForm
                   type="checkbox"

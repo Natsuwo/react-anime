@@ -3,8 +3,6 @@ import "./ActionButton.css";
 import UseIconList from "../SvgList/UseIconList";
 import Tooltip from "../../Global/Tooltip/Tooltip";
 import { UseMyListContext } from "../../../context/MyListContext";
-import ModalAlert from "../../Modal/ModalAlert";
-import { Link } from "react-router-dom";
 import { UseToastMyListContext } from "../../../context/ToastMyListContext";
 
 const ActionButton = ({ items }) => {

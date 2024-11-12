@@ -88,7 +88,7 @@
 
 .modal-upload-btn .upload-icon {
   bottom: 0;
-  fill: #fff;
+  fill: var(--white-color);
   height: 20px;
   left: 0;
   margin: auto;
@@ -244,6 +244,7 @@
   width: 44px;
   height: 44px;
   flex-shrink: 0;
+  color: var(--white-color);
   background-color: var(--sub-title-color);
   border-radius: 50%;
   box-sizing: border-box;
@@ -380,6 +381,7 @@
 .modal-toast-button {
   align-items: center;
   border-radius: 4px;
+  background-color: var(--text-color);
   color: var(--secondary-color-2);
   display: flex;
   flex-grow: 0;

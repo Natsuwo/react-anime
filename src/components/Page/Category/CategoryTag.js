@@ -3,7 +3,6 @@ import UseIconList from "../../Global/SvgList/UseIconList";
 import MainCarousel from "../../Global/Carousel/MainCarousel";
 import { Link } from "react-router-dom";
 import { GetDocumentsByQuery } from "../../../features/useFetch";
-import MainCarouselMobile from "../../Global/Carousel/MainCarouselMobile";
 import { isMobile } from "react-device-detect";
 import Slider from "react-slick";
 
@@ -32,7 +31,7 @@ const CategoryTag = ({ category, slug }) => {
   }, [category, slug]);
 
   const settings = {
-    // dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 3,

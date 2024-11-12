@@ -26,7 +26,7 @@
   fill: currentColor;
   opacity: 0.5;
   transition: opacity 0.2s linear;
-  filter: drop-shadow(0 0 24px rgba(0, 0, 0, 0.8));
+  filter: drop-shadow(0 0 24px var(--black-80));
   cursor: pointer;
   color: var(--text-color);
   position: absolute;

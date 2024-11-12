@@ -5,12 +5,13 @@ import EmailPasswordSignIn from "../../../Modal/children/EmailPasswordSignIn";
 import Modal from "../../../Modal/Modal";
 import ResetPassword from "../../../Modal/children/ResetPassword";
 import { UseUserMetaContext } from "../../../../context/UserMeta";
+import { useDarkMode } from "../../../../context/DarkModeContext";
 
 const NavbarFloat = ({ handleFloat }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [modalState, setModalState] = useState("sign-in");
-  const { user, userId, userMetaData, userLevel, levelLoading } =
-    UseUserMetaContext();
+  const { user, userId, userLevel } = UseUserMetaContext();
+  const { darkMode, toggleDarkMode } = useDarkMode();
   const handleModalState = (state) => {
     if (!state) {
       if (modalState !== "reset-password") {
@@ -116,6 +117,16 @@ const NavbarFloat = ({ handleFloat }) => {
             </div>
             <span className="item-text">Badges</span>
           </Link>
+        </li>
+        <li onClick={() => toggleDarkMode(!darkMode)}>
+          <div className="mobile-nav-float-item-link">
+            <div className="item-icon">
+              <UseIconList width="24" height="24" icon="yurei" />
+            </div>
+            <span className="item-text">
+              {darkMode ? "Dark mode" : "Light mode"}
+            </span>
+          </div>
         </li>
         <li>
           <Link className="mobile-nav-float-item-link" to="/coupon">

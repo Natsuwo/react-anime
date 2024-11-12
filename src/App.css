@@ -41,6 +41,11 @@ body {
 
 * {
   --white-color: #fff;
+  --h5: 16px;
+  --h6: 13px;
+  --radius: 6px;
+  --radius-2: 8px;
+  --radius-3: 12px;
 }
 
 body.dark-theme {
@@ -63,19 +68,15 @@ body.dark-theme {
   --black-12: rgba(0, 0, 0, 0.12);
   --black-20: rgba(0, 0, 0, 0.2);
   --black-24: rgba(0, 0, 0, 0.24);
+  --black-40: rgba(0, 0, 0, 0.4);
   --black-50: rgba(0, 0, 0, 0.5);
   --black-70: rgba(0, 0, 0, 0.7);
   --black-80: rgba(0, 0, 0, 0.8);
-  --radius: 6px;
-  --radius-2: 8px;
-  --radius-3: 12px;
   --color-danger: #f0163a;
   --color-sub-danger: #f34461;
   --sub-title-color: #999;
   --border-color: #333;
   --bg-color: #000;
-  --h5: 16px;
-  --h6: 13px;
   background-color: var(--bg-color);
   color: var(--text-color);
 }
@@ -100,19 +101,15 @@ body {
   --black-12: rgba(255, 255, 255, 0.12);
   --black-20: rgba(255, 255, 255, 0.2);
   --black-24: rgba(255, 255, 255, 0.24);
+  --black-40: rgba(255, 255, 255, 0.4);
   --black-50: rgba(255, 255, 255, 0.5);
   --black-70: rgba(255, 255, 255, 0.7);
   --black-80: rgba(255, 255, 255, 0.8);
-  --radius: 6px;
-  --radius-2: 8px;
-  --radius-3: 12px;
   --color-danger: #d9534f;
   --color-sub-danger: #e67373;
   --sub-title-color: #666;
   --border-color: #ccc;
   --bg-color: #ffffff;
-  --h5: 16px;
-  --h6: 13px;
   background-color: var(--bg-color);
   color: var(--text-color);
 }
@@ -258,7 +255,7 @@ svg:not(:root) {
 }
 
 .btn-white {
-  background-color: #fff;
+  background-color: var(--text-color);
   color: var(--primary-color);
 }
 
@@ -413,7 +410,7 @@ button.btn-default:hover::after {
   fill: currentColor;
   opacity: 0.5;
   transition: opacity 0.2s linear;
-  filter: drop-shadow(0 0 24px rgba(0, 0, 0, 0.8));
+  filter: drop-shadow(0 0 24px var(--black-80));
   cursor: pointer;
   color: var(--text-color);
   position: absolute;
@@ -574,7 +571,7 @@ main.page-main {
 }
 
 .video-label .label-text {
-  color: #fff;
+  color: var(--text-color);
   border-radius: 4px;
   font-size: 10px;
   font-weight: 700;
@@ -596,7 +593,7 @@ main.page-main {
 
 .player-icon-circle {
   animation: player-circle 1.5s ease-in-out infinite;
-  stroke: #fff;
+  stroke: var(--text-color);
   stroke-dasharray: 89, 200;
   stroke-dashoffset: -35px;
   stroke-linecap: round;

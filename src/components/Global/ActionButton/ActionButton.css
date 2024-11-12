@@ -51,7 +51,7 @@
 
 .detail-button.facebook {
   background-color: #1877f2;
-  color: #fff;
+  color: var(--white-color);
 }
 
 .detail-action-list li .detail-button svg {

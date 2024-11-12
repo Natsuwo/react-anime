@@ -35,4 +35,4 @@ Update
 2. Mobile UI [DONE]
 3. Loading on top [DONE]
 4. API (Backend)
-5. Light Theme
+5. Light Theme [DONE]

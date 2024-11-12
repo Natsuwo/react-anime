@@ -7,12 +7,20 @@ export const useDarkMode = () => useContext(DarkModeContext);
 export const DarkModeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(() => {
     const savedMode = localStorage.getItem("darkMode");
+    if (!savedMode) return null;
     return savedMode === "true" || false;
   });
 
   useEffect(() => {
-    document.body.classList.toggle("dark-theme", darkMode);
-    localStorage.setItem("darkMode", darkMode);
+    if (darkMode === null) {
+      const isDarkMode = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      document.body.classList.toggle("dark-theme", !isDarkMode);
+    } else {
+      document.body.classList.toggle("dark-theme", !darkMode);
+      localStorage.setItem("darkMode", darkMode);
+    }
   }, [darkMode]);
 
   const toggleDarkMode = () => {
