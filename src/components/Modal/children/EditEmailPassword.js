@@ -5,8 +5,9 @@ import Alert from "../component/Alert";
 import HeadlineBack from "../component/HeadlineBack";
 import InputForm from "../../Global/FormInput/FormInput";
 import {
+  CreateDocument,
   FetchReAuthenticateUser,
-  FetchResetPassword,
+  getDoubleFind,
 } from "../../../features/useFetch";
 import VerifyEmailModal from "./VerifyEmailModal";
 import { UseUserMetaContext } from "../../../context/UserMeta";
@@ -15,6 +16,8 @@ import ModalSignUp from "./ModalSignUp";
 import ChangeEmail from "./ChangeEmail";
 import EmailPasswordSignIn from "./EmailPasswordSignIn";
 import ResetPassword from "./ResetPassword";
+import { signInWithCustomToken } from "firebase/auth";
+import { auth } from "../../../firebase";
 
 const ModalSwitchAccount = ({ setVisible, openModal }) => {
   return (
@@ -162,6 +165,61 @@ const ConfirmPassword = ({ setVisible, openModal, nextModal }) => {
 const ID_OTPSignIn = ({ setVisible, openModal }) => {
   const title =
     "If you switch to a different account, you will no longer be able to use the viewing plan or purchased content of your current account.";
+  const [values, setValues] = useState({ userId: "", otp_code: "" });
+  const [modalError, setModalError] = useState("");
+  const [isSent, setSent] = useState(false);
+
+  const onInputChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const handleSumbit = async (e) => {
+    e.preventDefault();
+    setSent(true);
+    const otp = await getDoubleFind(
+      "OTPRequests",
+      ["userId", values.userId, false],
+      ["otp_code", values.otp_code, false],
+      1
+    );
+    console.log(otp);
+
+    if (otp.success) {
+      const otpData = otp.doc[0];
+      console.log(otpData.is_used);
+      if (otpData?.expires_at.toMillis() > Date.now() && !otpData.is_used) {
+        const response = await fetch("/api/firebase-signin-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user_id: otpData.uid }),
+        }).catch((error) => {
+          console.error("Failed to get auth token ", error);
+        });
+        const data = await response.json();
+        if (!data.success) {
+          console.error("Failed to get auth token ", data.error);
+          setModalError("Failed to get auth token");
+          setSent(false);
+          return;
+        } else {
+          const customToken = data.token;
+          await signInWithCustomToken(auth, customToken);
+          otpData.is_used = true;
+          await CreateDocument("OTPRequests", otpData.uid, otpData);
+          setSent(false);
+          setVisible(false);
+        }
+      } else {
+        setModalError("This OTP is expired or already used!!");
+        setSent(false);
+      }
+    } else {
+      setSent(false);
+    }
+  };
+
   return (
     <>
       <HeadlineBack
@@ -174,32 +232,39 @@ const ID_OTPSignIn = ({ setVisible, openModal }) => {
           You can switch accounts by entering the email address and password you
           set up on another device.
         </div>
-        <form className="modal-form mt-2">
+        <form onSubmit={handleSumbit} className="modal-form mt-2">
           <InputForm
-            idFor="id"
+            idFor="userId"
             label="Your ID"
             type="text"
             placeholder="Enter User ID"
+            name="userId"
+            onChange={onInputChange}
           />
           <InputForm
-            idFor="otp"
+            name="otp_code"
+            idFor="otp_code"
             label="OTP"
             type="text"
             placeholder="Enter One-Time Password"
+            onChange={onInputChange}
           />
+          <div className="modal-error-alert">
+            <p className="modal-error-alert-text">{modalError}</p>
+          </div>
+          <div className="modal-actions">
+            <button
+              type="button"
+              onClick={() => setVisible(false)}
+              className="btn"
+            >
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-active" disabled={isSent}>
+              Confirm
+            </button>
+          </div>
         </form>
-      </div>
-      <div className="modal-actions">
-        <button onClick={() => setVisible(false)} className="btn">
-          Cancel
-        </button>
-        <button
-          onClick={() => setVisible(false)}
-          className="btn btn-active"
-          disabled
-        >
-          Confirm
-        </button>
       </div>
     </>
   );

@@ -51,26 +51,19 @@ function App() {
   }, [location.pathname]);
 
   const [progress, setProgress] = useState(0);
-  const loadingBarRef = useRef(null);
 
   const startLoading = () => {
     setProgress(30); // Bắt đầu thanh loading
-    loadingBarRef.current?.continuousStart(); // Đưa thanh tải vào trạng thái liên tục
   };
 
   // Khi loading hoàn tất
   const finishLoading = () => {
     setProgress(100);
-    loadingBarRef.current?.complete(); // Hoàn tất thanh tải
   };
 
   return (
     <>
-      <LoadingBar
-        color="var(--link-active)"
-        ref={loadingBarRef}
-        progress={progress}
-      />
+      <LoadingBar color="var(--link-active)" progress={progress} />
       {size.width < 992 ? (
         <HeaderMenu />
       ) : !isSubscriptionPage ? (

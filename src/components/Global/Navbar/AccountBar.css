@@ -91,6 +91,14 @@
   margin: 0 auto;
 }
 
+.main-navbar.active .dark-theme-switch {
+  display: none;
+}
+
+.main-navbar.active .account-nav {
+  padding-bottom: 24px;
+}
+
 .dark-theme-switch {
   --sz: 10px; /* size */
   --on: #269fe5; /* color on */

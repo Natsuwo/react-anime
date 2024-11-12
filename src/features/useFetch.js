@@ -87,6 +87,10 @@ export const getDoubleFind = async (document, find1, find2, maxDoc = false) => {
       ...doc.data(),
     }));
 
+    if (!documents.length) {
+      return { success: false, error: "Empty Docs" };
+    }
+
     return { success: true, doc: documents };
   } catch (err) {
     return { success: false, error: err.message };

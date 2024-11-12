@@ -22,7 +22,7 @@ const useUniqueShortUserId = () => {
             userId: base64Id,
             history_list: [],
             subscription_level: 1,
-            my_list: { episodes: [], videos: [] },
+            my_list: { videos: [], episodes: [] },
           })
         );
         console.log("New unique user ID generated and saved:", base64Id);

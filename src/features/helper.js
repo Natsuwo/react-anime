@@ -289,3 +289,31 @@ export const formatTimePlayer = (seconds) => {
     .toString()
     .padStart(2, "0")}`;
 };
+
+export const deepEqual = (obj1, obj2) => {
+  if (!obj1 || !obj2) return false;
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  // So sánh số lượng key
+  if (keys1.length !== keys2.length) return false;
+
+  for (const key of keys1) {
+    if (Array.isArray(obj1[key]) && Array.isArray(obj2[key])) {
+      // So sánh mảng bất kể thứ tự
+      if (!compareUnorderedArrays(obj1[key], obj2[key])) return false;
+    } else if (obj1[key] !== obj2[key]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+export const compareUnorderedArrays = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) return false;
+
+  const sortedArr1 = [...arr1].sort();
+  const sortedArr2 = [...arr2].sort();
+
+  return JSON.stringify(sortedArr1) === JSON.stringify(sortedArr2);
+};

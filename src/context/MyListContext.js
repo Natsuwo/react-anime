@@ -1,6 +1,7 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { UseUserMetaContext } from "./UserMeta";
 import { FetchMyList } from "../features/useFetch";
+import { deepEqual } from "../features/helper";
 
 // create
 const MyListContext = createContext();
@@ -66,13 +67,13 @@ const MyListContextProvider = ({ children }) => {
   useEffect(() => {
     if (user || user === false) {
       const initialMyList = userMetaData?.my_list || {
-        episodes: [],
         videos: [],
+        episodes: [],
       };
       if (user?.logout) {
         setDataMyList({
-          episodes: [],
           videos: [],
+          episodes: [],
         });
         return;
       } else if (
@@ -83,7 +84,7 @@ const MyListContextProvider = ({ children }) => {
         setDataMyList(initialMyList);
       }
     }
-  }, [user, userMetaData]);
+  }, [user, userMetaData?.my_list]);
 
   useEffect(() => {
     const updateMyList = () => {
@@ -112,7 +113,7 @@ const MyListContextProvider = ({ children }) => {
         user !== null &&
         userMetaData &&
         Object.keys(userMetaData).length &&
-        JSON.stringify(userMetaData?.my_list) !== JSON.stringify(dataMyList) &&
+        !deepEqual(userMetaData?.my_list, dataMyList) &&
         !isLoading
       ) {
         handleUserMetaData({ my_list: dataMyList });

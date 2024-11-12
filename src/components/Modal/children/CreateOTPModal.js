@@ -12,6 +12,11 @@ const CreateOTPModal = ({ visible, setVisible }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user && !user?.uid) {
+      setError("You must require an account to use this feature!");
+      return;
+    }
+
     const isValid = validateOTP(otpCode);
     if (!isValid.valid) {
       setError(isValid.message);
@@ -38,7 +43,7 @@ const CreateOTPModal = ({ visible, setVisible }) => {
     const getOptCreated = async () => {
       if (user) {
         const otp = await FetchDocument("OTPRequests", user.uid);
-        if (otp?.expires_at.toMillis() > Date.now()) {
+        if (otp?.expires_at.toMillis() > Date.now() && !otp.is_used) {
           setCreate(true);
           setOtpCode(otp.otp_code);
         } else {
