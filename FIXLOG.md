@@ -29,7 +29,7 @@
 29. Tag
 30. MAIL
 31. Toast My List All [DONE]
-32. Ẩn sign up sign in mobile
+32. Ẩn sign up sign in mobile [FIXED]
 
 Update
 

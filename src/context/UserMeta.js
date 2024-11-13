@@ -1,4 +1,10 @@
-import { useContext, createContext, useState, useEffect, useRef } from "react";
+import {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import {
   FetchDocument,
   UpdateDocument,
@@ -16,33 +22,33 @@ const UserMetaContextProvider = ({ children }) => {
   const [loadingUser, setLoadingUser] = useState(true);
   const [prevMetaData, setPrevMetaData] = useState({});
   const [userMetaData, setUserMetaData] = useState({});
+  const [adsEnabled, setAdsEnabled] = useState(true);
   const [userId, setUserId] = useState("");
 
-  const handleUserMetaData = (data) => {
+  const handleUserMetaData = useCallback((data) => {
     setUserMetaData((prev) => ({ ...prev, ...data }));
-  };
+  }, []);
 
   const [userLevel, setUserLevel] = useState({});
-  const [levelLoading, setLevelLoading] = useState(false);
+  const [levelLoading, setLevelLoading] = useState(true);
 
   useEffect(() => {
+    if (!Object.keys(userMetaData).length || !levelLoading) return;
+
     const handleData = async () => {
-      if (Object.keys(userMetaData).length && !levelLoading) {
-        setLevelLoading(true);
-        const data = await FetchSingleDocumentByKey(
-          "Subscription_Level",
-          "level_id",
-          userMetaData?.subscription_level
-        );
-        if (data.success) {
-          setUserLevel(data);
-        }
-        setLevelLoading(false);
+      const data = await FetchSingleDocumentByKey(
+        "Subscription_Level",
+        "level_id",
+        userMetaData?.subscription_level
+      );
+      if (data.success) {
+        setUserLevel(data);
       }
+      setLevelLoading(false);
     };
 
     handleData();
-  }, [userMetaData?.subscription_level]);
+  }, [userMetaData, levelLoading]);
 
   useEffect(() => {
     if (user === false) {
@@ -69,12 +75,12 @@ const UserMetaContextProvider = ({ children }) => {
     fetchUserMetaData();
   }, [user]);
 
-  const handeUpdateUserMeta = async () => {
+  const handeUpdateUserMeta = useCallback(async () => {
     setLoading(true);
     await UpdateDocument(userMetaData, "UserMetaData", user.uid);
     setPrevMetaData(userMetaData);
     setLoading(false);
-  };
+  }, [userMetaData, user?.uid]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -93,7 +99,13 @@ const UserMetaContextProvider = ({ children }) => {
         localStorage.setItem("USER_METADATA", JSON.stringify(userMetaData));
       }
     }
-  }, [userMetaData, user?.logout]);
+  }, [userMetaData, user, prevMetaData, isLoading, handeUpdateUserMeta]);
+
+  useEffect(() => {
+    if (userMetaData?.subscription_level === 3) {
+      setAdsEnabled(false);
+    }
+  }, [userMetaData?.subscription_level]);
 
   return (
     <UserMetaContext.Provider
@@ -107,6 +119,7 @@ const UserMetaContextProvider = ({ children }) => {
         levelLoading,
         loadingUser,
         setUserMetaData,
+        adsEnabled,
       }}
     >
       {children}

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Promote.css";
 import Banner from "../../../../assets/images/png/banner-yurei.png";
 import PricingPlan from "../../../Global/Promote/PricingPlan";
 import PlanOption from "../../../Global/Promote/PlanOption";
 import ToggleButton from "../../../Global/Promote/ToggleButton";
 import PromoteThumb from "../../../../assets/images/png/promote-thumb.png";
-import { CreatePayment, GetAllSort } from "../../../../features/useFetch";
+import { CreatePayment } from "../../../../features/useFetch";
 import { UseUserMetaContext } from "../../../../context/UserMeta";
 import { useNavigate } from "react-router-dom";
 
@@ -21,8 +21,8 @@ const Promote = () => {
 
   const premiumList = [
     { option: "Full Access", check: true },
-    { option: "Unlimited contents", check: false },
-    { option: "No Ads", check: true },
+    { option: "Unlimited contents", check: true },
+    { option: "No Ads", check: false },
     { option: "Play from start livestream stuffs", check: false },
     { option: "Downloadble Videos", check: false },
   ];

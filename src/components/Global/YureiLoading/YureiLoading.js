@@ -1,9 +1,17 @@
 import React from "react";
 import "./YureiLoading.css";
-import { ReactComponent as YureiLogo } from "../../../assets/images/yurei/yurei.svg";
-import { ReactComponent as YureiLogoCompleted } from "../../../assets/images/yurei/yurei_oowarai.svg";
+import { ReactComponent as YureiPurple } from "../../../assets/images/yurei/yurei.svg";
+import { ReactComponent as YureiGreen } from "../../../assets/images/yurei/yurei_oowarai.svg";
+import { ReactComponent as YureiBlack } from "../../../assets/images/yurei/yurei_black.svg";
+import { ReactComponent as YureiCry } from "../../../assets/images/yurei/yurei_cry.svg";
 
-const YureiLoading = ({ style, width, height, type = "spin" }) => {
+const YureiLoading = ({
+  style,
+  width,
+  height,
+  type = "spin",
+  model = "purple",
+}) => {
   return (
     <div
       className={`yurei-logo-loading-wrapper ${type}`}
@@ -14,7 +22,34 @@ const YureiLoading = ({ style, width, height, type = "spin" }) => {
         ...style,
       }}
     >
-      <YureiLogo width={width} height={height} className="yurei-logo-loading" />
+      {model === "purple" && (
+        <YureiPurple
+          width={width}
+          height={height}
+          className="yurei-logo-loading"
+        />
+      )}
+      {model === "black" && (
+        <YureiBlack
+          width={width}
+          height={height}
+          className="yurei-logo-loading"
+        />
+      )}
+      {model === "green" && (
+        <YureiGreen
+          width={width}
+          height={height}
+          className="yurei-logo-loading"
+        />
+      )}
+      {model === "cry" && (
+        <YureiCry
+          width={width}
+          height={height}
+          className="yurei-logo-loading"
+        />
+      )}
     </div>
   );
 };

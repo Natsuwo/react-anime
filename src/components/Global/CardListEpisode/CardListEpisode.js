@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import { getTime, formatViews } from "../../../features/helper";
 import Skeleton from "../Skeleton/Skeleton";
 import { UseMyListContext } from "../../../context/MyListContext";
 import Tooltip from "../Tooltip/Tooltip";
+import { UseToastMyListContext } from "../../../context/ToastMyListContext";
 
 const CardListEpsiode = ({
   loading,
@@ -17,11 +18,13 @@ const CardListEpsiode = ({
   onClick = null,
 }) => {
   const { addToList, handleAddToList } = UseMyListContext();
+  const { handleToast, handleToastCondition } = UseToastMyListContext();
   const video_id = data?.id;
   const type = data?.highlighted_thumbnail ? "videos" : "episodes";
   const isPlaying = playingId === data?.id;
   const handleList = () => {
-    handleAddToList(video_id, type, "bug");
+    handleAddToList(video_id, type);
+    handleToast(true);
     if (typeof onClick === "function") {
       onClick();
     }
@@ -31,6 +34,10 @@ const CardListEpsiode = ({
     () => addToList?.[type]?.[video_id],
     [addToList, type, video_id]
   );
+
+  useEffect(() => {
+    handleToastCondition(isAddedToList);
+  }, [isAddedToList, handleToastCondition]);
 
   return (
     <>

@@ -17,50 +17,6 @@ const PlayerVast = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
 
-  const loadVastAd = () => {
-    handleVastRun(true);
-    const vastUrl = "https://basil79.github.io/vast-sample-tags/pg/vast.xml";
-    fetch(vastUrl)
-      .then((response) => response.text())
-      .then((vastXml) => {
-        // Parse XML và lấy URL của video quảng cáo
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(vastXml, "application/xml");
-        const mediaFileUrl =
-          xmlDoc.getElementsByTagName("MediaFile")[0].textContent;
-
-        // Tạo thẻ video quảng cáo
-        const adVideo = vastRef.current;
-        adVideo.src = mediaFileUrl;
-        adVideo.muted = true;
-        adVideo.controls = false; // Hiển thị controls nếu cần
-
-        // Gắn quảng cáo vào DOM
-        adVideo.play().catch((err) => {
-          console.error(err);
-        });
-
-        // Khi quảng cáo kết thúc, tiếp tục video chính
-        adVideo.onended = () => {
-          if (adVideo.currentTime === adVideo.duration) {
-            if (repeat) {
-              adVideo.play().catch((err) => {
-                console.error(err);
-              });
-            } else {
-              handleVastRun(false);
-              handleVastLoaded(true);
-            }
-          }
-        };
-      })
-      .catch((err) => {
-        handleVastRun(false);
-        handleVastLoaded(true);
-        console.error("Failed to load VAST:", err);
-      });
-  };
-
   const handleTimeUpdate = () => {
     const currentWatchTime = vastRef.current.currentTime;
     setCurrentTime(currentWatchTime);
@@ -104,10 +60,49 @@ const PlayerVast = ({
   }, []);
 
   useEffect(() => {
+    const loadVastAd = () => {
+      handleVastRun(true);
+      const vastUrl = "https://basil79.github.io/vast-sample-tags/pg/vast.xml";
+      fetch(vastUrl)
+        .then((response) => response.text())
+        .then((vastXml) => {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(vastXml, "application/xml");
+          const mediaFileUrl =
+            xmlDoc.getElementsByTagName("MediaFile")[0].textContent;
+          const adVideo = vastRef.current;
+          adVideo.src = mediaFileUrl;
+          adVideo.muted = true;
+          adVideo.controls = false;
+
+          adVideo.play().catch((err) => {
+            console.error(err);
+          });
+
+          adVideo.onended = () => {
+            if (adVideo.currentTime === adVideo.duration) {
+              if (repeat) {
+                adVideo.play().catch((err) => {
+                  console.error(err);
+                });
+              } else {
+                handleVastRun(false);
+                handleVastLoaded(true);
+              }
+            }
+          };
+        })
+        .catch((err) => {
+          handleVastRun(false);
+          handleVastLoaded(true);
+          console.error("Failed to load VAST:", err);
+        });
+    };
+
     if (vastRef.current) {
       loadVastAd();
     }
-  }, [vastRef.current]);
+  }, [handleVastRun, handleVastLoaded, repeat]);
   return (
     <div className={`video-vast-wrapper${className ? " " + className : ""}`}>
       <div className="yurei-player">

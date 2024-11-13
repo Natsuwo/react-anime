@@ -63,7 +63,11 @@ const AccountBar = () => {
         <span className="dark-theme-switch-text">Light</span>
         <div className="dark-theme-switch-input">
           <input
-            checked={!darkMode}
+            checked={
+              darkMode === null
+                ? !window.matchMedia("(prefers-color-scheme: dark)").matches
+                : !darkMode
+            }
             onChange={(e) => toggleDarkMode(e.target.checked)}
             id="dark-switch"
             className="dark-switch"

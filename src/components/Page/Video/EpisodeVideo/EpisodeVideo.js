@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./EpisodeVideo.css";
 import Breadcumb from "../../../Global/Breadcrumb/Breadcumb";
 import ActionButton from "../../../Global/ActionButton/ActionButton";
@@ -30,7 +30,8 @@ const EpisodeVideo = () => {
   const { episodeId } = useParams();
   const { wideMode } = UsePlayerWide();
   const { categoryList } = UseCategoryContext();
-  const { user, userMetaData, handleUserMetaData } = UseUserMetaContext();
+  const { user, userMetaData, handleUserMetaData, adsEnabled } =
+    UseUserMetaContext();
 
   const [mostViewData, setMostViewData] = useState([]);
   const [isLoadingMostView, setLoadingMostView] = useState(false);
@@ -40,43 +41,49 @@ const EpisodeVideo = () => {
 
   const [dataEpisode, setDataEpisode] = useState({});
   const [dataVideo, setDataVideo] = useState({});
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   const [episodeListArr, setEpisodeList] = useState([]);
-  const [episodeListLoading, setEpisodeListLoading] = useState(false);
+  const [episodeListLoading, setEpisodeListLoading] = useState(true);
 
   // time saved
   const [initialWatchTime, setInitialWatchTime] = useState(null);
 
   // Ads
-  const [adsRunning, setAdsRunning] = useState(false);
   const [adsLoaded, setAdsLoaded] = useState(false);
-
-  const handleVastRun = (option) => {
-    setAdsRunning(option);
-  };
+  const [isPremium, setPremium] = useState(false);
 
   const handleVastLoaded = (option) => {
     setAdsLoaded(option);
   };
 
-  const handleData = async () => {
-    setLoading(true);
-    const res = await GetDocument("Episode", episodeId);
-    if (res.success) {
-      setDataEpisode(res.docs);
-    } else {
-      console.error(res.error);
-    }
-
-    setLoading(false);
-  };
-
   useEffect(() => {
-    handleData();
+    const handleData = async () => {
+      setLoading(true);
+
+      const res = await GetDocument("Episode", episodeId);
+      if (res.success) {
+        setDataEpisode(res.docs);
+      } else {
+        console.error(res.error);
+      }
+
+      setLoading(false);
+    };
+
+    if (episodeId) {
+      handleData();
+      setAdsLoaded(false);
+    }
   }, [episodeId]);
 
-  const handleDataVideo = async () => {
+  useEffect(() => {
+    if (!adsEnabled) {
+      setAdsLoaded(true);
+    }
+  }, [adsEnabled]);
+
+  const handleDataVideo = useCallback(async () => {
     if (Object.keys(dataEpisode).length && dataEpisode.video_id) {
       const resVideo = await GetDocument("Videos", dataEpisode.video_id);
       if (resVideo.success) {
@@ -85,11 +92,11 @@ const EpisodeVideo = () => {
         console.error(resVideo.error);
       }
     }
-  };
+  }, [dataEpisode]);
 
   useEffect(() => {
     handleDataVideo();
-  }, [dataEpisode]);
+  }, [dataEpisode, handleDataVideo]);
 
   useEffect(() => {
     (async () => {
@@ -136,12 +143,11 @@ const EpisodeVideo = () => {
 
       setBreadCrumb(breadcrumbItems);
     }
-  }, [dataVideo]);
+  }, [dataVideo, categoryList, dataEpisode]);
 
   useEffect(() => {
     const handleData = async () => {
-      if (Object.keys(dataEpisode).length && !episodeListLoading) {
-        setEpisodeListLoading(true);
+      if (Object.keys(dataEpisode).length && episodeListLoading) {
         const data = await GetDocumentsByQuery(
           "Episode",
           "video_id",
@@ -155,13 +161,22 @@ const EpisodeVideo = () => {
     };
 
     handleData();
-  }, [dataEpisode]);
+  }, [dataEpisode, episodeListLoading]);
 
   useEffect(() => {
     if (dataEpisode && descRef.current) {
       setOriHeight(descRef.current.scrollHeight);
     }
   }, [dataEpisode]);
+
+  useEffect(() => {
+    console.log(dataEpisode?.level);
+    if (dataEpisode?.level >= 2) {
+      setPremium(dataEpisode?.level > userMetaData?.subscription_level);
+    } else {
+      setPremium(false);
+    }
+  }, [dataEpisode, userMetaData]);
 
   const preLoadData = Array.from({ length: 12 }, (_, i) => ({ id: i + 1 }));
 
@@ -179,21 +194,17 @@ const EpisodeVideo = () => {
     if (user === false) {
       setInitialWatchTime(0);
     }
-  }, [user?.uid, episodeId, dataEpisode?.video_id]);
+  }, [user, episodeId, dataEpisode]);
 
   useEffect(() => {
     if (userMetaData && userMetaData.history_list && dataEpisode?.video_id) {
       const videoId = dataEpisode?.video_id;
-      // Kiểm tra xem video_id đã có trong history chưa
       if (!userMetaData.history_list.includes(videoId)) {
-        // Nếu chưa có thì thêm vào history
         const updatedHistory = [...userMetaData.history_list, videoId];
-
-        // Cập nhật lại UserMetaData trong Firebase và Context
         handleUserMetaData({ history_list: updatedHistory });
       }
     }
-  }, [userMetaData?.history_list, dataEpisode?.video_id]);
+  }, [userMetaData, dataEpisode, handleUserMetaData]);
 
   return (
     <main className="page-main">
@@ -209,43 +220,39 @@ const EpisodeVideo = () => {
                   {isLoading && <Skeleton></Skeleton>}
                   {!isLoading && initialWatchTime !== null && (
                     <>
-                      {dataEpisode.level >= 2 ? (
-                        <>
-                          {(!user ||
-                            dataEpisode.level >
-                              userMetaData?.subscription_level) && (
-                            <div className="yurei-player-wrapper">
-                              <img
-                                style={{
-                                  position: "absolute",
-                                  top: "0",
-                                  left: "0",
-                                  zIndex: 1,
-                                }}
-                                src={dataEpisode.thumbnail_url}
-                                alt="thumbnail episode"
-                              />
-                              <div className="yurei-premium-overlay"></div>
-                              <div className="yurei-premium-content">
-                                <div className="yurei-premium-text">
-                                  Upgrade your account to access this video!
-                                </div>
-                                <Link to="/subscription/promote">
-                                  <button className="btn btn-active">
-                                    Upgrade to Premium
-                                  </button>
-                                </Link>
-                              </div>
+                      {isPremium && (
+                        <div className="yurei-player-wrapper">
+                          <img
+                            style={{
+                              position: "absolute",
+                              top: "0",
+                              left: "0",
+                              zIndex: 1,
+                            }}
+                            src={dataEpisode.thumbnail_url}
+                            alt="thumbnail episode"
+                          />
+                          <div className="yurei-premium-overlay"></div>
+                          <div className="yurei-premium-content">
+                            <div className="yurei-premium-text">
+                              Upgrade your account to access this video!
                             </div>
-                          )}
-                        </>
-                      ) : (
+                            <Link to="/subscription/promote">
+                              <button className="btn btn-active">
+                                Upgrade to Premium
+                              </button>
+                            </Link>
+                          </div>
+                        </div>
+                      )}
+
+                      {!isPremium && (
                         <>
-                          {!adsLoaded && (
+                          {!adsLoaded && adsEnabled && (
                             <PlayerVast
                               className="mb-2"
                               handleVastLoaded={handleVastLoaded}
-                              handleVastRun={handleVastRun}
+                              handleVastRun={() => {}}
                             />
                           )}
                           {adsLoaded && (

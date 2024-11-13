@@ -14,7 +14,6 @@ import "./Mylist.css";
 import { UseMyListContext } from "../../../context/MyListContext";
 import { handleSortData } from "../../../features/helper";
 import YureiLoading from "../../Global/YureiLoading/YureiLoading";
-import { UseToastMyListContext } from "../../../context/ToastMyListContext";
 
 const MyList = () => {
   const sortRef = useRef(null);
@@ -28,14 +27,11 @@ const MyList = () => {
     "Release (Newest)",
     "Release (Latest)",
   ];
-  const { handleToast, handleToastCondition } = UseToastMyListContext();
 
   const handleDeleteItemSort = async (index) => {
     const newSortData = [...sortData];
     newSortData.splice(index, 1);
     setSortData(newSortData);
-    handleToastCondition(false);
-    handleToast(true);
   };
 
   const handleSortItem = useCallback(
