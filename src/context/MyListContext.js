@@ -22,11 +22,10 @@ const MyListContextProvider = ({ children }) => {
   // My List Fetch
   const [myList, setMyList] = useState([]);
 
-  const handleAddToList = async (video_id, type, debug) => {
+  const handleAddToList = async (video_id, type) => {
     if (!type) return;
     setDataMyList((prevList) => {
       const exists = prevList[type]?.includes(video_id);
-
       const updatedList = {
         ...prevList,
         [type]: exists
@@ -42,9 +41,15 @@ const MyListContextProvider = ({ children }) => {
         },
       }));
 
+      // Update userMetaData immediately if it's the last item being removed
+      if (exists && updatedList[type].length === 0) {
+        handleUserMetaData({ my_list: updatedList });
+      }
+
       return updatedList;
     });
   };
+
   const handleMyList = useCallback(async () => {
     if (Object.keys(userMetaData).length && dataMyList) {
       const handleFetchMyList = await FetchMyList(dataMyList);

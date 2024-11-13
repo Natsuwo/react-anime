@@ -31,7 +31,7 @@ const MyList = () => {
   const { handleToast, handleToastCondition } = UseToastMyListContext();
 
   const handleDeleteItemSort = async (index) => {
-    const newSortData = sortData;
+    const newSortData = [...sortData];
     newSortData.splice(index, 1);
     setSortData(newSortData);
     handleToastCondition(false);
