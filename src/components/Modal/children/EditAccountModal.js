@@ -40,7 +40,10 @@ const EditAccountModal = ({ visible, setVisible }) => {
   };
   const handleSumbit = (e) => {
     e.preventDefault();
-    handleUserMetaData(values);
+    handleUserMetaData({
+      user_name: values.user_name,
+      avatar: values.avatar,
+    });
     setVisible(false);
   };
 
