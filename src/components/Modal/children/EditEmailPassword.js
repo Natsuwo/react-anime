@@ -162,7 +162,7 @@ const ConfirmPassword = ({ setVisible, openModal, nextModal }) => {
   );
 };
 
-const ID_OTPSignIn = ({ setVisible, openModal }) => {
+const IdOtpSignIn = ({ setVisible, openModal }) => {
   const title =
     "If you switch to a different account, you will no longer be able to use the viewing plan or purchased content of your current account.";
   const [values, setValues] = useState({ userId: "", otp_code: "" });
@@ -188,10 +188,10 @@ const ID_OTPSignIn = ({ setVisible, openModal }) => {
       const otpData = otp.doc[0];
       const baseURL =
         process.env.NODE_ENV === "production"
-          ? "yureitv-server.vercel.app"
+          ? "https://yureitv-server.vercel.app/"
           : "";
       if (otpData?.expires_at.toMillis() > Date.now() && !otpData.is_used) {
-        const response = await fetch(baseURL, {
+        const response = await fetch(`${baseURL}/api/firebase-signin-token`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -274,6 +274,7 @@ const ID_OTPSignIn = ({ setVisible, openModal }) => {
 };
 
 // Root Component
+
 const EditEmailPassword = ({ modalType, setVisible, visible }) => {
   const [modalState, setModalState] = useState(
     modalType ? modalType : "modal-sign-up"
@@ -300,19 +301,21 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
   };
 
   useEffect(() => {
-    if (!visible && !modalType) {
-      setModalState("modal-sign-up");
-    }
+    setModalState((prevModalState) => {
+      if (!visible && !modalType) {
+        return "modal-sign-up";
+      }
 
-    if (visible) {
-      const initialModalState = modalType || modalState;
-      setModalState(initialModalState);
-      setModalRoute([initialModalState]);
-    } else {
-      setModalRoute([]);
-      setModalState(modalType || "modal-sign-up");
-    }
-  }, [visible]);
+      if (visible) {
+        const initialModalState = modalType || prevModalState;
+        setModalRoute([initialModalState]); // Cập nhật modalRoute khi modalState thay đổi
+        return initialModalState;
+      } else {
+        setModalRoute([]); // Reset modalRoute khi không visible
+        return modalType || "modal-sign-up";
+      }
+    });
+  }, [visible, modalType]);
 
   return (
     <>
@@ -340,7 +343,7 @@ const EditEmailPassword = ({ modalType, setVisible, visible }) => {
       )}
 
       {modalState === "id-otp-signin" && (
-        <ID_OTPSignIn
+        <IdOtpSignIn
           setVisible={setVisible}
           openModal={openModal}
           nextModal={nextModal}

@@ -24,7 +24,7 @@
 24. Ads for player [DONE]
 25. Mobile [DONE]
 26. Player Vast Button [DONE]
-27. OTP, Backend vercel
+27. OTP, Backend vercel [DONE]
 28. Paypal
 29. Tag
 30. MAIL
