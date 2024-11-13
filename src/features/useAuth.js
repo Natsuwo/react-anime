@@ -13,9 +13,9 @@ const useAuth = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        localStorage.setItem("USER_METADATA", JSON.stringify({}));
         setUser(user);
         initialUserLoaded.current = true; // Đã tải xong lần đầu tiên
-        localStorage.setItem("USER_METADATA", JSON.stringify({}));
       } else {
         if (initialUserLoaded.current) {
           setUser({ logout: true });
