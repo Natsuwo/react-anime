@@ -186,9 +186,12 @@ const ID_OTPSignIn = ({ setVisible, openModal }) => {
 
     if (otp.success) {
       const otpData = otp.doc[0];
-      console.log(otpData.is_used);
+      const baseURL =
+        process.env.NODE_ENV === "production"
+          ? "yureitv-server.vercel.app"
+          : "";
       if (otpData?.expires_at.toMillis() > Date.now() && !otpData.is_used) {
-        const response = await fetch("/api/firebase-signin-token", {
+        const response = await fetch(baseURL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
