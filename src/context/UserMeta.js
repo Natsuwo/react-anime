@@ -31,6 +31,7 @@ const UserMetaContextProvider = ({ children }) => {
 
   const [userLevel, setUserLevel] = useState({});
   const [levelLoading, setLevelLoading] = useState(true);
+  const [waitFetch, setWaitFetch] = useState(true);
 
   useEffect(() => {
     if (!Object.keys(userMetaData).length || !levelLoading) return;
@@ -39,7 +40,7 @@ const UserMetaContextProvider = ({ children }) => {
       const data = await FetchSingleDocumentByKey(
         "Subscription_Level",
         "level_id",
-        userMetaData?.subscription_level
+        userMetaData?.subscription_level || 1
       );
       if (data.success) {
         setUserLevel(data);
@@ -52,15 +53,17 @@ const UserMetaContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (user === false) {
+      console.log("set");
       setLoadingUser(false);
     }
     const fetchUserMetaData = async () => {
       if (user && !user?.logout) {
         const metaDataFromDB = await FetchDocument("UserMetaData", user.uid);
+        setWaitFetch(false);
         setUserMetaData(metaDataFromDB);
         setPrevMetaData(metaDataFromDB);
         setUserId(metaDataFromDB.userId);
-        setLoadingUser(false);
+        setLevelLoading(true);
       } else {
         const localMetaData = localStorage.getItem("USER_METADATA")
           ? JSON.parse(localStorage.getItem("USER_METADATA"))
@@ -70,8 +73,11 @@ const UserMetaContextProvider = ({ children }) => {
         setUserId(localMetaData.userId);
       }
       setLoading(false);
+      setLoadingUser(false);
     };
-
+    setWaitFetch(true);
+    setLoading(true);
+    setLoadingUser(true);
     fetchUserMetaData();
   }, [user]);
 
@@ -83,7 +89,7 @@ const UserMetaContextProvider = ({ children }) => {
   }, [userMetaData, user?.uid]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && !waitFetch) {
       if (
         user &&
         JSON.stringify(prevMetaData) !== JSON.stringify(userMetaData)
@@ -99,7 +105,14 @@ const UserMetaContextProvider = ({ children }) => {
         localStorage.setItem("USER_METADATA", JSON.stringify(userMetaData));
       }
     }
-  }, [userMetaData, user, prevMetaData, isLoading, handeUpdateUserMeta]);
+  }, [
+    userMetaData,
+    user,
+    prevMetaData,
+    isLoading,
+    handeUpdateUserMeta,
+    waitFetch,
+  ]);
 
   useEffect(() => {
     if (userMetaData?.subscription_level === 3) {
