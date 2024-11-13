@@ -1,8 +1,6 @@
 const admin = require("firebase-admin");
 require("dotenv").config();
 
-console.log(process.env.SERVICE_ACCOUNT_TYPE);
-
 admin.initializeApp({
   credential: admin.credential.cert({
     type: process.env.SERVICE_ACCOUNT_TYPE,
