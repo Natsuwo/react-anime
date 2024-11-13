@@ -12,7 +12,10 @@
 /build
 
 # misc
-/api
+/api/.env
+/api/node_modules
+/api/firebase_config.json
+
 .DS_Store
 .env.local
 .env.development.local
@@ -23,3 +26,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .vercel
+.env
