@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import "./AccountBar.css";
@@ -63,7 +63,7 @@ const AccountBar = () => {
         <span className="dark-theme-switch-text">Light</span>
         <div className="dark-theme-switch-input">
           <input
-            checked={darkMode}
+            checked={!darkMode}
             onChange={(e) => toggleDarkMode(e.target.checked)}
             id="dark-switch"
             className="dark-switch"

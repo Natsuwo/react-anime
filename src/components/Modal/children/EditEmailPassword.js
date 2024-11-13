@@ -182,7 +182,6 @@ const IdOtpSignIn = ({ setVisible, openModal }) => {
       ["otp_code", values.otp_code, false],
       1
     );
-    console.log(otp);
 
     if (otp.success) {
       const otpData = otp.doc[0];
@@ -230,44 +229,50 @@ const IdOtpSignIn = ({ setVisible, openModal }) => {
         openModal={() => openModal("", true)}
       />
       <div className="modal-content-wrapper">
-        <Alert title={title} />
-        <div className="modal-description">
-          You can switch accounts by entering the email address and password you
-          set up on another device.
+        <div className="modal-scroll-area">
+          <Alert title={title} />
+          <div className="modal-description">
+            You can switch accounts by entering the email address and password
+            you set up on another device.
+          </div>
+          <form onSubmit={handleSumbit} className="modal-form mt-2">
+            <InputForm
+              idFor="userId"
+              label="Your ID"
+              type="text"
+              placeholder="Enter User ID"
+              name="userId"
+              onChange={onInputChange}
+            />
+            <InputForm
+              name="otp_code"
+              idFor="otp_code"
+              label="OTP"
+              type="text"
+              placeholder="Enter One-Time Password"
+              onChange={onInputChange}
+            />
+            <div className="modal-error-alert">
+              <p className="modal-error-alert-text">{modalError}</p>
+            </div>
+            <div className="modal-actions">
+              <button
+                type="button"
+                onClick={() => setVisible(false)}
+                className="btn"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-active"
+                disabled={isSent}
+              >
+                Confirm
+              </button>
+            </div>
+          </form>
         </div>
-        <form onSubmit={handleSumbit} className="modal-form mt-2">
-          <InputForm
-            idFor="userId"
-            label="Your ID"
-            type="text"
-            placeholder="Enter User ID"
-            name="userId"
-            onChange={onInputChange}
-          />
-          <InputForm
-            name="otp_code"
-            idFor="otp_code"
-            label="OTP"
-            type="text"
-            placeholder="Enter One-Time Password"
-            onChange={onInputChange}
-          />
-          <div className="modal-error-alert">
-            <p className="modal-error-alert-text">{modalError}</p>
-          </div>
-          <div className="modal-actions">
-            <button
-              type="button"
-              onClick={() => setVisible(false)}
-              className="btn"
-            >
-              Cancel
-            </button>
-            <button type="submit" className="btn btn-active" disabled={isSent}>
-              Confirm
-            </button>
-          </div>
-        </form>
       </div>
     </>
   );

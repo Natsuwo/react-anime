@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Breadcumb from "../../Global/Breadcrumb/Breadcumb";
 import CardListEpsiode from "../../Global/CardListEpisode/CardListEpisode";
 import UseIconList from "../../Global/SvgList/UseIconList";
@@ -14,6 +14,7 @@ import "./Mylist.css";
 import { UseMyListContext } from "../../../context/MyListContext";
 import { handleSortData } from "../../../features/helper";
 import YureiLoading from "../../Global/YureiLoading/YureiLoading";
+import { UseToastMyListContext } from "../../../context/ToastMyListContext";
 
 const MyList = () => {
   const sortRef = useRef(null);
@@ -27,29 +28,37 @@ const MyList = () => {
     "Release (Newest)",
     "Release (Latest)",
   ];
+  const { handleToast, handleToastCondition } = UseToastMyListContext();
 
-  const handleDeleteItemSort = (index) => {
+  const handleDeleteItemSort = async (index) => {
     const newSortData = sortData;
     newSortData.splice(index, 1);
     setSortData(newSortData);
+    handleToastCondition(false);
+    handleToast(true);
   };
 
-  const handleSortItem = (index) => {
-    switch (index) {
-      case 0:
-        setSortData(handleSortData(myList, "last_modified_date", "desc"));
-        break;
-      case 1:
-        setSortData(handleSortData(myList, "last_modified_date", "asc"));
-        break;
-      case 2:
-        setSortData(handleSortData(myList, "upload_date", "desc"));
-        break;
-      case 3:
-        setSortData(handleSortData(myList, "upload_date", "asc"));
-        break;
-    }
-  };
+  const handleSortItem = useCallback(
+    (index) => {
+      switch (index) {
+        case 0:
+          setSortData(handleSortData(myList, "last_modified_date", "desc"));
+          break;
+        case 1:
+          setSortData(handleSortData(myList, "last_modified_date", "asc"));
+          break;
+        case 2:
+          setSortData(handleSortData(myList, "upload_date", "desc"));
+          break;
+        case 3:
+          setSortData(handleSortData(myList, "upload_date", "asc"));
+          break;
+        default:
+          break;
+      }
+    },
+    [myList]
+  );
 
   useEffect(() => {
     const updateSort = () => {
@@ -74,7 +83,7 @@ const MyList = () => {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [showSort, isLoading]);
+  }, [showSort, isLoading, handleSortItem, sortAcitve]);
   return (
     <main className="page-main">
       <div className="page-container">

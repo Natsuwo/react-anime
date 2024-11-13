@@ -1,4 +1,10 @@
-import { useContext, createContext, useState, useEffect } from "react";
+import {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { UseUserMetaContext } from "./UserMeta";
 import { FetchMyList } from "../features/useFetch";
 import { deepEqual } from "../features/helper";
@@ -10,18 +16,13 @@ const MyListContext = createContext();
 const MyListContextProvider = ({ children }) => {
   const [addToList, setAddToList] = useState({});
   const [isLoading, setLoading] = useState(true);
-  const {
-    user,
-    userMetaData,
-    handleUserMetaData,
-    isLoading: userMetaLoading,
-  } = UseUserMetaContext();
+  const { user, userMetaData, handleUserMetaData } = UseUserMetaContext();
 
   const [dataMyList, setDataMyList] = useState({ videos: [], episodes: [] });
   // My List Fetch
-  const [myList, setMyList] = useState({ videos: [], episodes: [] });
+  const [myList, setMyList] = useState([]);
 
-  const handleAddToList = async (video_id, type) => {
+  const handleAddToList = async (video_id, type, debug) => {
     if (!type) return;
     setDataMyList((prevList) => {
       const exists = prevList[type]?.includes(video_id);
@@ -44,25 +45,17 @@ const MyListContextProvider = ({ children }) => {
       return updatedList;
     });
   };
-
-  const handleMyList = async () => {
+  const handleMyList = useCallback(async () => {
     if (Object.keys(userMetaData).length && dataMyList) {
       const handleFetchMyList = await FetchMyList(dataMyList);
       setLoading(false);
       if (handleFetchMyList.success) {
-        setMyList({
-          videos: handleFetchMyList.videos,
-          episodes: handleFetchMyList.episodes,
-        });
+        setMyList(handleFetchMyList.data);
       } else {
-        setMyList({ videos: [], episodes: [] });
+        setMyList([]);
       }
     }
-
-    if (user === false) {
-      setLoading(false);
-    }
-  };
+  }, [userMetaData, dataMyList]); // Liệt kê các dependencies
 
   useEffect(() => {
     if (user || user === false) {
@@ -84,7 +77,12 @@ const MyListContextProvider = ({ children }) => {
         setDataMyList(initialMyList);
       }
     }
-  }, [user, userMetaData?.my_list]);
+  }, [
+    user,
+    userMetaData?.my_list,
+    dataMyList?.episodes?.length,
+    dataMyList?.videos?.length,
+  ]);
 
   useEffect(() => {
     const updateMyList = () => {
@@ -101,11 +99,13 @@ const MyListContextProvider = ({ children }) => {
     if (dataMyList?.episodes.length || dataMyList?.videos.length) {
       updateMyList();
     }
+  }, [dataMyList]);
 
+  useEffect(() => {
     if (user || user === false) {
       handleMyList();
     }
-  }, [dataMyList, user]);
+  }, [handleMyList, user]);
 
   useEffect(() => {
     const updateUserMetaData = async () => {
@@ -120,7 +120,7 @@ const MyListContextProvider = ({ children }) => {
       }
     };
     updateUserMetaData();
-  }, [dataMyList, user, userMetaData]);
+  }, [dataMyList, user, userMetaData, handleUserMetaData, isLoading]);
 
   return (
     <MyListContext.Provider

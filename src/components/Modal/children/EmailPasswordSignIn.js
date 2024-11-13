@@ -65,57 +65,63 @@ const EmailPasswordSignIn = ({ setVisible, openModal }) => {
         openModal={() => openModal("", true)}
       />
       <div className="modal-content-wrapper">
-        <Alert title={title} />
-        <div className="modal-description">
-          You can switch accounts by entering the email address and password you
-          set up on another device.
-        </div>
-        <form
-          className="modal-form mt-2"
-          onSubmit={handleSumbit}
-          onKeyDown={handleKeyDown}
-        >
-          <InputForm
-            name={"email"}
-            onChange={onValidEmail}
-            idFor="email"
-            label="Email Address"
-            type="text"
-            placeholder="Enter your email"
-            autocomplete={"true"}
-            errorText={errorText["email"]}
-          />
-          <InputForm
-            name={"password"}
-            errorText={errorText["password"]}
-            onChange={onChangePassword}
-            type="password"
-            subtitle={false}
-          />
-
-          <div className="modal-error-alert">
-            <p className="modal-error-alert-text">{modalError}</p>
+        <div className="modal-scroll-area">
+          <Alert title={title} />
+          <div className="modal-description">
+            You can switch accounts by entering the email address and password
+            you set up on another device.
           </div>
-          <Link
-            onClick={() => openModal("reset-password")}
-            className="__link-active"
+          <form
+            className="modal-form mt-2"
+            onSubmit={handleSumbit}
+            onKeyDown={handleKeyDown}
           >
-            Forgot Password
-          </Link>
+            <InputForm
+              name={"email"}
+              onChange={onValidEmail}
+              idFor="email"
+              label="Email Address"
+              type="text"
+              placeholder="Enter your email"
+              autocomplete={"true"}
+              errorText={errorText["email"]}
+            />
+            <InputForm
+              name={"password"}
+              errorText={errorText["password"]}
+              onChange={onChangePassword}
+              type="password"
+              subtitle={false}
+            />
 
-          <div className="modal-actions">
-            <button
-              type="button"
-              onClick={() => setVisible(false)}
-              className="btn"
+            <div className="modal-error-alert">
+              <p className="modal-error-alert-text">{modalError}</p>
+            </div>
+            <Link
+              onClick={() => openModal("reset-password")}
+              className="__link-active"
             >
-              Cancel
-            </button>
-            <button disabled={isSent} type="submit" className="btn btn-active">
-              Confirm
-            </button>
-          </div>
-        </form>
+              Forgot Password
+            </Link>
+
+            <div className="modal-actions">
+              <button
+                type="button"
+                onClick={() => setVisible(false)}
+                className="btn"
+              >
+                Cancel
+              </button>
+              <button
+                disabled={isSent}
+                type="submit"
+                className="btn btn-active"
+              >
+                Confirm
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </>
   );

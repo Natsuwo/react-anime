@@ -147,9 +147,9 @@ export const formatViews = (views) => {
 };
 
 export const handleSortData = (myList, key, sortBy) => {
-  const combinedList = [...myList.episodes, ...myList.videos];
+  // const combinedList = [...myList.episodes, ...myList.videos];
 
-  const sortedData = combinedList.sort((a, b) => {
+  const sortedData = myList.sort((a, b) => {
     if (a[key].seconds !== b[key].seconds) {
       return sortBy === "desc"
         ? b[key].seconds - a[key].seconds

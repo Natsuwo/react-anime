@@ -33,12 +33,16 @@ const NavbarFloat = ({ handleFloat }) => {
         <UseIconList icon="close" width="24" height="24"></UseIconList>
       </button>
       <ul className="mobile-nav-float-top">
-        <li>
-          <Link to="/subscription/signup">Sign up</Link>
-        </li>
-        <li>
-          <Link onClick={() => setIsVisible(true)}>Sign in</Link>
-        </li>
+        {!user && (
+          <>
+            <li>
+              <Link to="/subscription/signup">Sign up</Link>
+            </li>
+            <li>
+              <Link onClick={() => setIsVisible(true)}>Sign in</Link>
+            </li>
+          </>
+        )}
       </ul>
       <ul className="mobile-nav-bar-float">
         <li>

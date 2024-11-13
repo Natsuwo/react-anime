@@ -16,9 +16,9 @@ export const DarkModeProvider = ({ children }) => {
       const isDarkMode = window.matchMedia(
         "(prefers-color-scheme: dark)"
       ).matches;
-      document.body.classList.toggle("dark-theme", !isDarkMode);
+      document.body.classList.toggle("dark-theme", isDarkMode);
     } else {
-      document.body.classList.toggle("dark-theme", !darkMode);
+      document.body.classList.toggle("dark-theme", darkMode);
       localStorage.setItem("darkMode", darkMode);
     }
   }, [darkMode]);

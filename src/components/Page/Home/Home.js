@@ -111,7 +111,7 @@ const Home = () => {
     handleActionData();
   }, []);
 
-  const { myList, dataMyList, isLoading: myListLoading } = UseMyListContext();
+  const { myList, isLoading: myListLoading } = UseMyListContext();
 
   return (
     <>
@@ -142,7 +142,7 @@ const Home = () => {
             height={175}
           ></VideoList>
         ) : (
-          dataMyList?.length > 0 && (
+          myList?.length > 0 && (
             <VideoList
               categoryTitle={"My List"}
               ChildComponent={CardVideo}
@@ -152,7 +152,6 @@ const Home = () => {
             ></VideoList>
           )
         )}
-
         {/* Action */}
         {!isLoadingAction.current ? (
           <VideoList

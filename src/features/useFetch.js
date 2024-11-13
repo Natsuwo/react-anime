@@ -444,8 +444,7 @@ export const FetchMyList = async (myList) => {
   }
 
   try {
-    const videos = [];
-    const episodes = [];
+    const data = [];
 
     if (myList?.videos?.length) {
       const videosRef = collection(db, "Videos");
@@ -456,7 +455,7 @@ export const FetchMyList = async (myList) => {
       const videosSnapshot = await getDocs(videosQuery);
 
       videosSnapshot.forEach((doc) => {
-        videos.push({ id: doc.id, ...doc.data() });
+        data.push({ id: doc.id, type_of_list: "videos", ...doc.data() });
       });
     }
 
@@ -467,13 +466,12 @@ export const FetchMyList = async (myList) => {
         where("__name__", "in", myList?.episodes)
       );
       const EpisodeSnapshot = await getDocs(EpisodeQuery);
-
       EpisodeSnapshot.forEach((doc) => {
-        episodes.push({ id: doc.id, ...doc.data() });
+        data.push({ id: doc.id, type_of_list: "episodes", ...doc.data() });
       });
     }
 
-    return { success: true, videos, episodes };
+    return { success: true, data };
   } catch (error) {
     return { success: false, error: error.message, errorCode: error.code };
   }

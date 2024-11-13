@@ -18,10 +18,10 @@ const CardListEpsiode = ({
 }) => {
   const { addToList, handleAddToList } = UseMyListContext();
   const video_id = data?.id;
-  const type = video_id ? "episodes" : "videos";
+  const type = data?.highlighted_thumbnail ? "videos" : "episodes";
   const isPlaying = playingId === data?.id;
   const handleList = () => {
-    handleAddToList(video_id, video_id ? "episodes" : "videos");
+    handleAddToList(video_id, type, "bug");
     if (typeof onClick === "function") {
       onClick();
     }
