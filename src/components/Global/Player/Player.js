@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Player.css";
-import Video from "../../../assets/videos/trailer-1.mp4";
 import { UsePlayerWide } from "../../../context/PlayerWideContext";
 import VideoScreen from "./VideoScreen";
 import ButtonHandle from "./ButtonHandle";

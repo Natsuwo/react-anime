@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import "./ActionButton.css";
 import UseIconList from "../SvgList/UseIconList";
 import Tooltip from "../Tooltip/Tooltip";
@@ -13,21 +13,23 @@ const ActionButton = ({ items }) => {
     { title: "Facebook", icon: "facebook" },
   ];
   const { addToList, handleAddToList } = UseMyListContext();
+
+  const type = useMemo(() => {
+    return items.highlighted_thumbnail ? "videos" : "episodes";
+  }, [items.highlighted_thumbnail]);
+
+  const isAddedToList = useMemo(
+    () => addToList?.[type]?.[id],
+    [addToList, id, type]
+  );
+
   const handleClick = async (e) => {
     e.stopPropagation();
     handleToast(true);
-    await handleAddToList(id, "videos");
+    handleToastCondition(!isAddedToList);
+    await handleAddToList(id, type);
   };
 
-  const isAddedToList = useMemo(() => addToList?.videos?.[id], [addToList, id]);
-
-  useEffect(() => {
-    if (isAddedToList) {
-      handleToastCondition(true);
-    } else {
-      handleToastCondition(false);
-    }
-  }, [isAddedToList]);
   return (
     <>
       <ul className="detail-action-list">

@@ -65,7 +65,7 @@ const EditAccountModal = ({ visible, setVisible }) => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [userMetaData.avatar, userMetaData.user_name]);
   return (
     <>
       <form

@@ -108,24 +108,17 @@ const DetailVideo = () => {
 
   const breadcrumb = [{ title: data.title }];
 
-  const handleAddToListClick = async (e) => {
-    e.stopPropagation();
-    await handleAddToList(data?.id, "videos", "detail");
-    handleToast(true);
-  };
-
   const isAddedToList = useMemo(
     () => !!addToList?.videos?.[data?.id],
     [addToList, data?.id]
   );
 
-  useEffect(() => {
-    if (isAddedToList) {
-      handleToastCondition(true);
-    } else {
-      handleToastCondition(false);
-    }
-  }, [isAddedToList]);
+  const handleAddToListClick = async (e) => {
+    e.stopPropagation();
+    await handleAddToList(data?.id, "videos", "detail");
+    handleToastCondition(!isAddedToList);
+    handleToast(true);
+  };
 
   return (
     <main className="page-main">

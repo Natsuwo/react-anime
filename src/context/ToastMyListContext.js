@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, useEffect } from "react";
+import { useContext, createContext, useState } from "react";
 import ModalAlert from "../components/Modal/ModalAlert";
 import { Link } from "react-router-dom";
 
@@ -15,6 +15,7 @@ const ToastMyListContextProvider = ({ children }) => {
   const handleToastCondition = (option) => {
     setCondition(option);
   };
+
   return (
     <ToastMyListContext.Provider
       value={{ toastVisible, handleToast, handleToastCondition }}

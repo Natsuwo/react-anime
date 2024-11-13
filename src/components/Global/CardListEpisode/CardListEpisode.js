@@ -22,22 +22,20 @@ const CardListEpsiode = ({
   const video_id = data?.id;
   const type = data?.highlighted_thumbnail ? "videos" : "episodes";
   const isPlaying = playingId === data?.id;
-  const handleList = () => {
-    handleAddToList(video_id, type);
-    handleToast(true);
-    if (typeof onClick === "function") {
-      onClick();
-    }
-  };
 
   const isAddedToList = useMemo(
     () => addToList?.[type]?.[video_id],
     [addToList, type, video_id]
   );
 
-  useEffect(() => {
-    handleToastCondition(isAddedToList);
-  }, [isAddedToList, handleToastCondition]);
+  const handleList = () => {
+    handleAddToList(video_id, type);
+    handleToastCondition(!isAddedToList);
+    handleToast(true);
+    if (typeof onClick === "function") {
+      onClick();
+    }
+  };
 
   return (
     <>

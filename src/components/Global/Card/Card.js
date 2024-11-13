@@ -89,12 +89,6 @@ export const CardVideo = ({
   const [isLive, setLive] = useState(false);
   const type = thumbnail_url ? "episodes" : "videos";
 
-  const handleClick = async (e) => {
-    e.stopPropagation();
-    handleToast(true);
-    await handleAddToList(video_id, thumbnail_url ? "episodes" : "videos");
-  };
-
   const handleCategory = () => {
     const newCate = categoryList?.filter(
       (item) => item.category_id === props?.category_id[0]
@@ -113,13 +107,12 @@ export const CardVideo = ({
     [addToList, type, video_id]
   );
 
-  useEffect(() => {
-    if (isAddedToList) {
-      handleToastCondition(true);
-    } else {
-      handleToastCondition(false);
-    }
-  }, [isAddedToList]);
+  const handleClick = async (e) => {
+    e.stopPropagation();
+    await handleAddToList(video_id, thumbnail_url ? "episodes" : "videos");
+    handleToast(true);
+    handleToastCondition(!isAddedToList);
+  };
 
   return (
     <div className="video-card-wrapper">
