@@ -57,8 +57,6 @@ function App() {
       ) : (
         <Header />
       )}
-      {/* Create User Unique ID IF First Time Access */}
-      {/* <useUniqueShortUserId /> */}
 
       <div className={`main-container${size.width < 992 ? " __mobile" : ""}`}>
         {!isSubscriptionPage && size.width >= 992 && <Navbar />}

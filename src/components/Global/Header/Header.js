@@ -4,7 +4,7 @@ import { UseToggleContext } from "../../../context/ToggleContext";
 import UseIconList from "../SvgList/UseIconList";
 import { Link, useNavigate } from "react-router-dom";
 
-const Header = ({ hideMenu = false }) => {
+const Header = ({ hideMenu = false, hiddenSearch = false }) => {
   const { toggleNav } = UseToggleContext();
   const [isActive, setIsActive] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -53,20 +53,22 @@ const Header = ({ hideMenu = false }) => {
             YureiTV
           </Link>
         </div>
-        <form onSubmit={handleSubmit} className="search-bar">
-          <input
-            onChange={(e) => setSearchValue(e.target.value)}
-            value={searchValue}
-            name="q"
-            type="text"
-            placeholder="Search something..."
-          />
-          <button type="sumbit">
-            <div className="icon-search">
-              <UseIconList icon="search" />
-            </div>
-          </button>
-        </form>
+        {!hiddenSearch && (
+          <form onSubmit={handleSubmit} className="search-bar">
+            <input
+              onChange={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
+              name="q"
+              type="text"
+              placeholder="Search something..."
+            />
+            <button type="sumbit">
+              <div className="icon-search">
+                <UseIconList icon="search" />
+              </div>
+            </button>
+          </form>
+        )}
       </div>
     </header>
   );

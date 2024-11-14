@@ -6,12 +6,16 @@ import Header from "../../Global/Header/Header";
 const NotFound = () => {
   return (
     <>
-      <Header hideMenu={false} />
+      <Header hideMenu={false} hiddenSearch={true} />
       <div className="notfound-wrapper">
         <div className="notfound-content">
           <div className="upper">
             <div className="notfound-yurei">
-              <YureiLoading width={120} model="cry" type="stop" />
+              <YureiLoading
+                className="notfound-yurei-loading"
+                model="cry"
+                type="stop"
+              />
             </div>
             <div className="notfound-title">Sorry</div>
           </div>

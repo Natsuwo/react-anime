@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./Player.css";
 import { UsePlayerWide } from "../../../context/PlayerWideContext";
 import VideoScreen from "./VideoScreen";
@@ -50,20 +50,23 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
   // Control
   const [showControls, setShowControls] = useState(false);
 
-  const handlePlay = (option) => {
-    if (!readyToPlay) {
-      setReadyToPlay(true);
-    }
-    if (option === "play") {
-      videoRef.current.play();
-      setIsPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
+  const handlePlay = useCallback(
+    (option) => {
+      if (!readyToPlay) {
+        setReadyToPlay(true);
+      }
+      if (option === "play") {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    },
+    [readyToPlay]
+  );
 
-  const togglePlayPause = () => {
+  const togglePlayPause = useCallback(() => {
     const video = videoRef.current;
     if (!isHoldingMouse && !doubleTapRef.current && video) {
       const timer = setTimeout(() => {
@@ -72,17 +75,17 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
           setReadyToPlay(true);
         }
         if (isPlaying) {
-          video.pause(); // Nếu đang phát thì tạm dừng
+          video.pause();
           startControlTimer();
         } else {
           startControlTimer();
-          video.play(); // Nếu đang tạm dừng thì phát tiếp
+          video.play();
         }
         setShowPlayPauseIcon(true);
         setTimeout(() => {
           setShowPlayPauseIcon(false);
         }, 500);
-        setIsPlaying(!isPlaying); // Cập nhật trạng thái
+        setIsPlaying((prev) => !prev); // Cập nhật trạng thái dựa trên giá trị trước đó
       }, 200);
 
       if (playTimeout) {
@@ -91,7 +94,7 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
 
       setPlayTimeOut(timer);
     }
-  };
+  }, [isPlaying, isHoldingMouse, readyToPlay, playTimeout]);
 
   const handleDoubleClick = () => {
     clearTimeout(playTimeout);
@@ -150,7 +153,7 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
     }
   };
 
-  const handleSpeedChangeMouseUp = () => {
+  const handleSpeedChangeMouseUp = useCallback(() => {
     clearTimeout(holdTimeout);
     setHoldTimeout(null);
 
@@ -166,9 +169,15 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
         handlePlay("pause");
       }
     }
-  };
+  }, [
+    holdTimeout,
+    isHoldingMouse,
+    prevPlaybackRate,
+    wasPausedBefore,
+    handlePlay,
+  ]);
 
-  const handleFullScreen = () => {
+  const handleFullScreen = useCallback(() => {
     const playerContainer = document.querySelector(".yurei-player-wrapper");
     if (!isFullscreen) {
       if (playerContainer.requestFullscreen) {
@@ -198,13 +207,13 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
       }
       setIsFullscreen(false);
     }
-  };
+  }, [isFullscreen]);
 
   const handleVolumeChange = (e) => {
     const volumeBar = volumeRef.current.getBoundingClientRect();
     const newVolume = Math.max(
       0,
-      Math.min(1, (volumeBar.bottom - e.clientY) / volumeBar.height)
+      Math.min(1, (volumeBar.bottom - e.clientY) / volumeBar?.height)
     );
     if (videoRef.current.muted) {
       videoRef.current.muted = false;
@@ -249,12 +258,14 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
   };
 
   // Kéo seekbar
-  const handleMouseMove = (e) => {
-    if (isDragging) {
-      updateSeek(e.touches ? e.touches[0] : e);
-    }
-  };
-
+  const handleMouseMove = useCallback(
+    (e) => {
+      if (isDragging) {
+        updateSeek(e.touches ? e.touches[0] : e);
+      }
+    },
+    [isDragging] // Chỉ tái tạo khi `isDragging` thay đổi
+  );
   // Kết thúc kéo
   const handleMouseUp = () => {
     setIsDragging(false);
@@ -287,37 +298,6 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
 
   const handlePiP = (opt) => {
     setIsPip(opt);
-  };
-
-  // handle key
-
-  const handleKeyDown = (event) => {
-    const { key, shiftKey } = event;
-
-    switch (key) {
-      case " ": // Space để play/pause video
-        event.preventDefault(); // Ngăn chặn scroll khi nhấn Space
-        togglePlayPause();
-        break;
-      case "f": // F để vào full screen
-        if (!isPip) {
-          handleFullScreen();
-        }
-        break;
-      case "F": // Shift + F để vào wide mode
-        if (shiftKey && !isPip) {
-          handleWide(!wideMode);
-        }
-        break;
-      case "ArrowRight": // Mũi tên phải để tua tới
-        handleRewindForward("forward");
-        break;
-      case "ArrowLeft": // Mũi tên trái để tua lùi
-        handleRewindForward("rewind");
-        break;
-      default:
-        break;
-    }
   };
 
   // Control timeout hide
@@ -386,10 +366,41 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
       const rect = player?.getBoundingClientRect();
       // Kích hoạt PiP nếu vị trí cuộn gần cuối trang (dưới 100px)
 
-      if (scrollPosition - rect.height > -50) {
+      if (scrollPosition - rect?.height > -50) {
         handlePiP(true);
       } else {
         handlePiP(false);
+      }
+    };
+
+    // handle key
+
+    const handleKeyDown = (event) => {
+      const { key, shiftKey } = event;
+
+      switch (key) {
+        case " ": // Space để play/pause video
+          event.preventDefault(); // Ngăn chặn scroll khi nhấn Space
+          togglePlayPause();
+          break;
+        case "f": // F để vào full screen
+          if (!isPip) {
+            handleFullScreen();
+          }
+          break;
+        case "F": // Shift + F để vào wide mode
+          if (shiftKey && !isPip) {
+            handleWide(!wideMode);
+          }
+          break;
+        case "ArrowRight": // Mũi tên phải để tua tới
+          handleRewindForward("forward");
+          break;
+        case "ArrowLeft": // Mũi tên trái để tua lùi
+          handleRewindForward("rewind");
+          break;
+        default:
+          break;
       }
     };
 
@@ -476,6 +487,11 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
     holdTimeout,
     isPip,
     isDragging,
+    handleFullScreen,
+    handleMouseMove,
+    handleSpeedChangeMouseUp,
+    handleWide,
+    togglePlayPause,
   ]);
 
   const handleLoadedMetadata = () => {
@@ -495,7 +511,7 @@ const Player = ({ url, userId, videoId, episodeId, initialWatchTime }) => {
         setReadyToPlay(true);
       }
     }
-  }, [videoRef.current?.paused]);
+  }, [videoRef.current?.paused, readyToPlay]);
 
   return (
     <div

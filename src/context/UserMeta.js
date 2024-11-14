@@ -53,16 +53,15 @@ const UserMetaContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (user === false) {
-      console.log("set");
       setLoadingUser(false);
     }
     const fetchUserMetaData = async () => {
       if (user && !user?.logout) {
         const metaDataFromDB = await FetchDocument("UserMetaData", user.uid);
-        setWaitFetch(false);
         setUserMetaData(metaDataFromDB);
         setPrevMetaData(metaDataFromDB);
         setUserId(metaDataFromDB.userId);
+        setWaitFetch(false);
         setLevelLoading(true);
       } else {
         const localMetaData = localStorage.getItem("USER_METADATA")

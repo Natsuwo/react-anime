@@ -14,14 +14,17 @@ const Category = () => {
   const { slug } = useParams();
   const [category, setCategory] = useState({});
 
-  const handleCategory = async () => {
-    const category = await FetchSingleDocumentByKey("Categories", "slug", slug);
-    if (category.success) {
-      setCategory(category);
-    }
-  };
-
   useEffect(() => {
+    const handleCategory = async () => {
+      const category = await FetchSingleDocumentByKey(
+        "Categories",
+        "slug",
+        slug
+      );
+      if (category.success) {
+        setCategory(category);
+      }
+    };
     handleCategory();
   }, [slug]);
 
@@ -33,13 +36,13 @@ const Category = () => {
         <div className="main-content-wrapper">
           <Breadcumb items={breadcrumb} />
           <h1 className="main-title mb-2">{category.name}</h1>
-          <CategoryData category={category} slug={slug}></CategoryData>
-          <CategoryTag category={category} slug={slug}></CategoryTag>
-          <CategoryRank category={category} slug={slug}></CategoryRank>
-          <CategoryFree category={category} slug={slug}></CategoryFree>
-          <CategoryPremium category={category} slug={slug}></CategoryPremium>
+          <CategoryData category={category}></CategoryData>
+          <CategoryTag category={category}></CategoryTag>
+          <CategoryRank category={category}></CategoryRank>
+          <CategoryFree category={category}></CategoryFree>
+          <CategoryPremium category={category}></CategoryPremium>
           {category?.category_id && (
-            <CategoryAll category={category} slug={slug}></CategoryAll>
+            <CategoryAll slug={slug} category={category}></CategoryAll>
           )}
         </div>
       </div>

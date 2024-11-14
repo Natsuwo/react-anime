@@ -30,7 +30,7 @@ const DetailVideo = () => {
   const { user } = UseUserMetaContext();
 
   const [data, setData] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  // const [isLoading, setLoading] = useState(false);
 
   const [mostViewData, setMostViewData] = useState([]);
   const [isLoadingMostView, setLoadingMostView] = useState(false);
@@ -63,19 +63,18 @@ const DetailVideo = () => {
     })();
   }, []);
 
-  const handleData = async () => {
-    setLoading(true);
-    const res = await GetDocument("Videos", videoId);
-    if (res.success) {
-      setData(res.docs);
-    } else {
-      console.error(res.error);
-    }
-
-    setLoading(false);
-  };
-
   useEffect(() => {
+    const handleData = async () => {
+      // setLoading(true);
+      const res = await GetDocument("Videos", videoId);
+      if (res.success) {
+        setData(res.docs);
+      } else {
+        console.error(res.error);
+      }
+      // setLoading(false);
+    };
+
     handleData();
   }, [videoId]);
 

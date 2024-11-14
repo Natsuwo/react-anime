@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import { getTime, formatViews } from "../../../features/helper";

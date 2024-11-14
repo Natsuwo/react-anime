@@ -3,17 +3,12 @@ import { GetDocumentsByQuery } from "../../../features/useFetch";
 import VideoList from "../../Global/VideoList/VideoList";
 import { CardRank } from "../../Global/Card/Card";
 
-const CategoryRank = ({ category, slug }) => {
+const CategoryRank = ({ category }) => {
   const [categoryRank, setCategoryRank] = useState([]);
-  const [categoryRankLoading, setCategoryRankLoading] = useState(false);
+  const [categoryRankLoading, setCategoryRankLoading] = useState(true);
   useEffect(() => {
     const handleData = async () => {
-      if (
-        category?.id &&
-        !categoryRankLoading &&
-        Object.keys(category).length
-      ) {
-        setCategoryRankLoading(true);
+      if (category?.id && categoryRankLoading && Object.keys(category).length) {
         const data = await GetDocumentsByQuery(
           "Videos",
           "category_id",
@@ -31,7 +26,11 @@ const CategoryRank = ({ category, slug }) => {
       }
     };
     handleData();
-  }, [category, slug]);
+  }, [category, categoryRankLoading]);
+
+  useEffect(() => {
+    setCategoryRankLoading(true);
+  }, [category]);
 
   return (
     <section className="feature-section">

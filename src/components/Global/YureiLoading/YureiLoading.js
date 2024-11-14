@@ -6,6 +6,7 @@ import { ReactComponent as YureiBlack } from "../../../assets/images/yurei/yurei
 import { ReactComponent as YureiCry } from "../../../assets/images/yurei/yurei_cry.svg";
 
 const YureiLoading = ({
+  className,
   style,
   width,
   height,
@@ -26,28 +27,28 @@ const YureiLoading = ({
         <YureiPurple
           width={width}
           height={height}
-          className="yurei-logo-loading"
+          className={`yurei-logo-loading ${className}`}
         />
       )}
       {model === "black" && (
         <YureiBlack
           width={width}
           height={height}
-          className="yurei-logo-loading"
+          className={`yurei-logo-loading ${className}`}
         />
       )}
       {model === "green" && (
         <YureiGreen
           width={width}
           height={height}
-          className="yurei-logo-loading"
+          className={`yurei-logo-loading ${className}`}
         />
       )}
       {model === "cry" && (
         <YureiCry
           width={width}
           height={height}
-          className="yurei-logo-loading"
+          className={`yurei-logo-loading ${className}`}
         />
       )}
     </div>

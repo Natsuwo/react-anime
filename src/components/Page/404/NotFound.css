@@ -29,3 +29,26 @@
   align-self: end;
   line-height: 1;
 }
+
+.notfound-yurei-loading {
+  width: 120px;
+}
+
+@media (max-width: 991px) {
+  .notfound-title {
+    font-size: 32px;
+  }
+  .notfound-yurei-loading {
+    width: 80px;
+  }
+
+  .notfound-content .lower h1 {
+    font-size: 24px;
+  }
+
+  .notfound-content .lower {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+}

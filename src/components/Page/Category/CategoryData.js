@@ -4,14 +4,13 @@ import VideoList from "../../Global/VideoList/VideoList";
 import { CardSkeleton, CardVideo } from "../../Global/Card/Card";
 import Recommend from "../../Global/Recommend/Recommend";
 
-const CategoryData = ({ title, category, slug, isGrid = false }) => {
+const CategoryData = ({ title, category, isGrid = false }) => {
   const [categoryData, setCategoryData] = useState([]);
-  const [categoryDataLoading, setCategoryDataLoading] = useState(false);
+  const [categoryDataLoading, setCategoryDataLoading] = useState(true);
 
   useEffect(() => {
     const handleData = async () => {
-      if (!categoryDataLoading && Object.keys(category).length) {
-        setCategoryDataLoading(true);
+      if (categoryDataLoading && Object.keys(category).length) {
         const data = await GetDocumentsByQuery(
           "Videos",
           "category_id",
@@ -26,7 +25,11 @@ const CategoryData = ({ title, category, slug, isGrid = false }) => {
       }
     };
     handleData();
-  }, [category, slug]);
+  }, [category, categoryDataLoading]);
+
+  useEffect(() => {
+    setCategoryDataLoading(true);
+  }, [category]);
 
   return (
     <section className="feature-section">

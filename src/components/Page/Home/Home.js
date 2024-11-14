@@ -6,7 +6,7 @@ import { UseToggleContext } from "../../../context/ToggleContext";
 import {
   CardVideo,
   CardRank,
-  CardSquare,
+  // CardSquare,
   CardSkeleton,
 } from "../../Global/Card/Card";
 import VideoList from "../../Global/VideoList/VideoList";
@@ -185,12 +185,12 @@ const Home = () => {
         )}
         {/* Card Square */}
         {/* CardSquare */}
-        <VideoList
+        {/* <VideoList
           categoryTitle={"Sport"}
           ChildComponent={CardSquare}
           slidesToShow={8}
           isLoading={false}
-        ></VideoList>
+        ></VideoList> */}
       </div>
     </>
   );

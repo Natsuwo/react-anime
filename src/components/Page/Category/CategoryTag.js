@@ -6,14 +6,13 @@ import { GetDocumentsByQuery } from "../../../features/useFetch";
 import { isMobile } from "react-device-detect";
 import Slider from "react-slick";
 
-const CategoryTag = ({ category, slug }) => {
+const CategoryTag = ({ category }) => {
   const [arrtag, settag] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleData = async () => {
-      if (!isLoading && Object.keys(category).length) {
-        setLoading(true);
+      if (isLoading && Object.keys(category).length) {
         const data = await GetDocumentsByQuery(
           "TagMeta",
           "category_id",
@@ -28,7 +27,11 @@ const CategoryTag = ({ category, slug }) => {
       }
     };
     handleData();
-  }, [category, slug]);
+  }, [category, isLoading]);
+
+  useEffect(() => {
+    setLoading(true);
+  }, [category]);
 
   const settings = {
     dots: false,

@@ -3,12 +3,7 @@ import "./Card.css";
 import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import Skeleton from "../Skeleton/Skeleton";
-import {
-  formatDuration,
-  formatLevelText,
-  getDays,
-  getTime,
-} from "../../../features/helper";
+import { formatDuration, getDays, getTime } from "../../../features/helper";
 import { UseMyListContext } from "../../../context/MyListContext";
 import Tooltip from "../Tooltip/Tooltip";
 import CategoryTag from "../CategoryTag/CategoryTag";
@@ -86,21 +81,21 @@ export const CardVideo = ({
   const { handleToast, handleToastCondition } = UseToastMyListContext();
   const { categoryList } = UseCategoryContext();
   const [categoryName, setCategoryName] = useState("");
-  const [isLive, setLive] = useState(false);
+  // const [isLive, setLive] = useState(false);
   const type = thumbnail_url ? "episodes" : "videos";
 
-  const handleCategory = () => {
-    const newCate = categoryList?.filter(
-      (item) => item.category_id === props?.category_id[0]
-    );
-    if (newCate.length) {
-      setCategoryName(newCate[0].name);
-    }
-  };
-
   useEffect(() => {
+    const handleCategory = () => {
+      const newCate = categoryList?.filter(
+        (item) => item.category_id === props?.category_id[0]
+      );
+      if (newCate.length) {
+        setCategoryName(newCate[0].name);
+      }
+    };
+
     handleCategory();
-  }, []);
+  }, [categoryList, props?.category_id]);
 
   const isAddedToList = useMemo(
     () => addToList?.[type]?.[video_id],
@@ -150,7 +145,7 @@ export const CardVideo = ({
             />
           </Skeleton>
 
-          {isLive && (
+          {/* {isLive && (
             <div className="tag-on-thumb-wrapper">
               <span className="tag-on-thumb">
                 <span className="tag-icon">
@@ -159,7 +154,7 @@ export const CardVideo = ({
                 <div className="tag-text">On Live</div>
               </span>
             </div>
-          )}
+          )} */}
         </div>
         <div className="video-card-detail-container">
           <div className="video-card-detail">

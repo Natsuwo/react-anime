@@ -3,13 +3,12 @@ import { getDoubleFind } from "../../../features/useFetch";
 import VideoList from "../../Global/VideoList/VideoList";
 import { CardVideo } from "../../Global/Card/Card";
 
-const CategoryFree = ({ category, slug }) => {
+const CategoryFree = ({ category }) => {
   const [categoryFree, setCategoryFree] = useState([]);
-  const [freeLoading, setFreeLoading] = useState(false);
+  const [freeLoading, setFreeLoading] = useState(true);
   useEffect(() => {
     const handleData = async () => {
-      if (!freeLoading && Object.keys(category).length) {
-        setFreeLoading(true);
+      if (freeLoading && Object.keys(category).length) {
         const data = await getDoubleFind(
           "Episode",
           ["level", 1, false],
@@ -23,7 +22,11 @@ const CategoryFree = ({ category, slug }) => {
       setFreeLoading(false);
     };
     handleData();
-  }, [category, slug]);
+  }, [category, freeLoading]);
+
+  useEffect(() => {
+    setFreeLoading(true);
+  }, [category]);
 
   return (
     <section className="feature-section">

@@ -7,14 +7,12 @@ import { CardSkeleton } from "../../Global/Card/Card";
 const CategoryAll = ({ category, slug }) => {
   const [data, setData] = useState([]);
   const [lastDoc, setLastDoc] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const limitPerPage = 8;
 
   const fetchData = useCallback(
     async (reset = false) => {
-      setLoading(true);
-      // Reset lastDoc if we're fetching new category data
       const startingDoc = reset ? null : lastDoc;
       const fetchedData = await FetchDocInfinity(
         "Videos",
@@ -38,6 +36,7 @@ const CategoryAll = ({ category, slug }) => {
       } else {
         console.error(fetchedData.error);
       }
+
       setLoading(false);
     },
     [lastDoc, category?.category_id, limitPerPage]
@@ -48,12 +47,17 @@ const CategoryAll = ({ category, slug }) => {
   }, [lastDoc]);
 
   useEffect(() => {
-    setLastDoc(null);
-    setLoading(false);
-    setHasMore(true);
-    setData([]);
-    fetchData(true);
-  }, [category, slug]);
+    if (loading) {
+      setLastDoc(null);
+      setData([]);
+      setHasMore(true);
+      fetchData(true);
+    }
+  }, [category, fetchData, loading]);
+
+  useEffect(() => {
+    setLoading(true);
+  }, [category]);
 
   return (
     <section className="feature-section">
