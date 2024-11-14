@@ -37,6 +37,14 @@
   width: 480px;
 }
 
+.main-modal-wrapper.first-loading {
+  overflow: hidden;
+}
+
+.main-modal-wrapper.first-loading .main-modal-container .main-modal-content {
+  width: 100vw;
+}
+
 .modal-item-title {
   box-sizing: border-box;
   padding: 0 40px 32px;

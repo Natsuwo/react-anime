@@ -68,6 +68,7 @@ const EpisodeVideo = () => {
         console.error(res.error);
       }
 
+      setEpisodeListLoading(true);
       setLoading(false);
     };
 
@@ -114,7 +115,14 @@ const EpisodeVideo = () => {
   useEffect(() => {
     (async () => {
       setLoadingSidebar(true);
-      const data = await GetAllSort("Episode", "views_count", "desc", 12);
+      const data = await GetAllSort(
+        "Episode",
+        "views_count",
+        "desc",
+        12,
+        "__name__",
+        episodeId
+      );
 
       if (data.success) {
         setMostViewSidebar(data.doc);
@@ -287,7 +295,7 @@ const EpisodeVideo = () => {
                   </h1>
                   <div className="episode-supplement">
                     <div className="supplement-item">
-                      {dataEpisode?.duration / 60} minutes
+                      {(dataEpisode?.duration / 60).toFixed(0)} minutes
                     </div>
                     <div className="supplement-item">
                       {getTime(dataEpisode?.last_modified_date)}
@@ -331,7 +339,7 @@ const EpisodeVideo = () => {
                   <EpisodeList
                     playingId={episodeId}
                     value={episodeListArr}
-                    loading={episodeListLoading.current}
+                    loading={episodeListLoading}
                   />
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./AccountManagement.css";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import Modal from "../../../Modal/Modal";
@@ -172,7 +172,7 @@ const AccountManagement = () => {
           </div>
         </div>
         <div
-          onClick={() => handleModalMobile("switch-account")}
+          onClick={() => handleModalMobile("create-otp")}
           className="account-manager-item"
         >
           <div className="manager-item-wrapper">

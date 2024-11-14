@@ -11,17 +11,17 @@ import {
 } from "../../Global/Card/Card";
 import VideoList from "../../Global/VideoList/VideoList";
 import { UseResponsiveContext } from "../../../context/ResponsiveContext";
-import { GetAllSort, GetDocumentsByQuery } from "../../../features/useFetch";
+import {
+  GetAllSort,
+  GetDocumentsByQuery,
+  getDoubleFind,
+} from "../../../features/useFetch";
 import { UseMyListContext } from "../../../context/MyListContext";
 import BannerMobile from "../../Mobile/Global/Banner/Banner";
 
 const AppBaner = () => {
   const { size } = UseResponsiveContext();
   const { isSwitcher } = UseToggleContext();
-  const [isHovered, setIsHovered] = useState(false);
-  const handleHovered = (opt) => {
-    setIsHovered(opt);
-  };
 
   // Category Data
   const [scheduleData, setScheduleData] = useState([]);
@@ -49,20 +49,10 @@ const AppBaner = () => {
   ) : (
     <div className="banner-wrapper">
       {isSwitcher === 0 ? (
-        <Banner
-          data={scheduleData}
-          isLoading={scheLoading}
-          isHovered={isHovered}
-          handleHovered={handleHovered}
-        />
+        <Banner data={scheduleData} isLoading={scheLoading} />
       ) : (
         <>
-          <Sponsored
-            data={scheduleData}
-            isLoading={scheLoading}
-            isHovered={isHovered}
-            handleHovered={handleHovered}
-          />
+          <Sponsored data={scheduleData} isLoading={scheLoading} />
           {/* Set Gradient */}
           <div className="sponsored-overlay">
             <div className="sponsored-overlay-bg">
@@ -82,115 +72,178 @@ const AppBaner = () => {
 
 const Home = () => {
   const [mostViewData, setMostViewData] = useState([]);
-  const [isLoadingMostView, setLoadingMostView] = useState(false);
-
   const [actionData, setActionData] = useState([]);
+  const [actionDataRank, setActionRank] = useState([]);
+  const [freeAnimeData, setFreeAnime] = useState([]);
+  const [premiumAnime, setPremiumAnime] = useState([]);
+  const [dramaData, setDramaData] = useState([]);
+  const [newsData, setNewsData] = useState([]);
+  const [musicData, setMusicData] = useState([]);
   const isLoadingAction = useRef(true);
-
-  useEffect(() => {
-    (async () => {
-      setLoadingMostView(true);
-      const data = await GetAllSort("Videos", "views_count", "desc", 12);
-      if (data.success) {
-        setMostViewData(data.doc);
-      } else {
-        console.error(data.error);
-      }
-      setLoadingMostView(false);
-    })();
-  }, []);
-
-  useEffect(() => {
-    const handleActionData = async () => {
-      const data = await GetDocumentsByQuery("Videos", "tags", "Action", true);
-      if (data.success) {
-        setActionData(data.doc);
-      }
-      isLoadingAction.current = false;
-    };
-    handleActionData();
-  }, []);
+  const [loading, setLoading] = useState({
+    mostView: true,
+    actionRank: true,
+    freeAnime: true,
+    premiumAnime: true,
+    drama: true,
+    news: true,
+    music: true,
+  });
 
   const { myList, isLoading: myListLoading } = UseMyListContext();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const [
+        mostViewRes,
+        actionDataRes,
+        actionRankRes,
+        freeAnimeRes,
+        premiumAnimeRes,
+        dramaRes,
+        newRes,
+        musicRes,
+      ] = await Promise.all([
+        GetAllSort("Videos", "views_count", "desc", 12),
+        GetDocumentsByQuery("Videos", "tags", "Action", true),
+        GetDocumentsByQuery(
+          "Videos",
+          "tags",
+          "Action",
+          true,
+          20,
+          true,
+          "views_count",
+          "desc"
+        ),
+        getDoubleFind(
+          "Episode",
+          ["level", 1, false],
+          ["category_id", [1, 2, 3], true],
+          20
+        ),
+        getDoubleFind(
+          "Episode",
+          ["level", 2, false],
+          ["category_id", [1, 2, 3], true],
+          20
+        ),
+        GetDocumentsByQuery("Videos", "category_id", [4, 5], true),
+        GetDocumentsByQuery("Episode", "category_id", 6, true),
+        GetDocumentsByQuery("Episode", "category_id", 7, true),
+      ]);
+
+      if (mostViewRes.success) setMostViewData(mostViewRes.doc);
+      if (actionDataRes.success) setActionData(actionDataRes.doc);
+      if (actionRankRes.success) setActionRank(actionRankRes.doc);
+      if (freeAnimeRes.success) setFreeAnime(freeAnimeRes.doc);
+      if (premiumAnimeRes.success) setPremiumAnime(premiumAnimeRes.doc);
+      if (dramaRes.success) setDramaData(dramaRes.doc);
+      if (newRes.success) setNewsData(newRes.doc);
+      if (musicRes.success) setMusicData(musicRes.doc);
+      setLoading({
+        mostView: !mostViewRes.success,
+        actionRank: !actionRankRes.success,
+        freeAnime: !freeAnimeRes.success,
+        premiumAnime: !premiumAnimeRes.success,
+        drama: !dramaRes.success,
+        news: !newRes.success,
+        music: !musicRes.success,
+      });
+      isLoadingAction.current = !actionDataRes.success;
+    };
+
+    fetchData();
+  }, []);
+
+  const renderVideoList = (
+    title,
+    data,
+    isLoading,
+    ChildComponent,
+    slidesToShow = 4,
+    totalSlides = null,
+    height = 175,
+    horizontal = true
+  ) => (
+    <VideoList
+      categoryTitle={title}
+      ChildComponent={isLoading ? CardSkeleton : ChildComponent}
+      slidesToShow={slidesToShow}
+      totalSlides={totalSlides ?? data?.length}
+      items={isLoading ? [] : data}
+      height={isLoading ? height : undefined}
+      horizontal={horizontal}
+    />
+  );
 
   return (
     <>
       <AppBaner />
       <div className="home-container">
-        {/* Most Viewed */}
-        {!isLoadingMostView ? (
-          <VideoList
-            categoryTitle={"Most viewed"}
-            ChildComponent={CardVideo}
-            items={mostViewData}
-            totalSlides={mostViewData?.length}
-          ></VideoList>
-        ) : (
-          <VideoList
-            categoryTitle={"Most viewed"}
-            ChildComponent={CardSkeleton}
-            height={215}
-          ></VideoList>
+        {renderVideoList(
+          "Most viewed",
+          mostViewData,
+          loading.mostView,
+          CardVideo
         )}
+        {renderVideoList(
+          "Top Rank",
+          mostViewData,
+          loading.mostView,
+          CardRank,
+          7,
+          mostViewData?.length,
+          undefined,
+          false
+        )}
+        {myListLoading
+          ? renderVideoList("My List", [], true, CardSkeleton, 4, null, 175)
+          : myList?.length > 0 &&
+            renderVideoList(
+              "My List",
+              myList,
+              false,
+              CardVideo,
+              4,
+              myList.length
+            )}
+        {renderVideoList(
+          "Action List",
+          actionData,
+          isLoadingAction.current,
+          CardVideo
+        )}
+        {renderVideoList(
+          "Action Rank",
+          actionDataRank,
+          loading.actionRank,
+          CardRank,
+          7,
+          actionDataRank?.length,
+          undefined,
+          false
+        )}
+        {renderVideoList(
+          "Free Anime",
+          freeAnimeData,
+          loading.freeAnime,
+          CardVideo
+        )}
+        {premiumAnime?.length > 0 &&
+          renderVideoList(
+            "Premium Anime",
+            premiumAnime,
+            loading.premiumAnime,
+            CardVideo
+          )}
 
-        {/* My List */}
-        {myListLoading ? (
-          <VideoList
-            categoryTitle={"My List"}
-            ChildComponent={CardSkeleton}
-            slidesToShow={4}
-            height={175}
-          ></VideoList>
-        ) : (
-          myList?.length > 0 && (
-            <VideoList
-              categoryTitle={"My List"}
-              ChildComponent={CardVideo}
-              slidesToShow={4}
-              totalSlides={myList?.length}
-              items={myList}
-            ></VideoList>
-          )
-        )}
-        {/* Action */}
-        {!isLoadingAction.current ? (
-          <VideoList
-            categoryTitle={"Action List"}
-            ChildComponent={CardVideo}
-            slidesToShow={4}
-            totalSlides={actionData?.length}
-            items={actionData}
-          ></VideoList>
-        ) : (
-          <VideoList
-            categoryTitle={"Most viewed"}
-            ChildComponent={CardSkeleton}
-            slidesToShow={4}
-            height={175}
-          ></VideoList>
-        )}
-
-        {/* Card Rank */}
-        {/* CardRank */}
-        {mostViewData && (
-          <VideoList
-            categoryTitle={"Top Rank"}
-            ChildComponent={CardRank}
-            slidesToShow={7}
-            items={mostViewData}
-            totalSlides={mostViewData?.length}
-            isLoading={isLoadingMostView}
-            horizontal={false}
-          ></VideoList>
-        )}
-        {/* Card Square */}
-        {/* CardSquare */}
-        {/* <VideoList
-          categoryTitle={"Sport"}
-          ChildComponent={CardSquare}
-          slidesToShow={8}
-          isLoading={false}
-        ></VideoList> */}
+        {dramaData?.length > 0 &&
+          renderVideoList("Drama", dramaData, loading.drama, CardVideo, 4)}
+        {newsData?.length > 0 &&
+          renderVideoList("News", newsData, loading.news, CardVideo, 4)}
+        {musicData?.length > 0 &&
+          renderVideoList("Music", musicData, loading.music, CardVideo, 4)}
       </div>
     </>
   );

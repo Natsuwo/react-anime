@@ -3,7 +3,12 @@ import "./Card.css";
 import { Link } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import Skeleton from "../Skeleton/Skeleton";
-import { formatDuration, getDays, getTime } from "../../../features/helper";
+import {
+  convertColor,
+  formatDuration,
+  getDays,
+  getTime,
+} from "../../../features/helper";
 import { UseMyListContext } from "../../../context/MyListContext";
 import Tooltip from "../Tooltip/Tooltip";
 import CategoryTag from "../CategoryTag/CategoryTag";
@@ -122,11 +127,13 @@ export const CardVideo = ({
         onClick={onClick}
       >
         <div className="video-card-thumbnail">
-          {showTag && (
+          {showTag && props?.duration && (
             <div
               className="video-card-tags"
               style={{
-                "--dominant-color": dominant_color ? dominant_color : "#fb5607",
+                "--dominant-color": dominant_color
+                  ? dominant_color
+                  : convertColor(props?.category_id[0]),
               }}
             >
               <div className="card-tag-name">{categoryName}</div>

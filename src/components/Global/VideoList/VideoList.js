@@ -55,11 +55,11 @@ const VideoList = ({
   height,
   items = [],
   isLoading = true,
-  horizontal,
+  horizontal = true,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
-  const defaultArr = Array.from({ length: 4 });
+  const defaultArr = Array.from({ length: horizontal ? 4 : 7 });
   const cardRefs = useRef([]);
 
   const handleBeforeChange = () => {
@@ -128,7 +128,12 @@ const VideoList = ({
         {isLoading && items.length === 0 && (
           <div className="flex-container-less-wrapper">
             {defaultArr.map((_, index) => (
-              <div className="flex-container-less-item" key={index}>
+              <div
+                className={`flex-container-less-item${
+                  !horizontal ? " vertical" : ""
+                }`}
+                key={index}
+              >
                 <Skeleton horizontal={horizontal}></Skeleton>
               </div>
             ))}

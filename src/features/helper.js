@@ -317,3 +317,25 @@ export const compareUnorderedArrays = (arr1, arr2) => {
 
   return JSON.stringify(sortedArr1) === JSON.stringify(sortedArr2);
 };
+
+export const convertColor = (categoryid) => {
+  let color = "#fb5607";
+  switch (categoryid) {
+    case 1 || "1":
+    case 2 || "2":
+    case 3 || "3":
+      color = "#fb5607";
+      break;
+    case 4 || "4":
+    case 5 || "5":
+      color = "#9c27b0";
+      break;
+    case 6 || "6":
+      color = "#6649b6";
+      break;
+    case 7 || "7":
+      color = "#009688";
+      break;
+  }
+  return color;
+};

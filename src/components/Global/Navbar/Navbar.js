@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Navbar.css";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import UseIconList from "../SvgList/UseIconList";
 import { UseToggleContext } from "../../../context/ToggleContext";
 import AccountBar from "./AccountBar";
@@ -12,13 +12,13 @@ const Navbar = () => {
   const [hovered, setHovered] = useState(false);
   const { categoryList } = UseCategoryContext();
 
-  const handleHover = (state) => {
+  const handleHover = (currentState) => {
     if (nav !== hovered) {
       clearTimeout(delayHover);
       setDelayHover(
         setTimeout(() => {
-          setHovered(state);
-          if (state === nav) {
+          setHovered(currentState);
+          if (currentState === nav) {
             toggleNav();
           }
         }, 1000)

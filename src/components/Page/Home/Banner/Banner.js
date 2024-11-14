@@ -1,30 +1,40 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./Banner.css";
+import { Link } from "react-router-dom";
+import { UseToggleContext } from "../../../../context/ToggleContext";
+import { formatTimestamp, formatViews } from "../../../../features/helper";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import Carousel from "./Carousel";
 import LayoutSwitcher from "../../../Global/Banner/LayoutSwitcher/LayoutSwitcher";
-import { UseToggleContext } from "../../../../context/ToggleContext";
-import { formatTimestamp, formatViews } from "../../../../features/helper";
-import { FetchSingleDocumentByKey } from "../../../../features/useFetch";
-import { Link } from "react-router-dom";
 import SponsoredContainer from "../Sponsored/SponsoredContainer";
 
-const Banner = ({ isHovered, handleHovered, data, isLoading }) => {
+const Banner = ({ data, isLoading }) => {
   const [isMute, setIsMute] = useState(true);
   const [selected, setSelected] = useState({});
   const [isSponsored, setSponsored] = useState(false);
   const videoRef = useRef(null);
 
+  const [isHovered, setIsHovered] = useState(false);
+  const handleHovered = (opt) => {
+    if (isSponsored) return;
+    setIsHovered(opt);
+  };
+
   // active sort
   const { isSwitcher, handleSwitch } = UseToggleContext();
 
-  const handleSelect = (index) => {
-    if (index === 99) {
-      setSponsored(true);
-    }
-    const select = data[index];
-    setSelected(select);
-  };
+  const handleSelect = useCallback(
+    (index) => {
+      if (index === 99) {
+        setSponsored(true);
+      } else {
+        setSponsored(false);
+      }
+      const select = data[index];
+      setSelected(select);
+    },
+    [data]
+  );
 
   const handleMute = () => {
     videoRef.current.muted = !videoRef.current.muted;
@@ -35,7 +45,7 @@ const Banner = ({ isHovered, handleHovered, data, isLoading }) => {
     if (data.length) {
       handleSelect(0);
     }
-  }, [data]);
+  }, [data, handleSelect]);
 
   useEffect(() => {
     if (videoRef.current) {

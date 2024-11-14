@@ -1,0 +1,32 @@
+.main-first-loading {
+  width: 100%;
+  height: 100vh;
+  background-color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-first-loading .first-loading-yurei {
+  width: 120px;
+}
+
+.first-loading-content {
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.main-first-loading .first-loading-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.main-first-loading .first-loading-icon svg {
+  display: block;
+  color: var(--text-color);
+  z-index: 25;
+}

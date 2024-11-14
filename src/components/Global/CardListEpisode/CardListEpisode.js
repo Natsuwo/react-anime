@@ -95,7 +95,9 @@ const CardListEpsiode = ({
               </div>
               {showSupplements && (
                 <ul className="episode-list-item-info">
-                  <li className="clamp-text">{data?.duration / 60} minutes</li>
+                  <li className="clamp-text">
+                    {(data?.duration / 60).toFixed(0)} minutes
+                  </li>
                   <li className="clamp-text">
                     {getTime(data?.last_modified_date)}
                   </li>

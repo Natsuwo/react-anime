@@ -55,7 +55,14 @@ export const GetDocument = async (document, id) => {
   }
 };
 
-export const getDoubleFind = async (document, find1, find2, maxDoc = false) => {
+export const getDoubleFind = async (
+  document,
+  find1,
+  find2,
+  maxDoc = false,
+  sort_field,
+  sort_by
+) => {
   try {
     // Kiểm tra điều kiện so sánh cho find1
     const find1Condition =
@@ -74,12 +81,23 @@ export const getDoubleFind = async (document, find1, find2, maxDoc = false) => {
         : "==";
 
     // Tạo query
-    const q = query(
-      collection(db, document),
-      where(find1[0], find1Condition, find1[1]),
-      where(find2[0], find2Condition, find2[1]),
-      maxDoc ? limit(maxDoc) : undefined
-    );
+    let q;
+    if (sort_field && sort_by) {
+      q = query(
+        collection(db, document),
+        where(find1[0], find1Condition, find1[1]),
+        where(find2[0], find2Condition, find2[1]),
+        orderBy(sort_field, sort_by),
+        maxDoc ? limit(maxDoc) : undefined
+      );
+    } else {
+      q = query(
+        collection(db, document),
+        where(find1[0], find1Condition, find1[1]),
+        where(find2[0], find2Condition, find2[1]),
+        maxDoc ? limit(maxDoc) : undefined
+      );
+    }
 
     const querySnapshot = await getDocs(q);
     const documents = querySnapshot.docs.map((doc) => ({
@@ -222,19 +240,56 @@ export const FetchDocInfinity = async (
   }
 };
 
-export const GetAllSort = async (document, field, order_by, maxDoc) => {
+export const GetAllSort = async (
+  document,
+  field,
+  order_by,
+  maxDoc,
+  exclude_key,
+  exclude_id
+) => {
   try {
-    const q = query(
-      collection(db, document),
-      orderBy(field, order_by),
-      limit(maxDoc)
-    );
+    let q;
+
+    if (exclude_key && exclude_id) {
+      if (exclude_key === "__name__") {
+        // Nếu exclude_key là document ID, sắp xếp theo field và lọc sau khi lấy dữ liệu
+        q = query(
+          collection(db, document),
+          orderBy(field, order_by),
+          limit(maxDoc * 2) // Lấy nhiều hơn để đảm bảo có đủ dữ liệu sau khi lọc
+        );
+      } else {
+        // Nếu exclude_key không phải là document ID, dùng where với điều kiện bất đẳng thức
+        q = query(
+          collection(db, document),
+          where(exclude_key, "!=", exclude_id),
+          orderBy(field, order_by),
+          limit(maxDoc)
+        );
+      }
+    } else {
+      // Không có exclude_key, chỉ sắp xếp và giới hạn số lượng
+      q = query(
+        collection(db, document),
+        orderBy(field, order_by),
+        limit(maxDoc)
+      );
+    }
+
     const querySnapshot = await getDocs(q);
 
-    const documents = querySnapshot.docs.map((doc) => ({
+    let documents = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
+
+    // Nếu cần loại bỏ một document ID cụ thể, thực hiện lọc
+    if (exclude_key === "__name__" && exclude_id) {
+      documents = documents
+        .filter((doc) => doc.id !== exclude_id)
+        .slice(0, maxDoc);
+    }
 
     return { success: true, doc: documents };
   } catch (err) {

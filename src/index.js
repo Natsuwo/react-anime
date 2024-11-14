@@ -26,7 +26,12 @@ root.render(
             <PlayerWideContextProvider>
               <ResponsiveContextPrivider>
                 <ToggleContextProvider>
-                  <BrowserRouter>
+                  <BrowserRouter
+                    future={{
+                      v7_relativeSplatPath: true,
+                      v7_startTransition: true,
+                    }}
+                  >
                     <ToastMyListContextProvider>
                       <AppRoutes />
                     </ToastMyListContextProvider>

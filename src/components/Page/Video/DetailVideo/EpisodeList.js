@@ -11,6 +11,7 @@ const EpisodeList = ({ title, value, loading, playingId }) => {
   const [tablist, setTablist] = useState("");
 
   useEffect(() => {
+    console.log("chay", value);
     const types = [];
     const episodesMap = {};
 
@@ -32,7 +33,13 @@ const EpisodeList = ({ title, value, loading, playingId }) => {
       setTablist(types[0]);
     }
     setEpisodesByType(episodesMap);
-  }, [value]);
+  }, [value, playingId]);
+
+  const sortedEpisodes = [...(episodesByType[tablist] || [])].sort((a, b) => {
+    return sortDesc
+      ? b.episode_num - a.episode_num
+      : a.episode_num - b.episode_num;
+  });
 
   return (
     <div className="episode-list-wrapper">
@@ -69,7 +76,7 @@ const EpisodeList = ({ title, value, loading, playingId }) => {
             </div>
           </div>
           <ul className="episode-list">
-            {episodesByType[tablist]?.map((item, index) => (
+            {sortedEpisodes.map((item, index) => (
               <CardListEpsiode
                 loading={loading}
                 playingId={playingId}
