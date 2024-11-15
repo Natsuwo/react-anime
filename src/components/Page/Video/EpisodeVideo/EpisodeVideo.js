@@ -235,6 +235,7 @@ const EpisodeVideo = () => {
                               top: "0",
                               left: "0",
                               zIndex: 1,
+                              objectFit: "cover",
                             }}
                             src={dataEpisode.thumbnail_url}
                             alt="thumbnail episode"
