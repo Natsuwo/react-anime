@@ -7,8 +7,12 @@ const Vnpay = ({ data }) => {
   const [urlPay, setUrlPay] = useState("");
   useEffect(() => {
     (async () => {
+      const baseURL =
+        process.env.NODE_ENV === "production"
+          ? "https://yureitv.vercel.app"
+          : "http://localhost:3000";
       const res = await fetch(
-        `https://vnpayapi.vercel.app/api/payment/create-payment-url?amount=${data?.vnd_amount}&returnUrl=http://localhost:3000${localtion.pathname}`
+        `https://vnpayapi.vercel.app/api/payment/create-payment-url?amount=${data?.vnd_amount}&returnUrl=${baseURL}${localtion.pathname}`
       );
       const dataUrl = await res.json();
 
