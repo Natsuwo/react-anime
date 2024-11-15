@@ -308,7 +308,13 @@ const EpisodeVideo = () => {
                   </div>
                   <div className="episode-tag">
                     <div className="video-label">
-                      <span className="label-text free">Free</span>
+                      <span
+                        className={`label-text${
+                          dataEpisode?.level === 2 ? " premium" : " free"
+                        }`}
+                      >
+                        {dataEpisode?.level === 2 ? " Premium" : " Free"}
+                      </span>
                     </div>
                   </div>
                 </div>

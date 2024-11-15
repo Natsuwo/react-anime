@@ -18,7 +18,7 @@ const Vnpay = ({ data }) => {
 
       setUrlPay(dataUrl.data);
     })();
-  }, [data]);
+  }, [data, localtion.pathname]);
   return (
     <>
       <table className="payment-detail-table">

@@ -11,7 +11,6 @@ const EpisodeList = ({ title, value, loading, playingId }) => {
   const [tablist, setTablist] = useState("");
 
   useEffect(() => {
-    console.log("chay", value);
     const types = [];
     const episodesMap = {};
 
