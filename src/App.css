@@ -12,7 +12,7 @@ body {
 }
 
 * {
-  scrollbar-color: var(--sub-title-color) transparent;
+  scrollbar-color: #999 transparent;
 }
 
 ::-webkit-scrollbar {
@@ -24,7 +24,7 @@ body {
   background-color: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--sub-title-color);
+  background: #999;
   background-clip: content-box;
   border: 3px solid transparent;
   border-radius: 16px;
