@@ -9,6 +9,7 @@
 }
 
 .main-card.active {
+  z-index: 2;
   transform: scale(1.1);
   transition: transform 0.3s cubic-bezier(0.45, 0, 0.55, 1);
 }
