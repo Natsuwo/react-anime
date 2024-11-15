@@ -10,6 +10,8 @@ import HeaderPromote from "./components/Global/Header/HeaderPromote";
 import useUniqueShortUserId from "./features/useUniqueShortUserId";
 import { useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
+import Modal from "./components/Modal/Modal";
+import FirstLoading from "./components/Global/FirstLoading/FirstLoading";
 
 function App() {
   useUniqueShortUserId();
@@ -45,8 +47,26 @@ function App() {
     setProgress(100);
   };
 
+  const [visible, setVisible] = useState(!localStorage.getItem("FIRST_LOAD"));
+  console.log(visible);
+
+  useEffect(() => {
+    if (visible) {
+      setTimeout(() => {
+        localStorage.setItem("FIRST_LOAD", true);
+        setVisible(false);
+      }, 3000);
+    }
+  }, [visible]);
   return (
     <>
+      <Modal
+        visible={visible}
+        setVisible={setVisible}
+        className="first-loading"
+      >
+        <FirstLoading></FirstLoading>
+      </Modal>
       <LoadingBar color="var(--link-active)" progress={progress} />
       {size.width < 992 ? (
         <HeaderMenu />

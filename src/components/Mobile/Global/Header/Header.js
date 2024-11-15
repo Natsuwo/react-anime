@@ -3,11 +3,12 @@ import "./Header.css";
 import UseIconList from "../../../Global/SvgList/UseIconList";
 import Navbar from "./Navbar";
 import NavbarFloat from "./NavbarFloat";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isActive, setIsActive] = useState(false);
   const [floatActive, setFloatActive] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const floatRef = useRef(null);
   const handleFloat = (opt = !floatActive) => {
     setFloatActive(opt);
@@ -26,6 +27,16 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Ngăn form redirect
+    if (searchValue.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchValue)}`); // Chuyển hướng đến trang search với query
+    }
+  };
+
   return (
     <div className="mobile-header">
       <div className="mobile-header-wrapper">
@@ -59,9 +70,17 @@ const Header = () => {
             </button>
           </div>
           <div className={`mobile-header-form${isActive ? " active" : ""}`}>
-            <div className="mobile-header-input">
-              <input type="text" placeholder="Search something..." />
+            <form onSubmit={handleSubmit} className="mobile-header-input">
+              <input
+                onChange={(e) => setSearchValue(e.target.value)}
+                value={searchValue}
+                name="q"
+                type="text"
+                placeholder="Search something..."
+              />
+
               <button
+                type="button"
                 onClick={() => setIsActive(false)}
                 className="mobile-button close"
               >
@@ -72,7 +91,7 @@ const Header = () => {
                   className="mobile-icon"
                 ></UseIconList>
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </div>

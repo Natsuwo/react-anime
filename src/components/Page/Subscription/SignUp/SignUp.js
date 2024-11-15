@@ -79,7 +79,8 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    if (user?.emailVerified && userMetaData?.subscription_level === 1) {
+    const userLevel = userMetaData?.subscription_level || 1;
+    if (user?.emailVerified && userLevel === 1) {
       (async () => {
         const paymentlocal = localStorage.getItem("PAYMENT")
           ? JSON.parse(localStorage.getItem("PAYMENT"))
@@ -101,7 +102,7 @@ const SignUp = () => {
         }
       })();
     }
-  }, [user?.emailVerified]);
+  }, [user?.emailVerified, userMetaData, user?.uid, navigate]);
   return (
     <main className="page-main">
       <div className="page-container container__mobile">

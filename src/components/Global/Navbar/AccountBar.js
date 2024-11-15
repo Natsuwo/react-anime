@@ -37,7 +37,7 @@ const AccountBar = () => {
           {levelLoading ? (
             <Skeleton width={"50px"} height={"8px"} />
           ) : (
-            <span className="account-nav-text">
+            <span className="account-nav-text clamp-text">
               {userMetaData && userMetaData?.user_name
                 ? userMetaData?.user_name
                 : userId}
@@ -50,7 +50,7 @@ const AccountBar = () => {
             <Skeleton width={"50px"} height={"8px"} />
           ) : (
             <span
-              className={`account-nav-text ${
+              className={`account-nav-text clamp-text ${
                 userLevel?.level_text && userLevel?.level_text.toLowerCase()
               }`}
             >

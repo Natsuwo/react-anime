@@ -179,7 +179,8 @@ const EpisodeVideo = () => {
 
   useEffect(() => {
     if (dataEpisode?.level >= 2) {
-      setPremium(dataEpisode?.level > userMetaData?.subscription_level);
+      const userLevel = userMetaData?.subscription_level || 1;
+      setPremium(dataEpisode?.level > userLevel);
     } else {
       setPremium(false);
     }

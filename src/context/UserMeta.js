@@ -33,6 +33,10 @@ const UserMetaContextProvider = ({ children }) => {
   const [levelLoading, setLevelLoading] = useState(true);
   const [waitFetch, setWaitFetch] = useState(true);
 
+  const handleLevelLoading = useCallback((option) => {
+    setLevelLoading(option);
+  }, []);
+
   useEffect(() => {
     if (!Object.keys(userMetaData).length || !levelLoading) return;
 
@@ -99,10 +103,9 @@ const UserMetaContextProvider = ({ children }) => {
       if (user?.logout) {
         setUserMetaData({});
       }
-
-      if (user === false) {
-        localStorage.setItem("USER_METADATA", JSON.stringify(userMetaData));
-      }
+    }
+    if (user === false) {
+      localStorage.setItem("USER_METADATA", JSON.stringify(userMetaData));
     }
   }, [
     userMetaData,
@@ -132,6 +135,7 @@ const UserMetaContextProvider = ({ children }) => {
         loadingUser,
         setUserMetaData,
         adsEnabled,
+        handleLevelLoading,
       }}
     >
       {children}

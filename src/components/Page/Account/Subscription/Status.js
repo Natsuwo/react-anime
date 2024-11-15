@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Breadcumb from "../../../Global/Breadcrumb/Breadcumb";
 import "./Status.css";
 import { Link, useNavigate } from "react-router-dom";
 import { UseUserMetaContext } from "../../../../context/UserMeta";
-import {
-  calculateExpirationDate,
-  convertToExpirationDate,
-} from "../../../../features/helper";
+import { convertToExpirationDate } from "../../../../features/helper";
 import { isMobile } from "react-device-detect";
 
 const Subscription = () => {
@@ -18,7 +15,7 @@ const Subscription = () => {
       sub_title: "YureiTV",
       price: "4.99",
       isMonth: true,
-      description: "Watch anime, shows without Ads",
+      description: "Watch anime, shows without Limited",
       level: 2,
     },
     {

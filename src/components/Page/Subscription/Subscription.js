@@ -19,7 +19,7 @@ const Subscription = () => {
   ];
   const [isActive, setIsActive] = useState("credit_card");
   const [isPaid, setPaid] = useState(false);
-  const { handleUserMetaData } = UseUserMetaContext();
+  const { handleUserMetaData, handleLevelLoading } = UseUserMetaContext();
 
   const [data, setData] = useState(null);
   const { params } = useParams();
@@ -50,11 +50,12 @@ const Subscription = () => {
             subscription_level: data.level,
             subscription_expired: subscription_expired,
           });
+          handleLevelLoading(true);
           setPaid(true);
         }
       })();
     }
-  }, [data]);
+  }, [data, handleUserMetaData, handleLevelLoading]);
 
   return (
     <main className="page-main">
